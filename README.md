@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PolyTime ⏱️
+
+A lightweight timesheeting app for tracking time across projects, assets, and business units — with a manager dashboard, reporting, and CSV export.
+
+Built with **Next.js 16**, **TypeScript**, **Prisma**, **Tailwind CSS**, and **React Aria Components**.
+
+---
+
+## Features
+
+- 📋 **Timesheets** — Log daily time entries against projects and assets
+- 📊 **Reports** — Filter and summarise time by business unit, project, asset, or employee; export to CSV
+- 🏠 **Overview Dashboard** — See incomplete days at a glance and navigate quickly to outstanding entries
+- 🛠️ **Management** — Managers can administer users, projects, assets, business units, and work schedule rules
+- ♿ **Accessible** — Built with React Aria Components and semantic navigation
+- 📱 **Responsive** — Works across desktop and mobile
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | [Next.js 16](https://nextjs.org) (App Router) |
+| Language | TypeScript 5 |
+| Database ORM | [Prisma 6](https://www.prisma.io) |
+| Styling | [Tailwind CSS 4](https://tailwindcss.com) |
+| Accessibility | [React Aria Components](https://react-spectrum.adobe.com/react-aria/) |
+| Component Dev | [Storybook 10](https://storybook.js.org) |
+| Testing | [Vitest](https://vitest.dev) + Playwright |
+| Package Manager | [pnpm](https://pnpm.io) |
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- pnpm (`npm install -g pnpm`)
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/mocrsteel/PolyTime.git
+cd PolyTime
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Database Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Generate the Prisma client
+pnpm db:generate
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Run migrations
+pnpm db:migrate
 
-## Learn More
+# (Optional) Seed with demo data
+pnpm db:seed
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Development Server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command | Description |
+|---|---|
+| `pnpm dev` | Start the development server |
+| `pnpm build` | Build for production |
+| `pnpm start` | Start the production server |
+| `pnpm lint` | Run ESLint |
+| `pnpm storybook` | Start Storybook on port 6006 |
+| `pnpm build-storybook` | Build the Storybook static site |
+| `pnpm db:generate` | Regenerate the Prisma client |
+| `pnpm db:migrate` | Run database migrations |
+| `pnpm db:seed` | Seed the database |
+| `pnpm db:studio` | Open Prisma Studio |
+
+---
+
+## Project Structure
+
+```
+├── app/            # Next.js App Router pages and layouts
+├── components/     # Shared UI components
+├── prisma/         # Database schema, migrations, and seed
+├── docs/           # Project documentation
+├── public/         # Static assets
+└── scripts/        # Utility scripts
+```
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome. See the [open issues](https://github.com/mocrsteel/PolyTime/issues) for the current roadmap.
+
+---
+
+## License
+
+This project is currently unlicensed. All rights reserved.
