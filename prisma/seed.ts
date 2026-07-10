@@ -5,6 +5,10 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Seeding database...');
 
+  // Clear time entries first so the seed is idempotent (no unique natural key)
+  await prisma.timeEntry.deleteMany({});
+  console.log('🗑️  Cleared existing time entries');
+
   // ── Business Units ──────────────────────────────────────────────────────────
   const buEngineering = await prisma.businessUnit.upsert({
     where: { code: 'ENG' },
