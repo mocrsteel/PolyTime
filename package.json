@@ -8,9 +8,17 @@
     "start": "next start",
     "lint": "eslint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.0.0",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-aria-components": "^1.19.0",
@@ -34,8 +42,10 @@
     "eslint-config-next": "16.2.9",
     "eslint-plugin-storybook": "^10.4.6",
     "playwright": "^1.61.1",
+    "prisma": "^6.0.0",
     "storybook": "^10.4.6",
     "tailwindcss": "^4",
+    "tsx": "^4.19.0",
     "typescript": "^5",
     "vite": "^8.1.0",
     "vitest": "^4.1.9"
