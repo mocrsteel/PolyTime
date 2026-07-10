@@ -1,0 +1,170 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  MANAGER
+  ADMIN
+}
+
+enum ProjectStatus {
+  ACTIVE
+  INACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+enum EntryStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  REJECTED
+}
+
+enum AssetType {
+  EQUIPMENT
+  SOFTWARE
+  VEHICLE
+  FACILITY
+  OTHER
+}
+
+// ─── Models ──────────────────────────────────────────────────────────────────
+
+/// Represents an employee or manager in the system.
+model User {
+  id              String         @id @default(cuid())
+  email           String         @unique
+  name            String
+  role            Role           @default(USER)
+  businessUnitId  String?
+  employeeGroupId String?
+
+  // Audit fields
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  businessUnit    BusinessUnit?  @relation(fields: [businessUnitId], references: [id])
+  employeeGroup   EmployeeGroup? @relation(fields: [employeeGroupId], references: [id])
+  timeEntries     TimeEntry[]
+  approvedEntries TimeEntry[]    @relation("ApprovedBy")
+
+  @@index([email])
+  @@index([businessUnitId])
+  @@index([employeeGroupId])
+}
+
+/// Organisational unit that groups users and projects.
+model BusinessUnit {
+  id        String    @id @default(cuid())
+  name      String
+  code      String    @unique
+  description String?
+
+  // Audit fields
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  users     User[]
+  projects  Project[]
+
+  @@index([code])
+}
+
+/// A named group of employees, used for policy and reporting.
+model EmployeeGroup {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+
+  // Audit fields
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  users       User[]
+}
+
+/// A billable or internal project that time can be logged against.
+model Project {
+  id             String        @id @default(cuid())
+  name           String
+  code           String        @unique
+  description    String?
+  status         ProjectStatus @default(ACTIVE)
+  businessUnitId String?
+
+  // Audit fields
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  // Relations
+  businessUnit   BusinessUnit? @relation(fields: [businessUnitId], references: [id])
+  timeEntries    TimeEntry[]
+  assets         Asset[]
+
+  @@index([code])
+  @@index([status])
+  @@index([businessUnitId])
+}
+
+/// A single time log entry submitted by a user against a project.
+model TimeEntry {
+  id           String      @id @default(cuid())
+  userId       String
+  projectId    String
+  date         DateTime    @db.Date
+  hours        Decimal     @db.Decimal(5, 2)
+  description  String?
+  status       EntryStatus @default(DRAFT)
+  approvedById String?
+  approvedAt   DateTime?
+
+  // Audit fields
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  // Relations
+  user         User        @relation(fields: [userId], references: [id])
+  project      Project     @relation(fields: [projectId], references: [id])
+  approvedBy   User?       @relation("ApprovedBy", fields: [approvedById], references: [id])
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([date])
+  @@index([status])
+}
+
+/// A physical or digital asset that can be associated with a project.
+model Asset {
+  id          String    @id @default(cuid())
+  name        String
+  code        String    @unique
+  type        AssetType
+  description String?
+  projectId   String?
+
+  // Audit fields
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  project     Project?  @relation(fields: [projectId], references: [id])
+
+  @@index([code])
+  @@index([type])
+  @@index([projectId])
+}
