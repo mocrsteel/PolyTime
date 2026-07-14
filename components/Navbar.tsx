@@ -1,27 +1,6 @@
 import Image from "next/image";
-import {IoGridOutline} from "react-icons/io5";
-import {FaRegClock} from "react-icons/fa6";
-import {FaRegChartBar} from "react-icons/fa";
-import {FaRegUser} from "react-icons/fa";
 
-import {
-  FiGrid,
-  FiClock,
-  FiBarChart2,
-  FiSettings,
-  FiSearch,
-  FiBell,
-  FiChevronRight,
-  FiPlus,
-  FiCopy,
-  FiTrash2,
-  FiCheck,
-  FiArrowLeft,
-  FiUsers,
-  FiHome,
-  FiMessageSquare,
-  FiAlertTriangle,
-  FiGitBranch,} from "react-icons/fi"
+import {FiGrid, FiClock, FiBarChart2, FiSettings, FiUsers} from "./Icons";
 
 import NavButton, {NavButtonProps} from "./NavButton";
 
@@ -40,7 +19,7 @@ const navigationItems = [
     title: 'Timesheet',
     icon: <FiClock />,
     badge: null,
-    href: '/timesheet',
+    href: '/timesheets',
   },
   {
     title: 'Reports',

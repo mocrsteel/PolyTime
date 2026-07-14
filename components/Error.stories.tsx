@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import {Meta, StoryObj} from "@storybook/nextjs-vite";
 import Error from "@/components/Error";
 
