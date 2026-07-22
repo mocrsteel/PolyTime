@@ -19,7 +19,6 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    setupFiles: [path.join(dirname, 'vitest.setup.ts')],
     projects: [
       {
         resolve: {
@@ -42,6 +41,14 @@ export default defineConfig({
         ],
         test: {
           name: 'storybook',
+          setupFiles: [],
+          deps: {
+            optimizer: {
+              web: {
+                include: ['next/router', 'next/navigation'],
+              },
+            },
+          },
           browser: {
             enabled: true,
             headless: true,
