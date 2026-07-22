@@ -23,6 +23,13 @@ const meta = {
     backgrounds: {
       value: 'sidebarDark', grid: false
     }
+  },
+  deps: {
+    optimizer: {
+      web: {
+        include: ["next/router", "next/navigation"]
+      }
+    }
   }
 } satisfies Meta<typeof NavButton>
 
