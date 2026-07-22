@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import {Meta, StoryObj} from '@storybook/nextjs-vite';
 import {IoGridOutline} from "react-icons/io5";
 import {FaRegClock} from "react-icons/fa6";
@@ -66,7 +68,7 @@ export const TimesheetInactive: Story = {
   args: {
     title: 'Timesheet',
     icon: <FaRegClock/>,
-    href: '/timesheet',
+    href: '/timesheets',
     badge: null
   },
   parameters: {
@@ -83,14 +85,14 @@ export const TimesheetActive: Story = {
   args: {
     title: 'Timesheet',
     icon: <FaRegClock/>,
-    href: '/timesheet',
+    href: '/timesheets',
     badge: null
   },
   parameters: {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/timesheet"
+        pathname: "/timesheets"
       }
     }
   }

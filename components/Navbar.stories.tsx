@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import {Meta, StoryObj} from '@storybook/nextjs-vite';
 import {INITIAL_VIEWPORTS} from "storybook/viewport";
 
@@ -53,7 +55,7 @@ export const TimesheetRoute = {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/timesheet"
+        pathname: "/timesheets"
       }
     }
   }
