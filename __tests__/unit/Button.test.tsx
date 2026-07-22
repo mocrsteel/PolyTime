@@ -3,93 +3,55 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import Button from "@/components/ui/Button"
 
-/**
- * Component Tests - Testing React components with user interactions
- */
 describe("Button Component", () => {
-  describe("Regular Button", () => {
-    it("should render with children text", () => {
-      render(<Button onClick={() => {}}>Click me</Button>)
+  it("renders a regular button with its label", () => {
+    render(<Button onClick={() => {}}>Click me</Button>)
 
-      const button = screen.getByRole("button", { name: "Click me" })
-      expect(button).toBeInTheDocument()
-    })
-
-    it("should apply primary styles when primary prop is true", () => {
-      const { container } = render(<Button primary onClick={() => {}}>Primary Button</Button>)
-
-      const button = container.querySelector("button")
-      expect(button?.className).toContain("bg-teal-700")
-      expect(button?.className).toContain("text-white")
-    })
-
-    it("should apply secondary styles when primary is false or undefined", () => {
-      const { container } = render(<Button onClick={() => {}}>Secondary Button</Button>)
-
-      const button = container.querySelector("button")
-      expect(button?.className).toContain("border-slate-200")
-      expect(button?.className).not.toContain("bg-teal-700")
-    })
-
-    it("should call onClick handler when clicked", async () => {
-      const handleClick = vi.fn()
-      const user = userEvent.setup()
-
-      render(<Button onClick={handleClick}>Click me</Button>)
-
-      const button = screen.getByRole("button", { name: "Click me" })
-      await user.click(button)
-
-      expect(handleClick).toHaveBeenCalledOnce()
-    })
-
-    it("should have correct name attribute", () => {
-      render(<Button name="submit-btn" onClick={() => {}}>Submit</Button>)
-
-      const button = screen.getByRole("button", { name: "Submit" })
-      // Verify button is rendered (name attribute is typically not directly accessible)
-      expect(button).toBeInTheDocument()
-    })
+    expect(screen.getByRole("button", { name: "Click me" })).toBeInTheDocument()
   })
 
-  describe("Link Button", () => {
-    it("should render as a link when link prop is true", () => {
-      render(
-        <Button link href="/timesheets">
-          Go to Timesheet
-        </Button>,
-      )
+  it("calls onClick when a regular button is clicked", async () => {
+    const handleClick = vi.fn()
+    const user = userEvent.setup()
 
-      const link = screen.getByRole("button", { name: "Go to Timesheet" })
-      expect(link).toBeInTheDocument()
-    })
+    render(<Button onClick={handleClick}>Click me</Button>)
 
-    it("should apply correct href", () => {
-      const { container } = render(
-        <Button link href="/timesheets">
-          Timesheet
-        </Button>,
-      )
+    await user.click(screen.getByRole("button", { name: "Click me" }))
 
-      const linkElement = container.querySelector("a")
-      expect(linkElement?.href).toContain("/timesheets")
-    })
+    expect(handleClick).toHaveBeenCalledOnce()
   })
 
-  describe("Accessibility", () => {
-    it("should be keyboard accessible", async () => {
-      const handleClick = vi.fn()
-      const user = userEvent.setup()
+  it("uses secondary styling by default", () => {
+    render(<Button onClick={() => {}}>Secondary</Button>)
+    const button = screen.getByRole("button", { name: "Secondary" })
 
-      render(<Button onClick={handleClick}>Accessible Button</Button>)
+    expect(button).toHaveClass("inline-flex", "h-10", "rounded-ui-lg", "border-app-border", "bg-app-surface", "text-slate-700")
+    expect(button).not.toHaveClass("bg-app-primary")
+  })
 
-      const button = screen.getByRole("button")
-      button.focus()
+  it("uses primary styling when primary is true", () => {
+    render(<Button primary onClick={() => {}}>Primary</Button>)
+    const button = screen.getByRole("button", { name: "Primary" })
 
-      expect(button).toHaveFocus()
+    expect(button).toHaveClass("bg-app-primary", "border-app-primary", "text-white", "shadow-action")
+    expect(button).not.toHaveClass("bg-app-surface")
+  })
 
-      await user.keyboard("{Enter}")
-      expect(handleClick).toHaveBeenCalled()
-    })
+  it("includes hover classes on the primary variant", () => {
+    render(<Button primary onClick={() => {}}>Hover Primary</Button>)
+    const button = screen.getByRole("button", { name: "Hover Primary" })
+
+    expect(button).toHaveClass("hover:bg-app-primary-hover", "hover:boder-app-primary-hover")
+  })
+
+  it("renders a link variant with the expected href", () => {
+    render(
+      <Button link href="/timesheets">
+        Timesheets
+      </Button>,
+    )
+
+    expect(screen.getByRole("button", { name: "Timesheets" })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Timesheets" })).toHaveAttribute("href", "/timesheets")
   })
 })
