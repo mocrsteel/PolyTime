@@ -2,6 +2,7 @@
 
 import {Meta, StoryObj} from "@storybook/nextjs-vite"
 import Button from "./Button"
+import "@/app/globals.css"
 
 const meta = {
   title: "Elements/Button",

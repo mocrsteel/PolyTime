@@ -22,7 +22,6 @@ export default defineConfig({
     setupFiles: [path.join(dirname, 'vitest.setup.ts')],
     projects: [
       {
-        name: 'unit',
         resolve: {
           alias: {
             '@': dirname,
@@ -51,6 +50,7 @@ export default defineConfig({
           },
         },
       },
+      // End 2 end testing. Still need to work on this implementation later.
       // {
       //   name: 'e2e',
       //   test: {

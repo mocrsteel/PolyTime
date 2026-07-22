@@ -30,14 +30,11 @@ export default function Button({
   href,
   onClick,
 }: ButtonProps) {
-  let className: string
-  if (primary) {
-    className =
-      "font-semibold text-xs px-4 py-3 bg-teal-700 border border-teal-700 text-white rounded-lg shadow-lg hover:bg-teal-800 transition-colors"
-  } else {
-    className =
-      "font-semibold text-xs px-4 py-3 border text-slate text-slate-900 border-slate-200 rounded-lg hover:border-slate-300 transition-colors"
-  }
+
+  const baseClass = "inline-flex h-10 items-center justify-center gap-2 rounded-ui-lg border px-4 text-xs font-semibold transition"
+  const className: string = primary
+    ? baseClass + " bg-app-primary border-app-primary text-white shadow-action hover:bg-app-primary-hover hover:boder-app-primary-hover"
+    : baseClass + " border-app-border bg-app-surface text-slate-700 hover:border-slate-300"
 
   // onPress function has been included for testing purposes with storybook.
   // Not intended for actual use in final app.

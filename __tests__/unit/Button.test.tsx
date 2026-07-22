@@ -9,14 +9,14 @@ import Button from "@/components/ui/Button"
 describe("Button Component", () => {
   describe("Regular Button", () => {
     it("should render with children text", () => {
-      render(<Button>Click me</Button>)
+      render(<Button onClick={() => {}}>Click me</Button>)
 
       const button = screen.getByRole("button", { name: "Click me" })
       expect(button).toBeInTheDocument()
     })
 
     it("should apply primary styles when primary prop is true", () => {
-      const { container } = render(<Button primary>Primary Button</Button>)
+      const { container } = render(<Button primary onClick={() => {}}>Primary Button</Button>)
 
       const button = container.querySelector("button")
       expect(button?.className).toContain("bg-teal-700")
@@ -24,7 +24,7 @@ describe("Button Component", () => {
     })
 
     it("should apply secondary styles when primary is false or undefined", () => {
-      const { container } = render(<Button>Secondary Button</Button>)
+      const { container } = render(<Button onClick={() => {}}>Secondary Button</Button>)
 
       const button = container.querySelector("button")
       expect(button?.className).toContain("border-slate-200")
@@ -44,7 +44,7 @@ describe("Button Component", () => {
     })
 
     it("should have correct name attribute", () => {
-      render(<Button name="submit-btn">Submit</Button>)
+      render(<Button name="submit-btn" onClick={() => {}}>Submit</Button>)
 
       const button = screen.getByRole("button", { name: "Submit" })
       // Verify button is rendered (name attribute is typically not directly accessible)
