@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import React from "react"
-import Navbar from "@/components/Navbar"
+import Navbar from "@/components/pages/Navbar"
 
 vi.mock("next/image", () => ({
   default: ({ src, alt, className }: { src: string; alt: string; className?: string }) =>

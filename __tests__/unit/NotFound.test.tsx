@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { render, screen } from "@testing-library/react"
-import NotFound from "@/components/NotFound"
+import NotFound from "@/components/pages/NotFound"
 
 describe("NotFound Component", () => {
   it("renders the not found heading and message", () => {

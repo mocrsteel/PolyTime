@@ -5,7 +5,7 @@ import {ClientProvider} from "./provider";
 
 import {Geist, Geist_Mono, DM_Sans, DM_Mono} from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/pages/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

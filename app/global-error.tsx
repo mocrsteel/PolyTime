@@ -1,6 +1,6 @@
 "use client"
 
-import Error from '@/components/Error'
+import Error from '@/components/pages/Error'
 
 // eslint-disable-next-line @next/next/no-async-client-component
 export default async function GlobalError() {

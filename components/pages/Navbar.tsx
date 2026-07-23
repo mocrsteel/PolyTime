@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import {FiGrid, FiClock, FiBarChart2, FiSettings, FiUsers} from "./Icons";
+import {Grid, Clock, BarChart, Settings, Users} from "../Icons";
 
-import NavButton, {NavButtonProps} from "./NavButton";
+import NavButton, {NavButtonProps} from "../NavButton";
 
 type NavBarProps = {
   userType: "User" | "Manager";
@@ -13,17 +13,17 @@ const navigationItems = [
     title: "Overview",
     href: "/",
     badge: null,
-    icon: <FiGrid />
+    icon: <Grid />
   },
   {
     title: 'Timesheet',
-    icon: <FiClock />,
+    icon: <Clock />,
     badge: null,
     href: '/timesheets',
   },
   {
     title: 'Reports',
-    icon: <FiBarChart2 />,
+    icon: <BarChart />,
     badge: null,
     href: '/reports',
   }
@@ -33,13 +33,13 @@ const navigationItems = [
 const workSpaceItems = [
   {
     title: 'Profile',
-    icon: <FiUsers />,
+    icon: <Users />,
     badge: null,
     href: '/profile',
   },
   {
     title: 'Management',
-    icon: <FiSettings/>,
+    icon: <Settings/>,
     badge: null,
     href: '/management',
   }

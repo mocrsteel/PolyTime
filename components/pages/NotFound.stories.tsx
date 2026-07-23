@@ -1,10 +1,10 @@
 // noinspection JSUnusedGlobalSymbols
 
 import {Meta, StoryObj} from "@storybook/nextjs-vite";
-import NotFound from "@/components/NotFound";
+import NotFound from "@/components/pages/NotFound";
 
 const meta = {
-  title: "NotFound",
+  title: "Pages/NotFound",
   component: NotFound,
   tags: ['autodocs'],
   globals: {

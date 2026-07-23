@@ -7,7 +7,7 @@ import NavBar from './Navbar';
 
 const meta = {
   component: NavBar,
-  title: 'Navigation sidebar',
+  title: 'Pages/Navigation sidebar',
   tags: ['autodocs'],
   globals: {
     viewport: { value: 'desktop', isRotated: false}

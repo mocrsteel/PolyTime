@@ -3,20 +3,26 @@
  */
 
 export {
-  FiGrid,
-  FiClock,
-  FiBarChart2,
-  FiSettings,
-  FiSearch,
-  FiBell,
-  FiChevronRight,
-  FiPlus,
-  FiCopy,
-  FiTrash2,
-  FiCheck,
-  FiArrowLeft,
-  FiUsers,
-  FiHome,
-  FiMessageSquare,
-  FiAlertTriangle,
-  FiGitBranch,} from "react-icons/fi"
+  FiGrid as Grid,
+  FiClock as Clock,
+  FiBarChart2 as BarChart,
+  FiSettings as Settings,
+  FiSearch as Search,
+  FiBell as Bell,
+  FiChevronRight as ChevronRight,
+  FiPlus as Plus,
+  FiMinus as Minus,
+  FiCopy as Copy,
+  FiTrash2 as Trash,
+  FiCheck as Check,
+  FiArrowLeft as ArrowLeft,
+  FiUsers as Users,
+  FiHome as Home,
+  // FiMessageSquare as Message,
+  FiAlertTriangle as Alert,
+  FiGitBranch as Branch,} from "react-icons/fi"
+
+export {
+  LuDot as Dot,
+  LuMessageSquareText as Message,
+} from "react-icons/lu"

@@ -1,11 +1,11 @@
 // noinspection JSUnusedGlobalSymbols
 
 import {Meta, StoryObj} from "@storybook/nextjs-vite";
-import Error from "@/components/Error";
+import Error from "@/components/pages/Error";
 import "@/app/globals.css"
 
 const meta = {
-  title: "Error",
+  title: "Pages/Error",
   component: Error,
   tags: ['autodocs'],
   globals: {

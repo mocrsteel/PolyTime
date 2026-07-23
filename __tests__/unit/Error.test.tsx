@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { render, screen } from "@testing-library/react"
-import Error from "@/components/Error"
+import Error from "@/components/pages/Error"
 
 describe("Error Component", () => {
   it("renders internal error mode with request id and retry action", () => {

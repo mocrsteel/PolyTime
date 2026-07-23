@@ -5,7 +5,7 @@ import Button from "./Button"
 import "@/app/globals.css"
 
 const meta = {
-  title: "Elements/Button",
+  title: "UI/Elements/Button",
   component: Button,
   parameters: {
     nextjs: {

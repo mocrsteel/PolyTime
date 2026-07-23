@@ -1,8 +1,8 @@
 "use client"
 
-import {FiAlertTriangle} from "./Icons"
-import Button from "./ui/Button";
-import Card from "./ui/Card";
+import {Alert} from "../Icons"
+import Button from "../ui/Button";
+import Card from "../ui/Card";
 
 
 type DefaultErrorProps = {
@@ -38,7 +38,7 @@ export default function Error({requestId, global, globalErrorMessage}: ErrorProp
       {/*<div id="404-box" className="flex flex-col items-center justify-center gap-4 bg-white p-18 rounded-2xl shadow-lg">*/}
       <Card>
         <span id="404-icon" className="text-4xl bg-orange-100 text-orange-700 rounded-2xl p-4">
-          <FiAlertTriangle className="h-5 w-5"/>
+          <Alert className="h-5 w-5"/>
         </span>
         <h1 className="text-polytime-teal-dark eyebrow">{global ? "Global error" : "Internal error"}</h1>
         <h2 className="text-3xl font-bold tracking-tight max-w-xl">Something went wrong</h2>

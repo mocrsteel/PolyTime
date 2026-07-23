@@ -5,7 +5,7 @@ import Card from "./Card"
 import "@/app/globals.css"
 
 const meta = {
-  title: "Elements/Card",
+  title: "UI/Elements/Card",
   component: Card,
   tags: ["autodocs"],
 } satisfies Meta<typeof Card>
