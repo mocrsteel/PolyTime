@@ -1,5 +1,6 @@
-import {Message, Dot, Plus, Minus, Trash} from "@/components/Icons";
+import {Dot, Message, Minus, Plus, Trash} from "@/components/Icons";
 import Button from "@/components/ui/Button";
+import DurationInput from "@/components/ui/timesheet/DurationInput";
 
 export type DayEntryProps = {
   readonly id: string;
@@ -11,7 +12,14 @@ export type DayEntryProps = {
   comments: string[];
 }
 
+
 export default function DayEntry({id, businessUnit, asset, project, date, hours, comments}: DayEntryProps) {
+  const time = {
+    h: Math.floor(hours),
+    m: Math.round((hours - Math.floor(hours)) * 60),
+  };
+  const formattedTime = `${time.h}h ${time.m < 10 ? '0' : ''}${time.m}m`;
+
   return (
     <div className="flex flex-row items-center justify-between gap-4">
       <span id={`${id}-marker`} />
@@ -52,7 +60,7 @@ export default function DayEntry({id, businessUnit, asset, project, date, hours,
       <div>
         <form className="flex flex-row items-center gap-1">
           <Button tiny onClick={() => {}}><Minus className="h-3 w-3 text-polytime-muted"/></Button>
-          <input type="number" value={hours} step={0.01} className="w-12 text-center text-sm -webkit-appearance-none bg-transparent"/>
+          <input type="text" value={formattedTime} step={0.25} className="w-12 text-center text-sm -webkit-appearance-none bg-transparent"/>
           <Button tiny onClick={() => {}}><Plus className="h-3 w-3 text-polytime-muted"/></Button>
           <Button tiny onClick={() => {}} className="hover:text-red-600"><Trash className="h-3 w-3 text-polytime-muted"/></Button>
         </form>
