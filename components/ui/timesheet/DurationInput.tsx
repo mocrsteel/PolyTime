@@ -3,16 +3,22 @@ import {useState} from "react";
 import Button from "@/components/ui/Button";
 import {Minus, Plus} from "@/components/Icons";
 import {TextField, Input, FieldError, TextFieldProps, ValidationResult} from "react-aria-components/TextField";
+import {Form} from "react-aria-components/Form";
 
 type DurationInputProps = TextFieldProps & {
   readonly entryId: number;
   time: number;
-  props?: TextFieldProps;
+  onSubmit?: () => void;
 }
 
 type DurationInputState = {
   readonly entryId: number;
   time: number;
+}
+
+type RACTextFieldProps = TextFieldProps & {
+  errorMessage?: string | ((validationResult: ValidationResult) => string);
+  readonly entryId: number;
 }
 
 /**
@@ -27,37 +33,24 @@ type DurationInputState = {
  *
  * TODO: Future feature: Validate on maximum based on region or employment rules.
  */
-function inputValidation(value: string): string | null {
-  const durationRegex = /^(?<hours>[0-9]+)(\s*h\s*|\s*:\s*)?(?<minutes>[0-9]+)(m)?$/;
-  const floatRegex = /^[0-9]+(\.[0-9]+)?$/;
+function inputValidation(value: string): string | undefined {
+  const durationRegex = /^(?<hours>\d+)\s*(?:h|:)\s*(?<minutes>[0-5]?\d)\s*m?$/;
+  const floatRegex = /^(?<hours>\d+(?:\.\d+)?)$/;
 
-  if (durationRegex.test(value)) {
-    const result = durationRegex.exec(value);
-    if (result?.groups) {
-      // const hours = parseFloat(result.groups.hours);
-      // const minutes = result.groups.minutes ? parseFloat(result.groups.minutes) : 0;
-      // const time = hours + minutes / 60;
-      // setTime(time)
-      return null
-    } else {
-      return "Invalid duration input. Examples of valid inputs: 8.5, 8:30, 8h 30m, 8h30m.";
-    }
-  } else if (floatRegex.test(value)) {
-    const time = parseFloat(value);
-    if (time >= 0 && time <= 168) {
-      // setTime(time)
-      return null
-    } else {
-      return "Invalid duration input. Maximum is 24 hours.";
-    }
-  } else {
+  if (!durationRegex.test(value) && !floatRegex.test(value)) {
     return "Invalid duration input. Examples of valid inputs: 8.5, 8:30, 8h 30m, 8h30m.";
   }
 }
 
-function inputTransform(value: string, setTime: (val: number) => void): void {
-  const durationRegex = /^(?<hours>[0-9]+)(\s*h\s*|\s*:\s*)?(?<minutes>[0-9]+)(m)?$/;
-  const floatRegex = /^[0-9]+(\.[0-9]+)?$/;
+function parseInput(value: string, entry: {
+  entryId: number,
+  time: number
+}, setInputValue: (value: string) => void, setEntryTime: ({entryId, time}: {
+  entryId: number,
+  time: number
+}) => void): void {
+  const durationRegex = /^(?<hours>\d+)\s*(?:h|:)\s*(?<minutes>[0-5]?\d)\s*m?$/;
+  const floatRegex = /^(?<hours>\d+(?:\.\d+)?)$/;
 
   if (durationRegex.test(value)) {
     const result = durationRegex.exec(value);
@@ -65,13 +58,19 @@ function inputTransform(value: string, setTime: (val: number) => void): void {
       const hours: number = parseFloat(result.groups.hours);
       const minutes: number = result.groups.minutes ? parseFloat(result.groups.minutes) : 0;
       const time = hours + minutes / 60;
-      setTime(time);
+      setInputValue(formatDuration(time));
+      setEntryTime({...entry, time: time});
+    } else {
+      setInputValue(formatDuration(0));
+      setEntryTime({...entry, time: 0});
     }
   } else if (floatRegex.test(value)) {
     const time: number = parseFloat(value);
-    setTime(time);
+    setInputValue(formatDuration(time));
+    setEntryTime({...entry, time: time});
   } else {
-    setTime(0);
+    setInputValue(formatDuration(0));
+    setEntryTime({...entry, time: 0});
   }
 }
 
@@ -82,36 +81,60 @@ function inputTransform(value: string, setTime: (val: number) => void): void {
 function formatDuration(value: number): string {
   const hours = Math.floor(value);
   const minutes = Math.round((value - hours) * 60);
-  return `${hours}h ${minutes < 10 ? '0' : ''}${minutes}m`;
+  return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
 }
 
 export default function DurationInput(props: DurationInputProps) {
   // const [entry, setEntry] = useState<DurationInputState>({entryId: 0, time: 0});
-  const [entry, setEntry] = useState<DurationInputState>({entryId: 0, time: 8.25});
-  const [inputValue, setInputValue] = useState<string>("0h 00m");
-  const isInvalid = true // inputValidation(inputValue);
+  const [entry, setEntry] = useState<DurationInputState>({entryId: props.entryId, time: props.time});
+  const [inputValue, setInputValue] = useState<string>(formatDuration(entry.time));
+  const [touched, setTouched] = useState<boolean>(false);
 
+  function add15Min() {
+    setEntry({...entry, time: entry.time + 0.25})
+    setInputValue(formatDuration(entry.time + 0.25));
+  }
+
+  function remove15Min() {
+    if (entry.time - 0.25 < 0) return;
+
+    setEntry({...entry, time: entry.time - 0.25})
+    setInputValue(formatDuration(entry.time - 0.25));
+  }
+
+  function submit(e: React.FormEvent<HTMLFormElement> | React.FocusEvent<HTMLInputElement>) {
+    e.preventDefault()
+    parseInput(inputValue, entry, setInputValue, setEntry)
+    setTouched(true)
+  }
 
   return (
-    <form aria-label="Duration input" id={`duration-input-${entry.entryId}`}
-          className="flex flex-row items-center gap-1">
-      <Button tiny onClick={() => {}}>
-        <Minus className="h-3 w-3 text-polytime-muted"/>
-      </Button>
-      <TextField {...props}>
-        <Input
-          placeholder="0h 0m"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          // value={formatDuration(entry.time)}
-          // onChange={(e) => inputTransform(e.target.value, (time) => setEntry({...entry, time}))}
-          className="w-12 text-center text-sm -webkit-appearance-none bg-transparent"/>
+    <Form onSubmit={submit}>
+      <TextField
+        name="duration"
+        validate={(value) => {
+          if (!touched) return undefined;
+          if (!value.trim()) return undefined;
+
+          return inputValidation(value)
+        }}
+        validationBehavior="aria"
+        className="flex flex-col content-center gap-1">
+        <div className="flex flex-row items-center content-center gap-1">
+          <Button tiny onClick={remove15Min}>
+            <Minus className="h-3 w-3 text-polytime-muted"/>
+          </Button>
+          <Input
+            placeholder="0h 0m"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onBlur={submit}
+            className="w-16 text-center text-sm -webkit-appearance-none bg-transparent"/>
+          <Button tiny onClick={add15Min}>
+            <Plus className="h-3 w-3 text-polytime-muted"/></Button>
+        </div>
+        <FieldError className={"text-xs font-semibold text-red-500"}/>
       </TextField>
-      <Button tiny onClick={() => {}}>
-        <Plus className="h-3 w-3 text-polytime-muted"/></Button>
-      <FieldError className={"text-xs text-red-500"}>{(validationDetails) => {
-        return validationDetails.isInvalid ? validationDetails.validationErrors : null
-      }}</FieldError>
-    </form>
+    </Form>
   )
 }

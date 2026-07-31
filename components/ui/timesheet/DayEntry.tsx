@@ -1,70 +1,93 @@
-import {Dot, Message, Minus, Plus, Trash} from "@/components/Icons";
+import { Dot, Message, Pen, Trash } from "@/components/Icons";
 import Button from "@/components/ui/Button";
 import DurationInput from "@/components/ui/timesheet/DurationInput";
+import type { ProjectColor } from "@/lib/project-colors";
+import { projectColorClassFromSlot } from "@/lib/project-colors";
 
-export type DayEntryProps = {
-  readonly id: string;
+import Daylist from "@/components/ui/timesheet/DayList";
+import { twMerge } from "tailwind-merge";
+
+export type TimesheetEntry = {
+  readonly id: number;
   readonly businessUnit: string;
   readonly asset: string;
   readonly project: string;
+  readonly projectColor: ProjectColor["slot"];
   date: Date;
   hours: number;
   comments: string[];
-}
+  className?: string;
+};
 
-
-export default function DayEntry({id, businessUnit, asset, project, date, hours, comments}: DayEntryProps) {
-  const time = {
-    h: Math.floor(hours),
-    m: Math.round((hours - Math.floor(hours)) * 60),
-  };
-  const formattedTime = `${time.h}h ${time.m < 10 ? '0' : ''}${time.m}m`;
+// TODO: Add delete button
+// TODO: Add code to update the mother entry in the database when the duration is updated (onBlur, on entering, ...).
+export default function DayEntry({
+  id,
+  businessUnit,
+  asset,
+  project,
+  projectColor,
+  date,
+  hours,
+  comments,
+  ...props
+}: TimesheetEntry) {
+  const entryColor = projectColorClassFromSlot(projectColor, "before");
 
   return (
-    <div className="flex flex-row items-center justify-between gap-4">
-      <span id={`${id}-marker`} />
+    <div
+      className={twMerge(
+        "mx-4 grid grid-cols-1 content-center items-center justify-between border-t border-slate-200 md:grid-cols-[minmax(40%,3fr)_3fr_3fr_25px]",
+        props.className || "",
+      )}
+    >
       <div className="flex flex-col gap-1">
         <div
-          className="
-            relative
-
-            before:absolute
-            before:w-1.5
-            before:h-full
-            before:bg-polytime-coral
-            before:-left-6
-            before:rounded-full
-          "
+          className={twMerge(
+            "relative before:absolute before:-left-4 before:h-full before:w-1 before:rounded-full",
+            entryColor,
+          )}
         >
-          <h1 className="font-bold text-xs">{project}</h1>
-          <p className="text-polytime-muted text-[10px] mb-1">{asset}</p>
+          <h1 className="text-xs font-bold">{project}</h1>
+          <p className="text-polytime-muted text-[10px]">{asset}</p>
+        </div>
+        <div
+          id={`businessunit-sm-${id}`}
+          className="text-polytime-muted my-2 block text-[10px] tracking-wider uppercase md:hidden"
+        >
+          {businessUnit}
         </div>
         <div className="flex flex-col gap-1">
           {comments.map((comment, index) => (
-            <div key={index} className="flex flex-row items-center content-center text-polytime-muted font-medium text-[9px] bg-polytime-muted/10 rounded-md py-1 px-2">
-            <span>
-              <Message className="text-polytime-teal-dark h-3 w-3 mr-2"/>
-            </span>
-            <p>
-              {comment}
-            </p>
-
+            <div
+              key={index}
+              className="text-polytime-muted bg-polytime-muted/10 mb-2 flex w-full max-w-sm flex-row content-center items-center rounded-md px-2 py-1 text-[9px] font-medium md:mb-0"
+            >
+              <span>
+                <Message className="text-polytime-teal-dark mr-2 h-3 w-3" />
+              </span>
+              <p>{comment}</p>
             </div>
           ))}
-          <button className="flex flex-row gap-1 items-center text-[10px] text-polytime-teal-dark font-semibold"><Message />Edit comments</button>
+          <button className="text-polytime-teal-dark mb-2 ml-2 flex flex-row items-center gap-1 text-[10px] font-semibold md:mb-0">
+            <Pen />
+            {comments.length === 0
+              ? "Add comment"
+              : comments.length === 1
+                ? "Edit comment"
+                : "Edit comments"}
+          </button>
         </div>
       </div>
-      <div className="text-polytime-muted text-[10px] flex flex-row items-center content-center flex-nowrap">
-        <Dot className="h-6 w-6 text-polytime-muted/50"/> {businessUnit}
+      <div
+        id={`businessunit-md-${id}`}
+        className="text-polytime-muted hidden flex-row flex-nowrap content-center items-center justify-self-end text-[10px] uppercase md:flex"
+      >
+        <Dot className="text-polytime-muted/50 h-6 w-6" /> {businessUnit}
       </div>
-      <div>
-        <form className="flex flex-row items-center gap-1">
-          <Button tiny onClick={() => {}}><Minus className="h-3 w-3 text-polytime-muted"/></Button>
-          <input type="text" value={formattedTime} step={0.25} className="w-12 text-center text-sm -webkit-appearance-none bg-transparent"/>
-          <Button tiny onClick={() => {}}><Plus className="h-3 w-3 text-polytime-muted"/></Button>
-          <Button tiny onClick={() => {}} className="hover:text-red-600"><Trash className="h-3 w-3 text-polytime-muted"/></Button>
-        </form>
+      <div className="mt-2 ml-2 md:mt-0 md:ml-0 md:justify-self-end-safe">
+        <DurationInput entryId={id} time={hours} />
       </div>
     </div>
-  )
+  );
 }

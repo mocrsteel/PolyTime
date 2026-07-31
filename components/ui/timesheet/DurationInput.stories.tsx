@@ -1,4 +1,5 @@
 import {Meta, StoryObj} from '@storybook/nextjs-vite';
+import {fn} from "storybook/test"
 import DurationInput from "./DurationInput";
 
 const meta = {
@@ -15,6 +16,7 @@ export const Default: Story = {
   args: {
     entryId: 1,
     time: 8.25,
+    onSubmit: fn()
   }
 };
 

@@ -1,0 +1,140 @@
+/**
+ * Project color palette — 100 slots for per-project color assignment.
+ *
+ * All colors are HSL(h, 50%, 62%) rotated in 3.6° steps across the full hue
+ * wheel, keeping identical saturation and lightness for visual consistency.
+ * They are intentionally muted to match the polytime brand palette.
+ *
+ * Usage in Tailwind:
+ *   bg-project-1, text-project-1, border-project-1, etc.
+ *
+ * Usage in app:
+ *   Store the slot number (1-100) per project in the database.
+ *   Apply the corresponding Tailwind utility class dynamically.
+ *
+ * Import in globals.css:
+ *   @import "./project-palette.css";
+ */
+
+@theme {
+  /* ── Coral / Red (1–10) ── */
+  --color-project-1:   #CF6E6E; /* h=0.0°   */
+  --color-project-2:   #CF736E; /* h=3.6°   */
+  --color-project-3:   #CF796E; /* h=7.2°   */
+  --color-project-4:   #CF7F6E; /* h=10.8°  */
+  --color-project-5:   #CF856E; /* h=14.4°  */
+  --color-project-6:   #CF8B6E; /* h=18.0°  */
+  --color-project-7:   #CF906E; /* h=21.6°  */
+  --color-project-8:   #CF966E; /* h=25.2°  */
+  --color-project-9:   #CF9C6E; /* h=28.8°  */
+  --color-project-10:  #CFA26E; /* h=32.4°  */
+
+  /* ── Orange / Amber (11–20) ── */
+  --color-project-11:  #CFA86E; /* h=36.0°  */
+  --color-project-12:  #CFAE6E; /* h=39.6°  */
+  --color-project-13:  #CFB36E; /* h=43.2°  */
+  --color-project-14:  #CFB96E; /* h=46.8°  */
+  --color-project-15:  #CFBF6E; /* h=50.4°  */
+  --color-project-16:  #CFC56E; /* h=54.0°  */
+  --color-project-17:  #CFCB6E; /* h=57.6°  */
+  --color-project-18:  #CDCF6E; /* h=61.2°  */
+  --color-project-19:  #C7CF6E; /* h=64.8°  */
+  --color-project-20:  #C1CF6E; /* h=68.4°  */
+
+  /* ── Yellow / Lime (21–30) ── */
+  --color-project-21:  #BBCF6E; /* h=72.0°  */
+  --color-project-22:  #B5CF6E; /* h=75.6°  */
+  --color-project-23:  #B0CF6E; /* h=79.2°  */
+  --color-project-24:  #AACF6E; /* h=82.8°  */
+  --color-project-25:  #A4CF6E; /* h=86.4°  */
+  --color-project-26:  #9FCF6E; /* h=90.0°  */
+  --color-project-27:  #99CF6E; /* h=93.6°  */
+  --color-project-28:  #93CF6E; /* h=97.2°  */
+  --color-project-29:  #8DCF6E; /* h=100.8° */
+  --color-project-30:  #87CF6E; /* h=104.4° */
+
+  /* ── Green (31–40) ── */
+  --color-project-31:  #82CF6E; /* h=108.0° */
+  --color-project-32:  #7CCF6E; /* h=111.6° */
+  --color-project-33:  #76CF6E; /* h=115.2° */
+  --color-project-34:  #70CF6E; /* h=118.8° */
+  --color-project-35:  #6ECF72; /* h=122.4° */
+  --color-project-36:  #6ECF78; /* h=126.0° */
+  --color-project-37:  #6ECF7D; /* h=129.6° */
+  --color-project-38:  #6ECF83; /* h=133.2° */
+  --color-project-39:  #6ECF89; /* h=136.8° */
+  --color-project-40:  #6ECF8F; /* h=140.4° */
+
+  /* ── Mint / Seafoam (41–50) ── */
+  --color-project-41:  #6ECF95; /* h=144.0° */
+  --color-project-42:  #6ECF9A; /* h=147.6° */
+  --color-project-43:  #6ECFA0; /* h=151.2° */
+  --color-project-44:  #6ECFA6; /* h=154.8° */
+  --color-project-45:  #6ECFAC; /* h=158.4° */
+  --color-project-46:  #6ECFB2; /* h=162.0° */
+  --color-project-47:  #6ECFB8; /* h=165.6° */
+  --color-project-48:  #6ECFBD; /* h=169.2° */
+  --color-project-49:  #6ECFC3; /* h=172.8° */
+  --color-project-50:  #6ECFC9; /* h=176.4° */
+
+  /* ── Teal / Cyan (51–60) ── */
+  --color-project-51:  #6ECFCF; /* h=180.0° */
+  --color-project-52:  #6EC9CF; /* h=183.6° */
+  --color-project-53:  #6EC3CF; /* h=187.2° */
+  --color-project-54:  #6EBDCF; /* h=190.8° */
+  --color-project-55:  #6EB8CF; /* h=194.4° */
+  --color-project-56:  #6EB2CF; /* h=198.0° */
+  --color-project-57:  #6EACCF; /* h=201.6° */
+  --color-project-58:  #6EA6CF; /* h=205.2° */
+  --color-project-59:  #6EA0CF; /* h=208.8° */
+  --color-project-60:  #6E9ACF; /* h=212.4° */
+
+  /* ── Sky / Blue (61–70) ── */
+  --color-project-61:  #6E95CF; /* h=216.0° */
+  --color-project-62:  #6E8FCF; /* h=219.6° */
+  --color-project-63:  #6E89CF; /* h=223.2° */
+  --color-project-64:  #6E83CF; /* h=226.8° */
+  --color-project-65:  #6E7DCF; /* h=230.4° */
+  --color-project-66:  #6E78CF; /* h=234.0° */
+  --color-project-67:  #6E72CF; /* h=237.6° */
+  --color-project-68:  #6F6ECF; /* h=241.2° */
+  --color-project-69:  #756ECF; /* h=244.8° */
+  --color-project-70:  #7B6ECF; /* h=248.4° */
+
+  /* ── Indigo / Blue-Violet (71–80) ── */
+  --color-project-71:  #816ECF; /* h=252.0° */
+  --color-project-72:  #876ECF; /* h=255.6° */
+  --color-project-73:  #8C6ECF; /* h=259.2° */
+  --color-project-74:  #926ECF; /* h=262.8° */
+  --color-project-75:  #986ECF; /* h=266.4° */
+  --color-project-76:  #9E6ECF; /* h=270.0° */
+  --color-project-77:  #A46ECF; /* h=273.6° */
+  --color-project-78:  #AA6ECF; /* h=277.2° */
+  --color-project-79:  #AF6ECF; /* h=280.8° */
+  --color-project-80:  #B56ECF; /* h=284.4° */
+
+  /* ── Violet / Purple (81–90) ── */
+  --color-project-81:  #BB6ECF; /* h=288.0° */
+  --color-project-82:  #C16ECF; /* h=291.6° */
+  --color-project-83:  #C76ECF; /* h=295.2° */
+  --color-project-84:  #CD6ECF; /* h=298.8° */
+  --color-project-85:  #CF6ECB; /* h=302.4° */
+  --color-project-86:  #CF6EC5; /* h=306.0° */
+  --color-project-87:  #CF6EBF; /* h=309.6° */
+  --color-project-88:  #CF6EB9; /* h=313.2° */
+  --color-project-89:  #CF6EB3; /* h=316.8° */
+  --color-project-90:  #CF6EAE; /* h=320.4° */
+
+  /* ── Pink / Rose (91–100) ── */
+  --color-project-91:  #CF6EA8; /* h=324.0° */
+  --color-project-92:  #CF6EA2; /* h=327.6° */
+  --color-project-93:  #CF6E9C; /* h=331.2° */
+  --color-project-94:  #CF6E96; /* h=334.8° */
+  --color-project-95:  #CF6E91; /* h=338.4° */
+  --color-project-96:  #CF6E8B; /* h=342.0° */
+  --color-project-97:  #CF6E85; /* h=345.6° */
+  --color-project-98:  #CF6E7F; /* h=349.2° */
+  --color-project-99:  #CF6E79; /* h=352.8° */
+  --color-project-100: #CF6E73; /* h=356.4° */
+}
+

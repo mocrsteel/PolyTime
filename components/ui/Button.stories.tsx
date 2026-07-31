@@ -1,8 +1,8 @@
 // noinspection JSUnusedGlobalSymbols
 
-import {Meta, StoryObj} from "@storybook/nextjs-vite"
-import Button from "./Button"
-import "@/app/globals.css"
+import { Meta, StoryObj } from "@storybook/nextjs-vite";
+import Button from "./Button";
+import "@/app/globals.css";
 
 const meta = {
   title: "UI/Elements/Button",
@@ -14,28 +14,44 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    onClick: {action: "clicked"},
+    onClick: { action: "clicked" },
   },
-} satisfies Meta<typeof Button>
+} satisfies Meta<typeof Button>;
 
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<typeof meta>;
 
-export default meta
+export default meta;
 
 export const PrimaryButton: Story = {
   args: {
     children: "Primary button",
     primary: true,
-    onClick: () => null
+    onClick: () => null,
   },
-}
+};
 
 export const SecondaryButton: Story = {
   args: {
     children: "Secondary button",
-    onClick: () => null
+    onClick: () => null,
   },
-}
+};
+
+export const SecondaryVariantButton: Story = {
+  args: {
+    children: "Secondary button",
+    style: "secondary",
+    onClick: () => null,
+  },
+};
+
+export const TertiaryVariantButton: Story = {
+  args: {
+    children: "Secondary button",
+    style: "tertiary",
+    onClick: () => null,
+  },
+};
 
 export const PrimaryLinkButton: Story = {
   args: {
@@ -44,7 +60,7 @@ export const PrimaryLinkButton: Story = {
     link: true,
     href: "/link1",
   },
-}
+};
 
 export const SecondaryLinkButton: Story = {
   args: {
@@ -52,4 +68,4 @@ export const SecondaryLinkButton: Story = {
     link: true,
     href: "/link1",
   },
-}
+};

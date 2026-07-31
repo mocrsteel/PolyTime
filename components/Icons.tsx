@@ -24,5 +24,6 @@ export {
 
 export {
   LuDot as Dot,
+  LuPencil as Pen,
   LuMessageSquareText as Message,
 } from "react-icons/lu"
