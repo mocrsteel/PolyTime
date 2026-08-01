@@ -40,8 +40,8 @@ type RACTextFieldProps = TextFieldProps & {
  *
  * TODO: Future feature: Validate on maximum based on region or employment rules.
  */
-function inputValidation(value: string): string | undefined {
-  const durationRegex = /^(?<hours>\d+)\s*(?:h|:)\s*(?<minutes>[0-5]?\d)\s*m?$/;
+export function inputValidation(value: string): string | undefined {
+  const durationRegex = /^(?<hours>\d+)\s*(?:h|:)\s*(?<minutes>[0-5]?\d)?\s*m?$/;
   const floatRegex = /^(?<hours>\d+(?:\.\d+)?)$/;
 
   if (!durationRegex.test(value) && !floatRegex.test(value)) {
@@ -56,7 +56,7 @@ function inputValidation(value: string): string | undefined {
  * @param setInputValue function to set the input value in the component state.
  * @param setEntryTime function to set the entry time in the component state.
  */
-function parseInput(
+export function parseInput(
   value: string,
   entry: {
     entryId: number;
@@ -65,7 +65,7 @@ function parseInput(
   setInputValue: (value: string) => void,
   setEntryTime: ({ entryId, time }: { entryId: number; time: number }) => void,
 ): void {
-  const durationRegex = /^(?<hours>\d+)\s*(?:h|:)\s*(?<minutes>[0-5]?\d)\s*m?$/;
+  const durationRegex = /^(?<hours>\d+)\s*(?:h|:)\s*(?<minutes>[0-5]?\d)?\s*m?$/;
   const floatRegex = /^(?<hours>\d+(?:\.\d+)?)$/;
 
   if (durationRegex.test(value)) {
@@ -96,10 +96,10 @@ function parseInput(
  * Formats a float to a duration string in the format of "Xh Ym".
  * @param value the amount of hours to be formatted into a string.
  */
-function formatDuration(value: number): string {
-  const hours = Math.floor(value);
-  const minutes = Math.round((value % 1) * 60);
-  console.log(hours, minutes, value);
+export function formatDuration(value: number): string {
+  const valueMinutes = Math.round(value *  60)
+  const hours = Math.floor(valueMinutes / 60) ;
+  const minutes = valueMinutes % 60;
   return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
 }
 

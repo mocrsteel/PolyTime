@@ -35,7 +35,7 @@ type DayTabProps = RACTabProps & {
  * @param date the date to filter the entries by.
  * @returns the total hours logged on the specified date.
  */
-function getTotalHoursOnDate(data: TimesheetEntry[], date: string) {
+export function getTotalHoursOnDate(data: TimesheetEntry[], date: string) {
   const totalHours = data
     .filter((entry) => {
       return format(entry.date, "yyyy-MM-dd") === date;
@@ -49,7 +49,7 @@ function getTotalHoursOnDate(data: TimesheetEntry[], date: string) {
  * @param date the date to start the week from.
  * @returns an array of dates for the current week.
  */
-function generateWeekDays(date: Date) {
+export function generateWeekDays(date: Date) {
   const startOfWeekDate = startOfWeek(date, { weekStartsOn: 1 });
   return Array(7)
     .fill(0)
@@ -64,7 +64,7 @@ function generateWeekDays(date: Date) {
  * @param date the date to filter the entries by.
  * @returns the number of entries on the specified date.
  */
-function getEntriesOnDate(data: TimesheetEntry[], date: string) {
+export function getEntriesOnDate(data: TimesheetEntry[], date: string) {
   return data.filter((entry) => {
     return format(entry.date, "yyyy-MM-dd") === date;
   }).length;

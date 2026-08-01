@@ -1,16 +1,14 @@
 import type { Locale } from "date-fns";
-import { de, enUS, fr, nlBE } from "date-fns/locale";
-import { useState, useEffect, useContext, createContext } from "react";
+import { de, enUS, fr, nlBE , nl} from "date-fns/locale";
+import { useContext, createContext } from "react";
 
 /** Exported for testing purposes. */
 export const localeMap = {
   "en-US": enUS,
   en: enUS,
   "nl-BE": nlBE,
-  nl: nlBE,
-  "fr-FR": fr,
+  nl: nl,
   fr: fr,
-  "de-DE": de,
   de: de,
 };
 
