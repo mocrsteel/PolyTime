@@ -1,25 +1,34 @@
-import { startOfWeek, addWeeks, addDays, format } from "date-fns";
+"use client";
+
+import {
+  startOfWeek,
+  addWeeks,
+  addDays,
+  format,
+  parseISO,
+  formatISO,
+} from "date-fns";
+import { useLocale } from "@/lib/locale-context";
 
 export default function Experiments() {
+  const locale = useLocale();
   const today = new Date();
-  const startOfWeekDate = startOfWeek(today, { weekStartsOn: 1 });
-  const nextWeekDate = addWeeks(today, 1);
-  const previousWeek = addWeeks(today, -1);
-
-  const weekDays = [
-    ...Array.from({ length: 7 }, (_, i) => addDays(startOfWeekDate, i)),
-  ];
-
+  const todayISO = formatISO(today);
+  const dbData = "2026-08-01T09:05:08.048Z";
+  const reconstructedDatabaseDate = parseISO(dbData);
+  const reconstructedDate = parseISO(dbData);
   return (
     <div>
-      <div>Today: {format(today, "dd/MMM/y")}</div>
-      <div>Start of Week: {format(startOfWeekDate, "dd/MMM/y --> I")}</div>
-      <div>Week number and quarter: {format(today, "I --> QQQ")}</div>
-      <div>Next Week: {format(nextWeekDate, "dd/MMM/y --> I")}</div>
-      <div>Previous Week: {format(previousWeek, "dd/MMM/y --> I")}</div>
-      {weekDays.map((day) => (
-        <div key={day.getTime()}>{format(day, "EEEEEE dd/MMM/y -> I")}</div>
-      ))}
+      <div>Today: {today.toString()}</div>
+      <div>Today: {todayISO}</div>
+      <div>Today: {format(today, "yyyy-MM-dd")}</div>
+      <div>
+        <h1>Localized</h1>
+        <div>Original: 2026-08-01T09:05:08.048Z</div>
+        Reconstructed:{" "}
+        {format(reconstructedDatabaseDate, "PPPP", { locale: locale })}
+      </div>
+      <div>DB: {reconstructedDatabaseDate.toString()}</div>
     </div>
   );
 }

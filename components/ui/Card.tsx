@@ -18,6 +18,6 @@ const cardVariants = tv({
   },
 });
 
-export default function Card({ children, variant = "default" }: CardProps) {
+export default function Card({ children, variant = "page" }: CardProps) {
   return <div className={cardVariants({ layout: variant })}>{children}</div>;
 }

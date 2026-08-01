@@ -27,7 +27,6 @@ export default function DayEntry({
   asset,
   project,
   projectColor,
-  date,
   hours,
   comments,
   ...props
@@ -37,7 +36,7 @@ export default function DayEntry({
   return (
     <div
       className={twMerge(
-        "mx-4 grid grid-cols-1 content-center items-center justify-between border-t border-slate-200 md:grid-cols-[minmax(40%,3fr)_3fr_3fr_25px]",
+        "grid grid-cols-1 content-center items-center justify-between border-t border-slate-200 md:grid-cols-[minmax(40%,3fr)_3fr_3fr_25px]",
         props.className || "",
       )}
     >
@@ -88,6 +87,14 @@ export default function DayEntry({
       <div className="mt-2 ml-2 md:mt-0 md:ml-0 md:justify-self-end-safe">
         <DurationInput entryId={id} time={hours} />
       </div>
+      <Button
+        size="tiny"
+        style="secondary"
+        className="ml-2 hover:border-red-600 hover:text-red-600"
+        onClick={() => {}}
+      >
+        <Trash />
+      </Button>
     </div>
   );
 }
