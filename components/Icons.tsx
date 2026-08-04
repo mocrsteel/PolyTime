@@ -1,8 +1,9 @@
 /**
  * Default imports for icons. To ensure consistent icon usage throughout the app.
  */
+import { JSX } from "react";
 
-export {
+import {
   FiGrid as Grid,
   FiClock as Clock,
   FiBarChart2 as BarChart,
@@ -20,10 +21,87 @@ export {
   FiHome as Home,
   // FiMessageSquare as Message,
   FiAlertTriangle as Alert,
-  FiGitBranch as Branch,} from "react-icons/fi"
+  FiGitBranch as Branch,
+} from "react-icons/fi";
 
-export {
+import {
   LuDot as Dot,
   LuPencil as Pen,
   LuMessageSquareText as Message,
-} from "react-icons/lu"
+} from "react-icons/lu";
+import { ComponentProps } from "react";
+import { IconBaseProps } from "react-icons";
+
+export type AppIcons =
+  | "grid"
+  | "clock"
+  | "barChart"
+  | "settings"
+  | "search"
+  | "bell"
+  | "chevronRight"
+  | "plus"
+  | "minus"
+  | "copy"
+  | "trash"
+  | "check"
+  | "arrowLeft"
+  | "users"
+  | "home"
+  | "alert"
+  | "branch"
+  | "dot"
+  | "pen"
+  | "message";
+
+type IconProps = IconBaseProps & {
+  icon: AppIcons;
+};
+
+export function iconMap({
+  icon: AppIcon,
+  ...props
+}: IconProps): React.ReactNode {
+  switch (AppIcon) {
+    case "grid":
+      return <Grid {...props} />;
+    case "clock":
+      return <Clock {...props} />;
+    case "barChart":
+      return <BarChart {...props} />;
+    case "settings":
+      return <Settings {...props} />;
+    case "search":
+      return <Search {...props} />;
+    case "bell":
+      return <Bell {...props} />;
+    case "chevronRight":
+      return <ChevronRight {...props} />;
+    case "plus":
+      return <Plus {...props} />;
+    case "minus":
+      return <Minus {...props} />;
+    case "copy":
+      return <Copy {...props} />;
+    case "trash":
+      return <Trash {...props} />;
+    case "check":
+      return <Check {...props} />;
+    case "arrowLeft":
+      return <ArrowLeft {...props} />;
+    case "users":
+      return <Users {...props} />;
+    case "home":
+      return <Home {...props} />;
+    case "alert":
+      return <Alert {...props} />;
+    case "branch":
+      return <Branch {...props} />;
+    case "dot":
+      return <Dot {...props} />;
+    case "pen":
+      return <Pen {...props} />;
+    case "message":
+      return <Message {...props} />;
+  }
+}

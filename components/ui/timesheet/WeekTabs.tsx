@@ -19,7 +19,7 @@ import Card from "@/components/ui/Card";
 import type { TimesheetEntry } from "./DayEntry";
 import DayList from "@/components/ui/timesheet/DayList";
 import Button from "@/components/ui/Button";
-import { Dot, Plus } from "@/components/Icons";
+import { iconMap } from "@/components/Icons";
 import { useLocale } from "@/lib/locale-context";
 
 type DayTabProps = RACTabProps & {
@@ -131,10 +131,13 @@ export default function WeekTabs({ date, data, ...props }: DayTabProps) {
                 locale: locale,
               })}
             </h1>
-            <p className="text-polytime-muted inline-flex items-center gap-1 text-[10px]">
+            <p
+              className="text-polytime-muted inline-flex items-center gap-1 text-[10px]"
+              data-testid="day.summary.hours"
+            >
               {getEntriesOnDate(data, tab.toString())} entr
               {getEntriesOnDate(data, tab.toString()) !== 1 ? "ies" : "y"}
-              <Dot />
+              {iconMap({ icon: "dot" })}
               {getTotalHoursOnDate(data, tab.toString()).hours}h{" "}
               {getTotalHoursOnDate(data, tab.toString()).minutes}m
             </p>
@@ -145,7 +148,7 @@ export default function WeekTabs({ date, data, ...props }: DayTabProps) {
             onClick={() => {}}
             className="mt-2 mb-6 w-full"
           >
-            <Plus />
+            {iconMap({ icon: "plus" })}
             Add another entry
           </Button>
         </TabPanels>

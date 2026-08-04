@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import Button from "@/components/ui/Button";
-import { Minus, Plus } from "@/components/Icons";
 import {
   TextField,
   Input,
   FieldError,
   TextFieldProps,
-  ValidationResult,
 } from "react-aria-components/TextField";
 import { Form } from "react-aria-components/Form";
 
@@ -23,11 +21,6 @@ type DurationInputState = {
   time: number;
 };
 
-type RACTextFieldProps = TextFieldProps & {
-  errorMessage?: string | ((validationResult: ValidationResult) => string);
-  readonly entryId: number;
-};
-
 /**
  * Validates the input and formats it to a duration string.
  *
@@ -36,12 +29,11 @@ type RACTextFieldProps = TextFieldProps & {
  * Returning a string when validation fails, as it's output will be passed to FieldError.
  * Elegantly setting the correct time in the same function.
  * @param value string variation of the value.
- * @param setTime function to set the time into the component state.
  *
  * TODO: Future feature: Validate on maximum based on region or employment rules.
  */
 export function inputValidation(value: string): string | undefined {
-  const durationRegex = /^(?<hours>\d+)\s*(?:h|:)\s*(?<minutes>[0-5]?\d)?\s*m?$/;
+  const durationRegex = /^(?<hours>\d+)\s*[h:]\s*(?<minutes>[0-5]?\d)?\s*m?$/;
   const floatRegex = /^(?<hours>\d+(?:\.\d+)?)$/;
 
   if (!durationRegex.test(value) && !floatRegex.test(value)) {
@@ -65,7 +57,7 @@ export function parseInput(
   setInputValue: (value: string) => void,
   setEntryTime: ({ entryId, time }: { entryId: number; time: number }) => void,
 ): void {
-  const durationRegex = /^(?<hours>\d+)\s*(?:h|:)\s*(?<minutes>[0-5]?\d)?\s*m?$/;
+  const durationRegex = /^(?<hours>\d+)\s*[h:]\s*(?<minutes>[0-5]?\d)?\s*m?$/;
   const floatRegex = /^(?<hours>\d+(?:\.\d+)?)$/;
 
   if (durationRegex.test(value)) {
@@ -97,8 +89,8 @@ export function parseInput(
  * @param value the amount of hours to be formatted into a string.
  */
 export function formatDuration(value: number): string {
-  const valueMinutes = Math.round(value *  60)
-  const hours = Math.floor(valueMinutes / 60) ;
+  const valueMinutes = Math.round(value * 60);
+  const hours = Math.floor(valueMinutes / 60);
   const minutes = valueMinutes % 60;
   return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
 }
@@ -144,6 +136,7 @@ export default function DurationInput(props: DurationInputProps) {
     <Form id={`form-duration-${entry.entryId}`} onSubmit={submit}>
       <TextField
         name="duration"
+        aria-label="Duration input"
         id={`duration-textfield-${entry.entryId}`}
         validate={(value) => {
           if (!touched) return undefined;
@@ -157,11 +150,11 @@ export default function DurationInput(props: DurationInputProps) {
         <div className="flex flex-row content-center items-center gap-1">
           <Button
             id={`btn-minus-${entry.entryId}`}
+            aria-label="Subtract time button"
             size="tiny"
+            icon="minus"
             onClick={remove15Min}
-          >
-            <Minus className="text-polytime-muted h-3 w-3" />
-          </Button>
+          />
           <Input
             id={`duration-input-${entry.entryId}`}
             placeholder="0:00"
@@ -172,11 +165,11 @@ export default function DurationInput(props: DurationInputProps) {
           />
           <Button
             id={`btn-plus-${entry.entryId}`}
+            aria-label="Add time button"
             size="tiny"
+            icon="plus"
             onClick={add15Min}
-          >
-            <Plus className="text-polytime-muted h-3 w-3" />
-          </Button>
+          />
         </div>
         <FieldError className={"text-xs font-semibold text-red-500"} />
       </TextField>

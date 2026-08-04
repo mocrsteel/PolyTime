@@ -2,16 +2,19 @@ import { Button as AriaButton } from "react-aria-components/Button";
 import Link from "next/link";
 import { tv } from "tailwind-variants";
 import { twMerge } from "tailwind-merge";
+import { AppIcons, iconMap } from "@/components/Icons";
 
 type BaseButtonProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   id?: string;
   name?: string;
   primary?: boolean;
   tiny?: boolean;
   style?: "primary" | "secondary" | "tertiary";
   size?: "default" | "tiny";
+  icon?: AppIcons;
   className?: string;
+  ariaLabel?: string;
 };
 
 // Onclick is required when it's a regular button. Otherwise we'd have no function at all.
@@ -58,7 +61,6 @@ const buttonVariants = tv({
   },
 });
 
-
 export default function Button({
   children,
   id,
@@ -66,10 +68,12 @@ export default function Button({
   link,
   href,
   onClick,
-  className,
+  icon,
   tiny = false,
   style,
   size = "default",
+  className,
+  ariaLabel,
 }: ButtonProps) {
   // let baseClass =
   //   "inline-flex items-center justify-center gap-2 rounded-ui-lg border text-xs font-semibold transition";
@@ -101,7 +105,9 @@ export default function Button({
             }),
             className,
           )}
+          aria-label={ariaLabel}
         >
+          {icon && iconMap({ icon, className: "h-4 w-4" })}
           {children}
         </AriaButton>
       </Link>
@@ -120,7 +126,9 @@ export default function Button({
         }),
         className,
       )}
+      aria-label={ariaLabel}
     >
+      {icon && iconMap({ icon, className: "h-4 w-4" })}
       {children}
     </AriaButton>
   );

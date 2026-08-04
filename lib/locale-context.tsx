@@ -1,5 +1,5 @@
 import type { Locale } from "date-fns";
-import { de, enUS, fr, nlBE , nl} from "date-fns/locale";
+import { de, enUS, fr, nlBE, nl } from "date-fns/locale";
 import { useContext, createContext } from "react";
 
 /** Exported for testing purposes. */
@@ -25,7 +25,6 @@ export function resolveBrowserLocale(
 
 export default function LocaleProvider({
   children,
-
   locale,
 }: {
   children: React.ReactNode;

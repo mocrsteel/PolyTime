@@ -1,4 +1,4 @@
-import { Dot, Message, Pen, Trash } from "@/components/Icons";
+import { iconMap } from "@/components/Icons";
 import Button from "@/components/ui/Button";
 import DurationInput from "@/components/ui/timesheet/DurationInput";
 import type { ProjectColor } from "@/lib/project-colors";
@@ -63,13 +63,16 @@ export default function DayEntry({
               className="text-polytime-muted bg-polytime-muted/10 mb-2 flex w-full max-w-sm flex-row content-center items-center rounded-md px-2 py-1 text-[9px] font-medium md:mb-0"
             >
               <span>
-                <Message className="text-polytime-teal-dark mr-2 h-3 w-3" />
+                {iconMap({
+                  icon: "message",
+                  className: "text-polytime-teal-dark mr-2 h-3 w-3",
+                })}
               </span>
               <p>{comment}</p>
             </div>
           ))}
           <button className="text-polytime-teal-dark mb-2 ml-2 flex flex-row items-center gap-1 text-[10px] font-semibold md:mb-0">
-            <Pen />
+            {iconMap({ icon: "pen" })}
             {comments.length === 0
               ? "Add comment"
               : comments.length === 1
@@ -82,7 +85,8 @@ export default function DayEntry({
         id={`businessunit-md-${id}`}
         className="text-polytime-muted hidden flex-row flex-nowrap content-center items-center justify-self-end text-[10px] uppercase md:flex"
       >
-        <Dot className="text-polytime-muted/50 h-6 w-6" /> {businessUnit}
+        {iconMap({ icon: "dot", className: "text-polytime-muted/50 h-6 w-6" })}{" "}
+        {businessUnit}
       </div>
       <div className="mt-2 ml-2 md:mt-0 md:ml-0 md:justify-self-end-safe">
         <DurationInput entryId={id} time={hours} />
@@ -93,7 +97,7 @@ export default function DayEntry({
         className="ml-2 hover:border-red-600 hover:text-red-600"
         onClick={() => {}}
       >
-        <Trash />
+        {iconMap({ icon: "trash" })}
       </Button>
     </div>
   );
