@@ -11,6 +11,7 @@ import {
   FiSearch as Search,
   FiBell as Bell,
   FiChevronRight as ChevronRight,
+  FiChevronLeft as ChevronLeft,
   FiPlus as Plus,
   FiMinus as Minus,
   FiCopy as Copy,
@@ -40,6 +41,7 @@ export type AppIcons =
   | "search"
   | "bell"
   | "chevronRight"
+  | "chevronLeft"
   | "plus"
   | "minus"
   | "copy"
@@ -77,6 +79,8 @@ export function iconMap({
       return <Bell {...props} />;
     case "chevronRight":
       return <ChevronRight {...props} />;
+    case "chevronLeft":
+      return <ChevronLeft {...props} />;
     case "plus":
       return <Plus {...props} />;
     case "minus":

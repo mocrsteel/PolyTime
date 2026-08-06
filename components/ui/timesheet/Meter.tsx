@@ -2,11 +2,15 @@
  * TODO: build the progress bar for the timesheet page.
  */
 
+// import {
+//   Meter as RACMeter,
+//   MeterProps as RACMeterProps,
+// } from "react-aria-components/Meter";
 import {
+  Label,
   Meter as RACMeter,
   MeterProps as RACMeterProps,
-} from "react-aria-components/Meter";
-import { Label } from "react-aria-components/label";
+} from "react-aria-components";
 import { tv } from "tailwind-variants";
 import { twMerge } from "tailwind-merge";
 import { iconMap } from "@/components/Icons";
@@ -16,7 +20,6 @@ type MeterBar = React.HTMLProps<HTMLDivElement> &
     value: number;
     label: string;
     weekMaximum: number;
-    className?: string;
   };
 
 const MeterVariants = tv({
