@@ -83,7 +83,7 @@ export default function WeekTabs({ date, data, ...props }: DayTabProps) {
   });
 
   const variantClasses = tv({
-    base: "group selected:bg-white border-polytime-line relative flex w-full flex-col items-center border-r bg-slate-100/70 py-2 text-center transition-colors duration-400 last:border-r-0",
+    base: "group selected:bg-white border-polytime-line relative flex w-full cursor-pointer flex-col items-center border-r bg-slate-100/70 py-2 text-center transition-colors duration-400 last:border-r-0",
     variants: {
       deactivated: {
         true: "",
@@ -108,7 +108,7 @@ export default function WeekTabs({ date, data, ...props }: DayTabProps) {
                 key={format(date, "yyyy-MM-dd")}
                 id={format(date, "yyyy-MM-dd")}
               >
-                <>
+                <div key={format(date, "yyyy-MM-dd") + "-item"}>
                   <div className="block text-[8px] font-bold tracking-wider text-slate-400 uppercase">
                     {format(date, "EEE")}
                   </div>
@@ -118,8 +118,11 @@ export default function WeekTabs({ date, data, ...props }: DayTabProps) {
                   <small className="text-[9px] text-slate-500">
                     {totalHours.hours}h {totalHours.minutes}m
                   </small>
-                </>
-                <SelectionIndicator className="bg-polytime-teal absolute bottom-0 left-0 z-20 order-1 h-0.5 w-full rounded-full transition-[translate,widht] duration-400" />
+                </div>
+                <SelectionIndicator
+                  key={format(date, "yyyy-MM-dd") + "-indicator"}
+                  className="bg-polytime-teal absolute bottom-0 left-0 z-20 order-1 h-0.5 w-full rounded-full transition-[translate,widht] duration-400"
+                />
               </RACTab>
             );
           })}

@@ -6,7 +6,7 @@ import NavButton from "./NavButton";
 
 const meta = {
   component: NavButton,
-  title: "Nav Buttons sidebar",
+  title: "UI/Layout/Nav Buttons sidebar",
   parameters: {
     nextjs: {
       appDirectory: true,

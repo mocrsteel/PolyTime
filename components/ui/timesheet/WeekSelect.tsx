@@ -59,12 +59,20 @@ export default function WeekSelect({ date }: WeekSelectProps) {
         <div>
           {isCurrentWeek(date) ? (
             <div className="text-polytime-teal flex flex-row content-center items-center text-xs">
-              {iconMap({ icon: "dot", className: "text-green-600 h-10 w-10" })}{" "}
+              {iconMap({
+                icon: "dot",
+                className: "text-green-600 h-10 w-10 animate-pulse",
+                "data-testid": "status-icon",
+              })}{" "}
               Current week
             </div>
           ) : (
             <div className="text-polytime-muted flex flex-row content-center items-center text-xs">
-              {iconMap({ icon: "dot", className: "text-red-600 h-10 w-10" })}{" "}
+              {iconMap({
+                icon: "dot",
+                className: "text-red-600 h-10 w-10 animate-pulse",
+                "data-testid": "status-icon",
+              })}{" "}
               Editing non-current week
             </div>
           )}

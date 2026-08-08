@@ -1,11 +1,8 @@
+"use client";
 /**
  * TODO: build the progress bar for the timesheet page.
  */
 
-// import {
-//   Meter as RACMeter,
-//   MeterProps as RACMeterProps,
-// } from "react-aria-components/Meter";
 import {
   Label,
   Meter as RACMeter,

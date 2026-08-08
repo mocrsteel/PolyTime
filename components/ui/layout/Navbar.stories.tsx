@@ -1,29 +1,29 @@
 // noinspection JSUnusedGlobalSymbols
 
-import {Meta, StoryObj} from '@storybook/nextjs-vite';
-import {INITIAL_VIEWPORTS} from "storybook/viewport";
+import { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
-import NavBar from './Navbar';
+import NavBar from "./Navbar";
 
 const meta = {
   component: NavBar,
-  title: 'Pages/Navigation sidebar',
-  tags: ['autodocs'],
+  title: "UI/Layout/Navigation sidebar",
+  tags: ["autodocs"],
   globals: {
-    viewport: { value: 'desktop', isRotated: false}
+    viewport: { value: "desktop", isRotated: false },
   },
   parameters: {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: '/'
-      }
+        pathname: "/",
+      },
     },
     viewports: {
-      options: INITIAL_VIEWPORTS
-    }
-  }
-} satisfies Meta<typeof NavBar>
+      options: INITIAL_VIEWPORTS,
+    },
+  },
+} satisfies Meta<typeof NavBar>;
 
 export default meta;
 
@@ -31,96 +31,98 @@ type Story = StoryObj<typeof meta>;
 
 export const Overview: Story = {
   args: {
-    userType: "User"
-  }
+    userType: "User",
+  },
 };
 
 export const ManagerLoggedIn: Story = {
   args: {
-    userType: "Manager"
-  }
+    userType: "Manager",
+  },
 };
 
 export const UserLoggedIn: Story = {
   args: {
-    userType: "User"
-  }
+    userType: "User",
+  },
 };
 
 export const TimesheetRoute = {
   args: {
-    userType: "User"
+    userType: "User",
   },
   parameters: {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/timesheets"
-      }
-    }
-  }
+        pathname: "/timesheets",
+      },
+    },
+  },
 };
 
 export const ReportsRoute = {
   args: {
-    userType: "User"
+    userType: "User",
   },
   parameters: {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/reports"
-      }
-    }
-  }
-}
+        pathname: "/reports",
+      },
+    },
+  },
+};
 
 export const ProfileRoute = {
   args: {
-    userType: "User"
+    userType: "User",
   },
   parameters: {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/profile"
-      }
-    }
-  }
-}
+        pathname: "/profile",
+      },
+    },
+  },
+};
 
 export const ManagementRoute = {
   args: {
-    userType: "Manager"
+    userType: "Manager",
   },
   parameters: {
     nextjs: {
       appDirectory: true,
       navigation: {
-        pathname: "/management"
-      }
-    }
-  }
-}
+        pathname: "/management",
+      },
+    },
+  },
+};
 
 export const OnTabletIsUser = {
   args: {
-    userType: "User"
+    userType: "User",
   },
   globals: {
     viewport: {
-      value: 'tablet', isRotated: false
-    }
-  }
-}
+      value: "tablet",
+      isRotated: false,
+    },
+  },
+};
 
 export const OnTabletIsManager = {
   args: {
-    userType: "Manager"
+    userType: "Manager",
   },
   globals: {
     viewport: {
-      value: 'tablet', isRotated: false
-    }
-  }
-}
+      value: "tablet",
+      isRotated: false,
+    },
+  },
+};

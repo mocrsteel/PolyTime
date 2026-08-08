@@ -25,11 +25,11 @@ export default function Heading({
   return (
     <div className={twMerge(headingVariants(), props.className)}>
       <div>
-        <div className="text-polytime-teal mb-2 text-[10px] font-bold tracking-widest uppercase">
+        <div className="text-polytime-teal mb-2 text-[10px] font-extrabold tracking-widest uppercase">
           {eyebrow}
         </div>
         <div className="text-3xl font-bold tracking-tight">{title}</div>
-        <div className="text-hourwise-muted mt-2 text-sm">{subtitle}</div>
+        <div className="text-polytime-muted mt-2 text-sm">{subtitle}</div>
       </div>
       <div className="flex flex-row gap-2">{buttons}</div>
     </div>

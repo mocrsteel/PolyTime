@@ -1,8 +1,6 @@
 /**
  * Default imports for icons. To ensure consistent icon usage throughout the app.
  */
-import { JSX } from "react";
-
 import {
   FiGrid as Grid,
   FiClock as Clock,
@@ -12,6 +10,7 @@ import {
   FiBell as Bell,
   FiChevronRight as ChevronRight,
   FiChevronLeft as ChevronLeft,
+  FiChevronDown as ChevronDown,
   FiPlus as Plus,
   FiMinus as Minus,
   FiCopy as Copy,
@@ -30,8 +29,8 @@ import {
   LuPencil as Pen,
   LuMessageSquareText as Message,
 } from "react-icons/lu";
-import { ComponentProps } from "react";
-import { IconBaseProps } from "react-icons";
+
+import type { IconBaseProps } from "react-icons";
 
 export type AppIcons =
   | "grid"
@@ -42,6 +41,7 @@ export type AppIcons =
   | "bell"
   | "chevronRight"
   | "chevronLeft"
+  | "chevronDown"
   | "plus"
   | "minus"
   | "copy"
@@ -56,9 +56,10 @@ export type AppIcons =
   | "pen"
   | "message";
 
-type IconProps = IconBaseProps & {
-  icon: AppIcons;
-};
+type IconProps = React.HTMLAttributes<SVGElement> &
+  IconBaseProps & {
+    icon: AppIcons;
+  };
 
 export function iconMap({
   icon: AppIcon,
@@ -81,6 +82,8 @@ export function iconMap({
       return <ChevronRight {...props} />;
     case "chevronLeft":
       return <ChevronLeft {...props} />;
+    case "chevronDown":
+      return <ChevronDown {...props} />;
     case "plus":
       return <Plus {...props} />;
     case "minus":

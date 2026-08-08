@@ -1,3 +1,5 @@
+"use client";
+
 import { Button as AriaButton } from "react-aria-components/Button";
 import Link from "next/link";
 import { tv } from "tailwind-variants";
@@ -34,7 +36,7 @@ type LinkButtonProps = BaseButtonProps & {
 type ButtonProps = RegularButtonProps | LinkButtonProps;
 
 const buttonVariants = tv({
-  base: "rounded-ui-lg inline-flex items-center justify-center gap-2 border text-xs font-semibold transition",
+  base: "rounded-ui-lg inline-flex cursor-pointer items-center justify-center gap-2 border text-xs font-semibold transition",
   variants: {
     // Keeping primary in here to avoid breaking changes.
     // TODO: Refactor buttons to use `style` instead of `primary` in the futue to capture the removal of this item.

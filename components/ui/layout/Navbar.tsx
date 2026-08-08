@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import { iconMap, AppIcons } from "../Icons";
+import { iconMap, AppIcons } from "../../Icons";
 
-import NavButton, { NavButtonProps } from "../NavButton";
+import NavButton, { NavButtonProps } from "./NavButton";
 
 type NavBarProps = {
   userType: "User" | "Manager";
