@@ -13,6 +13,7 @@ import {
   FiChevronDown as ChevronDown,
   FiPlus as Plus,
   FiMinus as Minus,
+  FiLogOut as Logout,
   FiCopy as Copy,
   FiTrash2 as Trash,
   FiCheck as Check,
@@ -44,6 +45,7 @@ export type AppIcons =
   | "chevronDown"
   | "plus"
   | "minus"
+  | "logout"
   | "copy"
   | "trash"
   | "check"
@@ -94,6 +96,8 @@ export function iconMap({
       return <Trash {...props} />;
     case "check":
       return <Check {...props} />;
+    case "logout":
+      return <Logout {...props} />;
     case "arrowLeft":
       return <ArrowLeft {...props} />;
     case "users":
