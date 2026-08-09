@@ -6,6 +6,7 @@ import { ClientProvider } from "./provider";
 import { Geist, Geist_Mono, DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/layout/Navbar";
+import TopBar from "@/components/ui/layout/TopBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,7 +52,12 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col">
         <ClientProvider lang={lang}>
           <Navbar userType="User" />
-          <div className="ml-20 px-4 py-8 lg:ml-64">{children}</div>
+          <div className="ml-20 lg:ml-64">
+            <TopBar notificationsEnabled={true} notificationsCount={0} />
+            <div id="content" className="px-4 py-8">
+              {children}
+            </div>
+          </div>
         </ClientProvider>
       </body>
     </html>

@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { Meta, StoryObj } from "@storybook/nextjs-vite";
 import Heading from "./Heading";
 import Button from "@/components/ui/Button";
