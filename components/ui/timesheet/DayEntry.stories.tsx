@@ -1,12 +1,14 @@
-import {StoryObj, Meta} from '@storybook/nextjs-vite';
+// noinspection JSUnusedGlobalSymbols
+
+import { StoryObj, Meta } from "@storybook/nextjs-vite";
 import DayEntry from "./DayEntry";
 
-import {timesheetEntries} from "@/lib/mock";
+import { timesheetEntries } from "@/lib/mock";
 
 const meta = {
-  title: 'UI/Timesheets/DayEntry',
+  title: "UI/Timesheets/DayEntry",
   component: DayEntry,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof DayEntry>;
 
 export default meta;

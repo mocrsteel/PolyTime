@@ -1,7 +1,9 @@
-import {StoryObj, Meta} from "@storybook/nextjs-vite";
+// noinspection JSUnusedGlobalSymbols
+
+import { StoryObj, Meta } from "@storybook/nextjs-vite";
 
 import DayList from "./DayList";
-import {timesheetEntries} from "@/lib/mock";
+import { timesheetEntries } from "@/lib/mock";
 
 const meta = {
   title: "UI/Timesheets/DayList",
@@ -15,8 +17,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    entries: timesheetEntries
-  }
+    entries: timesheetEntries,
+  },
 };
-
-

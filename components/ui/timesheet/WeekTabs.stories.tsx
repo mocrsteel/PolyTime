@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { StoryObj, Meta } from "@storybook/nextjs-vite";
 import { expect, userEvent, within } from "storybook/test";
 
