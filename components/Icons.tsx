@@ -28,6 +28,8 @@ import {
 import {
   LuDot as Dot,
   LuPencil as Pen,
+  LuBuilding2 as Buildings,
+  LuUsers as Users2,
   LuMessageSquareText as Message,
 } from "react-icons/lu";
 
@@ -40,6 +42,7 @@ export type AppIcons =
   | "settings"
   | "search"
   | "bell"
+  | "buildings"
   | "chevronRight"
   | "chevronLeft"
   | "chevronDown"
@@ -51,6 +54,7 @@ export type AppIcons =
   | "check"
   | "arrowLeft"
   | "users"
+  | "users2"
   | "home"
   | "alert"
   | "branch"
@@ -74,6 +78,8 @@ export function iconMap({
       return <Clock {...props} />;
     case "barChart":
       return <BarChart {...props} />;
+    case "buildings":
+      return <Buildings {...props} />;
     case "settings":
       return <Settings {...props} />;
     case "search":
@@ -102,6 +108,8 @@ export function iconMap({
       return <ArrowLeft {...props} />;
     case "users":
       return <Users {...props} />;
+    case "users2":
+      return <Users2 {...props} />;
     case "home":
       return <Home {...props} />;
     case "alert":

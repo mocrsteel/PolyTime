@@ -13,7 +13,7 @@ type BaseButtonProps = {
   primary?: boolean;
   tiny?: boolean;
   style?: "primary" | "secondary" | "tertiary";
-  size?: "default" | "tiny";
+  size?: "default" | "tiny" | "custom";
   icon?: AppIcons;
   className?: string;
   ariaLabel?: string;
@@ -23,7 +23,7 @@ type BaseButtonProps = {
 type RegularButtonProps = BaseButtonProps & {
   link?: false;
   href?: never;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 // We don't want an onClick when it's a link button.
@@ -59,6 +59,7 @@ const buttonVariants = tv({
     size: {
       default: "rounded-ui-lg h-10 px-4",
       tiny: "rounded-ui-sm h-6 w-6 p-0",
+      custom: "",
     },
   },
 });

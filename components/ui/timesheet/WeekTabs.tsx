@@ -121,7 +121,7 @@ export default function WeekTabs({ date, data, ...props }: DayTabProps) {
                 </div>
                 <SelectionIndicator
                   key={format(date, "yyyy-MM-dd") + "-indicator"}
-                  className="bg-polytime-teal absolute bottom-0 left-0 z-20 order-1 h-0.5 w-full rounded-full transition-[translate,widht] duration-400"
+                  className="bg-polytime-teal absolute bottom-0 left-0 z-20 order-1 h-0.5 w-full rounded-full transition-[translate,width] duration-400"
                 />
               </RACTab>
             );
