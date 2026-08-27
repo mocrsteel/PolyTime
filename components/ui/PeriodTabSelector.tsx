@@ -17,18 +17,20 @@ const SelectionIndicatorVariants = tv({
   base: "last:rounded-r-ml shadow-action border-polytime-line absolute bottom-0 left-0 z-10 h-full w-full cursor-pointer scrollbar-none bg-black/50 mix-blend-difference transition-[translate,width,height] duration-400 first:rounded-l-md first:border-r",
 });
 
+export type PeriodTabKeys = "month" | "quarter" | "year"
+
 export default function PeriodTabSelector() {
   return (
     <RACTabList className={TabListVariants()}>
-      <RACTab className={TabItemVariants()} key="month">
+      <RACTab className={TabItemVariants()} id="month">
         <p className="z-11">Month</p>
         <SelectionIndicator className={SelectionIndicatorVariants()} />
       </RACTab>
-      <RACTab className={TabItemVariants()} key="quarter">
+      <RACTab className={TabItemVariants()} id="quarter">
         <p className="z-11">Quarter</p>
         <SelectionIndicator className={SelectionIndicatorVariants()} />
       </RACTab>
-      <RACTab className={TabItemVariants()} key="year">
+      <RACTab className={TabItemVariants()} id="year">
         <p className="z-11">Year</p>
         <SelectionIndicator className={SelectionIndicatorVariants()} />
       </RACTab>

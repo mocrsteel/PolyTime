@@ -10,7 +10,7 @@ import {
 import { Group } from "react-aria-components/Group";
 import { iconMap } from "@/components/Icons";
 import { tv } from "tailwind-variants";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   startOfMonth,
   endOfMonth,
@@ -28,6 +28,8 @@ export type PeriodPickerProps = {
   granularity: "month" | "quarter" | "year";
   /** Minimum and maximum year range to display. Can be defined based on database content. */
   dateRange: [Date, Date];
+  selectedDateRange?: [Date, Date];
+  setSelectedDateRange?: React.Dispatch<React.SetStateAction<[Date, Date]>>
 };
 
 type Period =
@@ -146,6 +148,7 @@ type PickerProps = {
 };
 
 // Periods beyond the DB range remain reachable within this margin, for backfilling/pre-entering data.
+// TODO: investigate on how make it strict in the past and looser in the future.
 const BUFFER_PERIODS = 2;
 
 type RangeState = "inRange" | "buffered" | "outOfRange";
