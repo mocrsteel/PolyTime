@@ -28,17 +28,25 @@ export type PeriodPickerProps = {
   granularity: "month" | "quarter" | "year";
   /** Minimum and maximum year range to display. Can be defined based on database content. */
   dateRange: [Date, Date];
-  selectedDateRange?: [Date, Date];
-  setSelectedDateRange?: React.Dispatch<React.SetStateAction<[Date, Date]>>
+  selectedDateRange: DateRange;
+  setSelectedDateRange: React.Dispatch<React.SetStateAction<DateRange>>
 };
 
-type Period =
+/**
+ * Input for getDateRange. 1-indexed for `month` and `quarter`.
+ */
+export type Period =
   | { year: number }
   | { year: number; month: number; quarter?: never }
   | { year: number; quarter: number; month?: never };
 
-type DateRange = { start: Date; end: Date };
+export type DateRange = { start: Date; end: Date };
 
+/**
+ * 
+ * @param period input year, month and quarter. Quarter and Month are 1-indexed.
+ * @returns Daterange for the inputted period (year, month, quarter)
+ */
 export function getDateRange(period: Period): DateRange {
   if ("month" in period && period.month) {
     const date = new Date(period.year, period.month - 1, 1);
@@ -87,53 +95,35 @@ const listBoxItemVariants = tv({
 export default function PeriodPicker({
   dateRange,
   granularity = "quarter",
+  selectedDateRange,
+  setSelectedDateRange
 }: PeriodPickerProps) {
-  const initialDate = dateRange[0];
-
-  let initialPeriodDates: DateRange;
-  switch (granularity) {
-    case "month":
-      initialPeriodDates = getDateRange({
-        year: getYear(initialDate),
-        month: getMonth(initialDate) + 1,
-      });
-      break;
-    case "year":
-      initialPeriodDates = getDateRange({ year: getYear(initialDate) });
-      break;
-    default:
-      initialPeriodDates = getDateRange({
-        year: getYear(initialDate),
-        quarter: getQuarter(initialDate),
-      });
-  }
 
   // Lifted so future report views can consume the active date range for data fetching.
-  const [periodDates, setPeriodDates] = useState(initialPeriodDates);
   const bounds: DateRange = { start: dateRange[0], end: dateRange[1] };
 
   switch (granularity) {
     case "month":
       return (
         <MonthPicker
-          dateRange={periodDates}
-          setPeriodDates={setPeriodDates}
+          dateRange={selectedDateRange}
+          setPeriodDates={setSelectedDateRange}
           bounds={bounds}
         />
       );
     case "year":
       return (
         <YearPicker
-          dateRange={periodDates}
-          setPeriodDates={setPeriodDates}
+          dateRange={selectedDateRange}
+          setPeriodDates={setSelectedDateRange}
           bounds={bounds}
         />
       );
     default:
       return (
         <QuarterPicker
-          dateRange={periodDates}
-          setPeriodDates={setPeriodDates}
+          dateRange={selectedDateRange}
+          setPeriodDates={setSelectedDateRange}
           bounds={bounds}
         />
       );
@@ -435,7 +425,7 @@ function MonthPicker({ dateRange, setPeriodDates, bounds }: PickerProps) {
           })}
         </Button>
         <Popover placement="bottom start">
-          <Dialog className="flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-3 shadow-xl">
+          <Dialog className="flex flex-col gap-3 rounded-xl border border-stone-200 bg-white p-3 shadow-xl duration-75">
             {({ close }) => (
               <>
                 <div
