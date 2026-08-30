@@ -1,6 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { Meta, StoryObj } from "@storybook/nextjs-vite";
+import {fn} from "storybook/test"
 import { expect, screen, userEvent, within } from "storybook/test";
 import PeriodPicker, { PeriodPickerProps } from "./PeriodPicker";
 
@@ -17,6 +18,8 @@ type Story = StoryObj<typeof meta>;
 const defaultArgs = {
   granularity: "year",
   dateRange: [new Date(2025, 0, 1), new Date(2026, 4, 1)],
+  selectedDateRange: {start: new Date(2025, 0, 1),end: new Date(2025, 11, 31)},
+  setSelectedDateRange: fn(),
 } satisfies PeriodPickerProps;
 
 export const YearPicker: Story = {
@@ -47,6 +50,8 @@ export const QuarterNavigation: Story = {
   args: {
     granularity: "quarter",
     dateRange: [new Date(2024, 0, 1), new Date(2027, 0, 1)],
+    selectedDateRange: {start: new Date(2024, 0, 1), end: new Date(2024, 2, 31)},
+    setSelectedDateRange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -77,6 +82,8 @@ export const QuarterPreviousBoundary: Story = {
   args: {
     granularity: "quarter",
     dateRange: [new Date(2026, 0, 1), new Date(2026, 0, 1)],
+    selectedDateRange: {start: new Date(2026, 0, 1), end: new Date(2026, 2, 31)},
+    setSelectedDateRange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -107,8 +114,10 @@ export const QuarterPreviousBoundary: Story = {
  */
 export const QuarterDialogBoundary: Story = {
   args: {
-    granularity: "quarter",
-    dateRange: [new Date(2026, 0, 1), new Date(2026, 0, 1)],
+      granularity: "quarter",
+      dateRange: [new Date(2026, 0, 1), new Date(2026, 0, 1)],
+      selectedDateRange: {start: new Date(2026, 0, 1), end: new Date(2026, 2, 31)},
+      setSelectedDateRange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -153,6 +162,8 @@ export const MonthBoundary: Story = {
   args: {
     granularity: "month",
     dateRange: [new Date(2026, 5, 1), new Date(2026, 5, 1)],
+    selectedDateRange: {start: new Date(2026, 5, 1), end: new Date(2026, 5, 31)},
+    setSelectedDateRange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -183,6 +194,8 @@ export const YearBoundary: Story = {
   args: {
     granularity: "year",
     dateRange: [new Date(2026, 0, 1), new Date(2026, 0, 1)],
+    selectedDateRange: {start: new Date(2026, 0, 1), end: new Date(2026, 11, 31)},
+    setSelectedDateRange: fn(),
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
