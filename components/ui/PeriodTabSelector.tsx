@@ -6,11 +6,11 @@ import {
 import { tv } from "tailwind-variants";
 
 const TabListVariants = tv({
-  base: "border-polytime-line shadow-soft z-9 flex w-fit flex-row overflow-x-auto overflow-y-clip rounded-md bg-gray-200",
+  base: "border-polytime-line shadow-soft z-9 h-10 flex w-fit flex-row overflow-x-auto overflow-y-clip rounded-md bg-gray-200",
 });
 
 const TabItemVariants = tv({
-  base: "selected:font-semibold selected:text-white relative z-9 flex cursor-pointer items-center justify-center px-6 py-3 text-sm text-xs font-medium first:rounded-l-md last:rounded-r-md",
+  base: "selected:font-semibold selected:text-white relative z-9 flex cursor-pointer items-center justify-center px-6 py-auto text-sm text-xs font-medium first:rounded-l-md last:rounded-r-md",
 });
 
 const SelectionIndicatorVariants = tv({

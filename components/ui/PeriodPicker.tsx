@@ -22,6 +22,7 @@ import {
   getMonth,
   getQuarter,
 } from "date-fns";
+import { group } from "console";
 
 export type PeriodPickerProps = {
   /** Period type to pick from. */
@@ -61,12 +62,14 @@ export function getDateRange(period: Period): DateRange {
   const date = new Date(period.year, 0, 1);
   return { start: startOfYear(date), end: endOfYear(date) };
 }
-
+const groupVariants = tv({
+  base: "flex w-fit flex-row h-10 items-center rounded-lg border border-stone-200 bg-stone-50"
+})
 const periodChangeButtonVariants = tv({
-  base: "h-full px-2 py-1 text-stone-500 hover:text-stone-900",
+  base: "h-full px-2 py-auto h-full text-stone-500 hover:text-stone-900",
 });
 const dialogButtonVariants = tv({
-  base: "flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-100 px-4 py-1 text-sm font-semibold text-stone-900 hover:border-stone-300/70 hover:bg-stone-200/50",
+  base: "flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-100 px-4 h-full py-auto text-sm font-semibold text-stone-900 hover:border-stone-300/70 hover:bg-stone-200/50",
 });
 const listBoxVariants = tv({
   base: "grid gap-3 text-sm",
@@ -223,7 +226,7 @@ function QuarterPicker({ dateRange, setPeriodDates, bounds }: PickerProps) {
     ) !== "outOfRange";
 
   return (
-    <Group className="flex w-fit flex-row items-center rounded-lg border border-stone-200 bg-stone-50">
+    <Group className={groupVariants()}>
       <Button
         aria-label="Previous period"
         isDisabled={!canGoPrev}
@@ -406,7 +409,7 @@ function MonthPicker({ dateRange, setPeriodDates, bounds }: PickerProps) {
     ) !== "outOfRange";
 
   return (
-    <Group className="flex w-fit flex-row items-center rounded-lg border border-stone-200 bg-stone-50">
+    <Group className={groupVariants()}>
       <Button
         aria-label="Previous period"
         isDisabled={!canGoPrev}
@@ -538,7 +541,7 @@ function YearPicker({ dateRange, setPeriodDates, bounds }: PickerProps) {
     getRangeState(period.year + 1, minYear, maxYear) !== "outOfRange";
 
   return (
-    <Group className="flex w-fit flex-row items-center rounded-lg border border-stone-200 bg-stone-50">
+    <Group className={groupVariants()}>
       <Button
         aria-label="Previous period"
         isDisabled={!canGoPrev}
@@ -547,7 +550,7 @@ function YearPicker({ dateRange, setPeriodDates, bounds }: PickerProps) {
       >
         {iconMap({ icon: "chevronLeft" })}
       </Button>
-      <div className="flex items-center gap-1.5 rounded-lg border border-stone-200 bg-stone-100 px-4 py-1 text-sm font-semibold text-stone-900">
+      <div className={dialogButtonVariants()}>
         {period.year}
         {currentState === "buffered" && <NoDataDot />}
       </div>
