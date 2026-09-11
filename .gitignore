@@ -46,3 +46,6 @@ storybook-static
 
 # Dev container caches
 .history
+node_modules/
+dist/
+.env

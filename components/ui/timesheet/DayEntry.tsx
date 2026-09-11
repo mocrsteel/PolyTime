@@ -13,6 +13,7 @@ export type TimesheetEntry = {
   readonly asset: string;
   readonly project: string;
   readonly projectColor: ProjectColor["slot"];
+  readonly user: User;
   date: Date;
   hours: number;
   comments: string[];
