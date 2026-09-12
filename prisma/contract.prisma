@@ -1,0 +1,55 @@
+// use prisma-next
+
+enum Role {
+  @@type("pg/text@1")
+  User = "user"
+  Manager = "manager"
+  Admin = "admin"
+}
+
+enum ProjectStatus {
+  @@type("pg/text@1")
+  Active = "active"
+  Inactive = "inactive"
+  Completed = "completed"
+  Archived = "archived"
+}
+
+enum EntryStatus {
+  @@type("pg/text@1")
+  Open = "open"
+  Frozen = "frozen"
+}
+
+/// Represents a regular user that either is a manager with users reporting to him or
+/// has a manager.
+model User {
+  id        Uuid      @id @default(uuid())
+  email     String    @unique
+  name      String
+  role      Role
+
+  groupId   Uuid
+  group     UserGroup @relation(fields: [groupId], references: [id])
+  // If the user has a manager, the ManagerId is to be set. Else, the user is a manager
+  // himself and will have reports (users reporting to him)
+  // The enforcement of the Uuid relating to an user with the manager role must be
+  // enforced in the API itself.
+  managerId Uuid?
+  manager   User?   @relation("UserManager", fields: [managerId], references: [id])
+  reports   User[]  @relation("UserManager")
+
+  // Audit fields
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+
+/// Named group of employees. Can represent a team.
+model UserGroup {
+  id            Uuid    @id @default(uuid())
+  name          String  @unique
+  description   String?
+  users         User[]
+}
+
+
