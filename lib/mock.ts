@@ -17,7 +17,7 @@ export const timesheetEntries: TimesheetEntry[] = [
   },
   {
     id: 2,
-    businessUnit: "Operations",
+    businessUnit: "Corporate",
     asset: "Plant South",
     project: "Atlas Migration",
     projectColor: 54,
@@ -47,7 +47,7 @@ export const timesheetEntries: TimesheetEntry[] = [
   },
   {
     id: 5,
-    businessUnit: "Corporate",
+    businessUnit: "Operations",
     asset: "Plant North",
     project: "Nova Rollout",
     projectColor: 7,

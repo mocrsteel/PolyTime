@@ -1,5 +1,4 @@
 // use prisma-next
-
 enum Role {
   @@type("pg/text@1")
   User = "user"
@@ -24,32 +23,96 @@ enum EntryStatus {
 /// Represents a regular user that either is a manager with users reporting to him or
 /// has a manager.
 model User {
-  id        Uuid      @id @default(uuid())
-  email     String    @unique
+  id        Uuid                       @id @default(uuid())
+  email     String                     @unique
   name      String
   role      Role
 
   groupId   Uuid
-  group     UserGroup @relation(fields: [groupId], references: [id])
+  group     UserGroup                  @relation(fields: [groupId], references: [id])
   // If the user has a manager, the ManagerId is to be set. Else, the user is a manager
   // himself and will have reports (users reporting to him)
   // The enforcement of the Uuid relating to an user with the manager role must be
   // enforced in the API itself.
   managerId Uuid?
-  manager   User?   @relation("UserManager", fields: [managerId], references: [id])
-  reports   User[]  @relation("UserManager")
+  manager   User?                      @relation("UserManager", fields: [managerId], references: [id])
+  reports   User[]                     @relation("UserManager")
 
   // Audit fields
-  createdAt TimestamptzString @default(now())
+  createdAt TimestamptzString          @default(now())
   updatedAt temporal.updatedAtString()
 }
 
 /// Named group of employees. Can represent a team.
 model UserGroup {
-  id            Uuid    @id @default(uuid())
-  name          String  @unique
-  description   String?
-  users         User[]
+  id          Uuid                       @id @default(uuid())
+  name        String                     @unique
+  description String?
+  users       User[]
+
+  createdAt   TimestamptzString          @default(now())
+  updatedAt   temporal.updatedAtString()
 }
 
+model BusinessUnit {
+  id          Uuid                       @id @default(uuid())
+  name        String                     @unique
+  description String?
 
+  createdAt   TimestamptzString          @default(now())
+  updatedAt   temporal.updatedAtString()
+
+  projects    Project[]
+  assets      Asset[]
+}
+
+model Asset {
+  id             Uuid                       @id @default(uuid())
+  name           String
+  description    String?
+
+  businessUnitId Uuid
+  businessUnit   BusinessUnit               @relation(fields: [businessUnitId], references: [id])
+
+  createdAt      TimestamptzString          @default(now())
+  updatedAt      temporal.updatedAtString()
+
+  projects       Project[]
+
+  @@unique([name, businessUnitId])
+}
+
+model Project {
+  id             Uuid                       @id @default(uuid())
+  name           String
+  description    String?
+  status         ProjectStatus
+
+  businessUnitId Uuid
+  businessUnit   BusinessUnit               @relation(fields: [businessUnitId], references: [id])
+
+  assetId        Uuid
+  asset          Asset                      @relation(fields: [assetId], references: [id])
+
+  createdAt      TimestamptzString          @default(now())
+  updatedAt      temporal.updatedAtString()
+
+  @@unique([name, assetId, businessUnitId])
+}
+
+model TimeEntry {
+  id          Uuid                       @id @default(uuid())
+  description String?
+  date        DateString
+  hours       Decimal
+  status      EntryStatus                @default(Open)
+
+  userId      Uuid
+  user        User                       @relation(fields: [userId], references: [id])
+
+  projectId   Uuid
+  project     Project                    @relation(fields: [projectId], references: [id])
+
+  createdAt   TimestamptzString          @default(now())
+  updatedAt   temporal.updatedAtString()
+}

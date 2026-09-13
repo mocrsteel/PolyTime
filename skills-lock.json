@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "prisma-composer-core-concepts": {
+      "source": "prisma/composer",
+      "sourceType": "github",
+      "skillPath": "skills/prisma-composer-core-concepts/SKILL.md",
+      "computedHash": "8fb7c8da7b1bbe913231916029667c2b76cc9b9161b588729fd078c88d27640e"
+    }
+  }
+}

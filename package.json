@@ -18,7 +18,7 @@
     "build-storybook": "storybook build",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:seed": "prisma db seed",
+    "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "contract:emit": "prisma contract emit",
     "postinstall": "prisma skills sync || exit 0"
@@ -30,6 +30,7 @@
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^6.0.0",
     "@prisma/composer": "^0.17.0",
+    "@prisma/composer-prisma-cloud": "^0.17.0",
     "@prisma/orm-postgres": "8.0.0-rc.8",
     "@react-types/shared": "^3.36.0",
     "arktype": "^2.2.3",

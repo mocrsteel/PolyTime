@@ -1,295 +1,150 @@
 
-/*
+import { db } from './db';
+import { timesheetEntries } from '../lib/mock';
 
-IMPORTANT: This was generated using Copilot. Re-iterate and have copilot propose
-some seed data later, but manually set up the boilerplate code since this was 
-wrong on the copilot version.
-*/
+async function main() {
+  console.log('🌱 Seeding database...');
 
-// import { PrismaClient, Role, ProjectStatus, EntryStatus, AssetType } from '@prisma/client';
+  // Clear existing entries cleanly with TRUNCATE CASCADE
+  const truncatePlan = db.raw.sql`TRUNCATE TABLE "timeEntry", "project", "asset", "businessUnit", "user", "userGroup" CASCADE;`.affectedCount().build();
+  await db.runtime().execute(truncatePlan);
 
-// const prisma = new PrismaClient();
+  console.log('🗑️  Cleared existing records');
 
-// async function main() {
-//   console.log('🌱 Seeding database...');
+  // ── Employee Groups ─────────────────────────────────────────────────────────
+  const groupDev = await db.orm.public.UserGroup.create({
+    name: 'Developers',
+    description: 'Software developers and engineers',
+  });
 
-//   // Clear time entries first so the seed is idempotent (no unique natural key)
-//   await prisma.timeEntry.deleteMany({});
-//   console.log('🗑️  Cleared existing time entries');
+  const groupMgmt = await db.orm.public.UserGroup.create({
+    name: 'Management',
+    description: 'Team leads and project managers',
+  });
 
-//   // ── Business Units ──────────────────────────────────────────────────────────
-//   const buEngineering = await prisma.businessUnit.upsert({
-//     where: { code: 'ENG' },
-//     update: {},
-//     create: {
-//       name: 'Engineering',
-//       code: 'ENG',
-//       description: 'Software engineering and product development',
-//     },
-//   });
+  console.log('✅ User groups seeded');
 
-//   const buOperations = await prisma.businessUnit.upsert({
-//     where: { code: 'OPS' },
-//     update: {},
-//     create: {
-//       name: 'Operations',
-//       code: 'OPS',
-//       description: 'Business operations and administration',
-//     },
-//   });
+  // ── Users ───────────────────────────────────────────────────────────────────
+  const manager = await db.orm.public.User.create({
+    email: 'manager@polytime.dev',
+    name: 'Jane Manager',
+    role: 'manager',
+    groupId: groupMgmt.id,
+  });
 
-//   console.log('✅ Business units seeded');
+  const alice = await db.orm.public.User.create({
+    email: 'alice@polytime.dev',
+    name: 'Alice Developer',
+    role: 'user',
+    groupId: groupDev.id,
+    managerId: manager.id,
+  });
 
-//   // ── Employee Groups ─────────────────────────────────────────────────────────
-//   const groupDev = await prisma.employeeGroup.upsert({
-//     where: { id: 'group-dev' },
-//     update: {},
-//     create: {
-//       id: 'group-dev',
-//       name: 'Developers',
-//       description: 'Software developers and engineers',
-//     },
-//   });
+  console.log('✅ Users seeded');
 
-//   const groupManagement = await prisma.employeeGroup.upsert({
-//     where: { id: 'group-management' },
-//     update: {},
-//     create: {
-//       id: 'group-management',
-//       name: 'Management',
-//       description: 'Team leads and project managers',
-//     },
-//   });
+  // ── Business Units ──────────────────────────────────────────────────────────
+  const buOps = await db.orm.public.BusinessUnit.create({
+    name: 'Operations',
+    description: 'Business operations and site management',
+  });
 
-//   console.log('✅ Employee groups seeded');
+  const buCorp = await db.orm.public.BusinessUnit.create({
+    name: 'Corporate',
+    description: 'Corporate services and overhead',
+  });
 
-//   // ── Users ───────────────────────────────────────────────────────────────────
-//   const admin = await prisma.user.upsert({
-//     where: { email: 'admin@polytime.dev' },
-//     update: {},
-//     create: {
-//       email: 'admin@polytime.dev',
-//       name: 'Admin User',
-//       role: Role.ADMIN,
-//       businessUnitId: buEngineering.id,
-//       employeeGroupId: groupManagement.id,
-//     },
-//   });
+  console.log('✅ Business units seeded');
 
-//   const manager = await prisma.user.upsert({
-//     where: { email: 'manager@polytime.dev' },
-//     update: {},
-//     create: {
-//       email: 'manager@polytime.dev',
-//       name: 'Jane Manager',
-//       role: Role.MANAGER,
-//       businessUnitId: buEngineering.id,
-//       employeeGroupId: groupManagement.id,
-//     },
-//   });
+  // ── Assets ──────────────────────────────────────────────────────────────────
+  const assetPlantNorth = await db.orm.public.Asset.create({
+    name: 'Plant North',
+    description: 'Main manufacturing facility north',
+    businessUnitId: buOps.id,
+  });
 
-//   const alice = await prisma.user.upsert({
-//     where: { email: 'alice@polytime.dev' },
-//     update: {},
-//     create: {
-//       email: 'alice@polytime.dev',
-//       name: 'Alice Developer',
-//       role: Role.USER,
-//       businessUnitId: buEngineering.id,
-//       employeeGroupId: groupDev.id,
-//     },
-//   });
+  const assetFleetWest = await db.orm.public.Asset.create({
+    name: 'Fleet West',
+    description: 'Western logistics fleet',
+    businessUnitId: buOps.id,
+  });
 
-//   const bob = await prisma.user.upsert({
-//     where: { email: 'bob@polytime.dev' },
-//     update: {},
-//     create: {
-//       email: 'bob@polytime.dev',
-//       name: 'Bob Operations',
-//       role: Role.USER,
-//       businessUnitId: buOperations.id,
-//       employeeGroupId: groupDev.id,
-//     },
-//   });
+  const assetPlantSouth = await db.orm.public.Asset.create({
+    name: 'Plant South',
+    description: 'Manufacturing facility south',
+    businessUnitId: buCorp.id,
+  });
 
-//   console.log('✅ Users seeded');
+  const assetHQSystems = await db.orm.public.Asset.create({
+    name: 'HQ Systems',
+    description: 'Corporate headquarters IT infrastructure',
+    businessUnitId: buCorp.id,
+  });
 
-//   // ── Projects ────────────────────────────────────────────────────────────────
-//   const projectPolytime = await prisma.project.upsert({
-//     where: { code: 'PT-CORE' },
-//     update: {},
-//     create: {
-//       name: 'PolyTime Core',
-//       code: 'PT-CORE',
-//       description: 'Core timesheeting application development',
-//       status: ProjectStatus.ACTIVE,
-//       businessUnitId: buEngineering.id,
-//     },
-//   });
+  const assetMap = {
+    'Plant North': assetPlantNorth,
+    'Fleet West': assetFleetWest,
+    'Plant South': assetPlantSouth,
+    'HQ Systems': assetHQSystems,
+  };
 
-//   const projectInfra = await prisma.project.upsert({
-//     where: { code: 'PT-INFRA' },
-//     update: {},
-//     create: {
-//       name: 'Infrastructure',
-//       code: 'PT-INFRA',
-//       description: 'Cloud infrastructure and DevOps',
-//       status: ProjectStatus.ACTIVE,
-//       businessUnitId: buOperations.id,
-//     },
-//   });
+  console.log('✅ Assets seeded');
 
-//   const projectInternal = await prisma.project.upsert({
-//     where: { code: 'PT-INT' },
-//     update: {},
-//     create: {
-//       name: 'Internal Admin',
-//       code: 'PT-INT',
-//       description: 'Internal administration and overhead',
-//       status: ProjectStatus.ACTIVE,
-//       businessUnitId: buOperations.id,
-//     },
-//   });
+  // ── Projects ────────────────────────────────────────────────────────────────
+  const projectsData = [
+    { name: 'Phoenix Upgrade', asset: 'Plant North', bu: buOps },
+    { name: 'Nova Rollout', asset: 'Plant North', bu: buOps },
+    { name: 'Helios Reporting', asset: 'Fleet West', bu: buOps },
+    { name: 'Summit Integration', asset: 'Fleet West', bu: buOps },
+    { name: 'Atlas Migration', asset: 'Plant South', bu: buCorp },
+    { name: 'Pulse Optimization', asset: 'Plant South', bu: buCorp },
+    { name: 'Orion Compliance', asset: 'HQ Systems', bu: buCorp },
+    { name: 'Cedar Analytics', asset: 'HQ Systems', bu: buCorp },
+  ];
 
-//   console.log('✅ Projects seeded');
+  const projectMap: Record<string, { id: string }> = {};
 
-//   // ── Assets ──────────────────────────────────────────────────────────────────
-//   await prisma.asset.upsert({
-//     where: { code: 'ASSET-LAPTOP-001' },
-//     update: {},
-//     create: {
-//       name: 'MacBook Pro 14"',
-//       code: 'ASSET-LAPTOP-001',
-//       type: AssetType.EQUIPMENT,
-//       description: 'Development laptop',
-//       projectId: projectPolytime.id,
-//     },
-//   });
+  for (const p of projectsData) {
+    const created = await db.orm.public.Project.create({
+      name: p.name,
+      description: `${p.name} project`,
+      status: 'active',
+      businessUnitId: p.bu.id,
+      assetId: assetMap[p.asset as keyof typeof assetMap].id,
+    });
+    projectMap[p.name] = created;
+  }
 
-//   await prisma.asset.upsert({
-//     where: { code: 'ASSET-SW-FIGMA' },
-//     update: {},
-//     create: {
-//       name: 'Figma License',
-//       code: 'ASSET-SW-FIGMA',
-//       type: AssetType.SOFTWARE,
-//       description: 'Design and prototyping tool',
-//       projectId: projectPolytime.id,
-//     },
-//   });
+  console.log('✅ Projects seeded');
 
-//   await prisma.asset.upsert({
-//     where: { code: 'ASSET-SW-GITHUB' },
-//     update: {},
-//     create: {
-//       name: 'GitHub Enterprise',
-//       code: 'ASSET-SW-GITHUB',
-//       type: AssetType.SOFTWARE,
-//       description: 'Source control and CI/CD',
-//       projectId: projectInfra.id,
-//     },
-//   });
+  // ── Time Entries (from mock.ts) ─────────────────────────────────────────────
+  for (const entry of timesheetEntries) {
+    const proj = projectMap[entry.project];
+    if (!proj) {
+      console.warn(`⚠️ Project not found for entry: ${entry.project}`);
+      continue;
+    }
 
-//   console.log('✅ Assets seeded');
+    const yyyy = entry.date.getFullYear();
+    const mm = String(entry.date.getMonth() + 1).padStart(2, '0');
+    const dd = String(entry.date.getDate()).padStart(2, '0');
 
-//   // ── Time Entries ────────────────────────────────────────────────────────────
-//   const today = new Date();
-//   today.setHours(0, 0, 0, 0);
+    await db.orm.public.TimeEntry.create({
+      description: entry.comments.length > 0 ? entry.comments.join('\n') : null,
+      date: `${yyyy}-${mm}-${dd}`,
+      hours: entry.hours.toString(),
+      status: 'open',
+      userId: alice.id,
+      projectId: proj.id,
+    });
+  }
 
-//   const yesterday = new Date(today);
-//   yesterday.setDate(yesterday.getDate() - 1);
+  console.log('✅ Time entries seeded from mock data');
 
-//   const twoDaysAgo = new Date(today);
-//   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+  console.log('\n🎉 Database seeded successfully!');
+  await db.close();
+}
 
-//   // Alice's approved entries
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: alice.id,
-//       projectId: projectPolytime.id,
-//       date: twoDaysAgo,
-//       hours: 8,
-//       description: 'Implemented NavButton and Navbar components with accessibility improvements',
-//       status: EntryStatus.APPROVED,
-//       approvedById: manager.id,
-//       approvedAt: yesterday,
-//     },
-//   });
-
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: alice.id,
-//       projectId: projectPolytime.id,
-//       date: yesterday,
-//       hours: 7.5,
-//       description: 'Set up Storybook with core UI component stories',
-//       status: EntryStatus.SUBMITTED,
-//     },
-//   });
-
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: alice.id,
-//       projectId: projectPolytime.id,
-//       date: today,
-//       hours: 6,
-//       description: 'Prisma schema design and initial migration',
-//       status: EntryStatus.DRAFT,
-//     },
-//   });
-
-//   // Bob's entries
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: bob.id,
-//       projectId: projectInfra.id,
-//       date: yesterday,
-//       hours: 8,
-//       description: 'Configure GitHub Actions CI/CD pipeline',
-//       status: EntryStatus.SUBMITTED,
-//     },
-//   });
-
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: bob.id,
-//       projectId: projectInternal.id,
-//       date: today,
-//       hours: 2,
-//       description: 'Team sync and planning',
-//       status: EntryStatus.DRAFT,
-//     },
-//   });
-
-//   // Manager's entries
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: manager.id,
-//       projectId: projectPolytime.id,
-//       date: yesterday,
-//       hours: 3,
-//       description: 'Sprint planning and backlog grooming',
-//       status: EntryStatus.APPROVED,
-//       approvedById: admin.id,
-//       approvedAt: today,
-//     },
-//   });
-
-//   console.log('✅ Time entries seeded');
-
-//   console.log('\n🎉 Database seeded successfully!');
-//   console.log('\nSample accounts:');
-//   console.log('  admin@polytime.dev  (Admin)');
-//   console.log('  manager@polytime.dev  (Manager)');
-//   console.log('  alice@polytime.dev  (User)');
-//   console.log('  bob@polytime.dev  (User)');
-// }
-
-// main()
-//   .catch((e) => {
-//     console.error('❌ Seed failed:', e);
-//     process.exit(1);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });
+main().catch((e) => {
+  console.error('❌ Seeding failed:', e);
+  process.exit(1);
+});
