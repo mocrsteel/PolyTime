@@ -1,6 +1,6 @@
 
 import { db } from './db';
-import { timesheetEntries } from '../lib/mock';
+import { generateSeedTimeEntries, seedBusinessUnits, seedUsers } from '../lib/mock';
 
 async function main() {
   console.log('🌱 Seeding database...');
@@ -11,116 +11,71 @@ async function main() {
 
   console.log('🗑️  Cleared existing records');
 
-  // ── Employee Groups ─────────────────────────────────────────────────────────
-  const groupDev = await db.orm.public.UserGroup.create({
-    name: 'Developers',
-    description: 'Software developers and engineers',
+  // ── User Group ───────────────────────────────────────────────────────────
+  const group = await db.orm.public.UserGroup.create({
+    name: 'Everyone',
+    description: 'Default group for all seeded users',
   });
 
-  const groupMgmt = await db.orm.public.UserGroup.create({
-    name: 'Management',
-    description: 'Team leads and project managers',
-  });
-
-  console.log('✅ User groups seeded');
+  console.log('✅ User group seeded');
 
   // ── Users ───────────────────────────────────────────────────────────────────
-  const manager = await db.orm.public.User.create({
-    email: 'manager@polytime.dev',
-    name: 'Jane Manager',
-    role: 'manager',
-    groupId: groupMgmt.id,
-  });
+  // Managers must be created before the users that report to them.
+  const usersByEmail = new Map<string, { id: string }>();
+  const managersFirst = [...seedUsers].sort((a) => (a.managerEmail ? 1 : -1));
 
-  const alice = await db.orm.public.User.create({
-    email: 'alice@polytime.dev',
-    name: 'Alice Developer',
-    role: 'user',
-    groupId: groupDev.id,
-    managerId: manager.id,
-  });
+  for (const seedUser of managersFirst) {
+    const created = await db.orm.public.User.create({
+      email: seedUser.email,
+      name: seedUser.name,
+      role: seedUser.role,
+      groupId: group.id,
+      managerId: seedUser.managerEmail ? usersByEmail.get(seedUser.managerEmail)?.id : undefined,
+    });
+    usersByEmail.set(seedUser.email, created);
+  }
 
   console.log('✅ Users seeded');
 
-  // ── Business Units ──────────────────────────────────────────────────────────
-  const buOps = await db.orm.public.BusinessUnit.create({
-    name: 'Operations',
-    description: 'Business operations and site management',
-  });
+  // ── Business Units, Assets & Projects ────────────────────────────────────────
+  const projectsByKey = new Map<string, { id: string }>();
 
-  const buCorp = await db.orm.public.BusinessUnit.create({
-    name: 'Corporate',
-    description: 'Corporate services and overhead',
-  });
-
-  console.log('✅ Business units seeded');
-
-  // ── Assets ──────────────────────────────────────────────────────────────────
-  const assetPlantNorth = await db.orm.public.Asset.create({
-    name: 'Plant North',
-    description: 'Main manufacturing facility north',
-    businessUnitId: buOps.id,
-  });
-
-  const assetFleetWest = await db.orm.public.Asset.create({
-    name: 'Fleet West',
-    description: 'Western logistics fleet',
-    businessUnitId: buOps.id,
-  });
-
-  const assetPlantSouth = await db.orm.public.Asset.create({
-    name: 'Plant South',
-    description: 'Manufacturing facility south',
-    businessUnitId: buCorp.id,
-  });
-
-  const assetHQSystems = await db.orm.public.Asset.create({
-    name: 'HQ Systems',
-    description: 'Corporate headquarters IT infrastructure',
-    businessUnitId: buCorp.id,
-  });
-
-  const assetMap = {
-    'Plant North': assetPlantNorth,
-    'Fleet West': assetFleetWest,
-    'Plant South': assetPlantSouth,
-    'HQ Systems': assetHQSystems,
-  };
-
-  console.log('✅ Assets seeded');
-
-  // ── Projects ────────────────────────────────────────────────────────────────
-  const projectsData = [
-    { name: 'Phoenix Upgrade', asset: 'Plant North', bu: buOps },
-    { name: 'Nova Rollout', asset: 'Plant North', bu: buOps },
-    { name: 'Helios Reporting', asset: 'Fleet West', bu: buOps },
-    { name: 'Summit Integration', asset: 'Fleet West', bu: buOps },
-    { name: 'Atlas Migration', asset: 'Plant South', bu: buCorp },
-    { name: 'Pulse Optimization', asset: 'Plant South', bu: buCorp },
-    { name: 'Orion Compliance', asset: 'HQ Systems', bu: buCorp },
-    { name: 'Cedar Analytics', asset: 'HQ Systems', bu: buCorp },
-  ];
-
-  const projectMap: Record<string, { id: string }> = {};
-
-  for (const p of projectsData) {
-    const created = await db.orm.public.Project.create({
-      name: p.name,
-      description: `${p.name} project`,
-      status: 'active',
-      businessUnitId: p.bu.id,
-      assetId: assetMap[p.asset as keyof typeof assetMap].id,
+  for (const bu of seedBusinessUnits) {
+    const createdBu = await db.orm.public.BusinessUnit.create({
+      name: bu.name,
+      description: bu.description,
     });
-    projectMap[p.name] = created;
+
+    for (const asset of bu.assets) {
+      const createdAsset = await db.orm.public.Asset.create({
+        name: asset.name,
+        description: asset.description,
+        businessUnitId: createdBu.id,
+      });
+
+      for (const project of asset.projects) {
+        const createdProject = await db.orm.public.Project.create({
+          name: project.name,
+          description: `${project.name} project`,
+          status: project.status,
+          businessUnitId: createdBu.id,
+          assetId: createdAsset.id,
+        });
+        projectsByKey.set(`${bu.name}|${asset.name}|${project.name}`, createdProject);
+      }
+    }
   }
 
-  console.log('✅ Projects seeded');
+  console.log('✅ Business units, assets and projects seeded');
 
-  // ── Time Entries (from mock.ts) ─────────────────────────────────────────────
-  for (const entry of timesheetEntries) {
-    const proj = projectMap[entry.project];
-    if (!proj) {
-      console.warn(`⚠️ Project not found for entry: ${entry.project}`);
+  // ── Time Entries (two years, generated from mock.ts seed data) ──────────────
+  const timeEntries = generateSeedTimeEntries();
+
+  for (const entry of timeEntries) {
+    const user = usersByEmail.get(entry.userEmail);
+    const project = projectsByKey.get(`${entry.businessUnit}|${entry.asset}|${entry.project}`);
+    if (!user || !project) {
+      console.warn(`⚠️ Skipping entry, missing user/project for ${entry.userEmail} / ${entry.project}`);
       continue;
     }
 
@@ -129,16 +84,16 @@ async function main() {
     const dd = String(entry.date.getDate()).padStart(2, '0');
 
     await db.orm.public.TimeEntry.create({
-      description: entry.comments.length > 0 ? entry.comments.join('\n') : null,
+      description: entry.description ?? null,
       date: `${yyyy}-${mm}-${dd}`,
       hours: entry.hours.toString(),
       status: 'open',
-      userId: alice.id,
-      projectId: proj.id,
+      userId: user.id,
+      projectId: project.id,
     });
   }
 
-  console.log('✅ Time entries seeded from mock data');
+  console.log(`✅ Seeded ${timeEntries.length} time entries covering two years across ${seedUsers.length} users`);
 
   console.log('\n🎉 Database seeded successfully!');
   await db.close();
