@@ -1,5 +1,4 @@
-import {Meta, StoryObj} from '@storybook/nextjs-vite';
-import {INITIAL_VIEWPORTS} from "storybook/viewport";
+import { StoryObj} from '@storybook/nextjs-vite';
 
 import TimeLog from './TimeLog';
 

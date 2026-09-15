@@ -27,7 +27,7 @@ export default function Meter({ ...props }: MeterBar) {
   const value = (props.value / props.weekMaximum) * 100;
   return (
     <RACMeter className={twMerge(MeterVariants(), props.className)} {...props}>
-      {({ percentage, valueText }) => (
+      {(params) => (
         <>
           <div className="flex justify-between text-[11px]">
             <Label className="text-polytime-muted">{props.label}</Label>
@@ -35,7 +35,7 @@ export default function Meter({ ...props }: MeterBar) {
               className={`flex flex-row content-center items-center gap-2 ${value > 100 ? "text-red-700" : "text-polytime-teal"}`}
             >
               {value > 100 && iconMap({ icon: "alert" })}
-              {" " + valueText + ` / ${props.weekMaximum} hr`}
+              {" " + params.valueText + ` / ${props.weekMaximum} hr`}
             </span>
           </div>
           <div className="relative h-2 w-full max-w-full rounded-full bg-slate-200 outline-1 outline-transparent">

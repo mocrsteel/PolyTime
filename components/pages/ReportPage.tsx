@@ -4,7 +4,6 @@ import { getYear, getMonth, getQuarter, format } from "date-fns";
 import { useState } from "react";
 import { Key, TabPanels, Tabs } from "react-aria-components/Tabs";
 
-import ReportCard from "@/components/ui/reports/ReportCard";
 import Heading from "@/components/ui/Heading";
 import Button from "@/components/ui/Button";
 import PeriodTabSelector, {
@@ -42,7 +41,7 @@ function initializeDateRangeSelection(
   }
 }
 
-export default function ReportPage(props: ReportPageProps) {
+export default function ReportPage() {
   const [tab, setTab] = useState<PeriodTabKeys>("quarter");
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange>(
     initializeDateRangeSelection(DEV_TIME_PERIOD[1], tab),
