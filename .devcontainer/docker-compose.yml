@@ -5,7 +5,9 @@ services:
     image: postgres:18
     container_name: postgres-dev
     environment:
+      POSTGRES_USER: dev
       POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: devdb
     ports:
       - "5432:5432"
     volumes:

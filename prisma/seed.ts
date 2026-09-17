@@ -1,295 +1,105 @@
 
-/*
+import { db } from './db';
+import { generateSeedTimeEntries, seedBusinessUnits, seedUsers } from '../lib/mock';
 
-IMPORTANT: This was generated using Copilot. Re-iterate and have copilot propose
-some seed data later, but manually set up the boilerplate code since this was 
-wrong on the copilot version.
-*/
+async function main() {
+  console.log('🌱 Seeding database...');
 
-// import { PrismaClient, Role, ProjectStatus, EntryStatus, AssetType } from '@prisma/client';
+  // Clear existing entries cleanly with TRUNCATE CASCADE
+  const truncatePlan = db.raw.sql`TRUNCATE TABLE "timeEntry", "project", "asset", "businessUnit", "user", "userGroup" CASCADE;`.affectedCount().build();
+  await db.runtime().execute(truncatePlan);
 
-// const prisma = new PrismaClient();
+  console.log('🗑️  Cleared existing records');
 
-// async function main() {
-//   console.log('🌱 Seeding database...');
+  // ── User Group ───────────────────────────────────────────────────────────
+  const group = await db.orm.public.UserGroup.create({
+    name: 'Everyone',
+    description: 'Default group for all seeded users',
+  });
 
-//   // Clear time entries first so the seed is idempotent (no unique natural key)
-//   await prisma.timeEntry.deleteMany({});
-//   console.log('🗑️  Cleared existing time entries');
+  console.log('✅ User group seeded');
 
-//   // ── Business Units ──────────────────────────────────────────────────────────
-//   const buEngineering = await prisma.businessUnit.upsert({
-//     where: { code: 'ENG' },
-//     update: {},
-//     create: {
-//       name: 'Engineering',
-//       code: 'ENG',
-//       description: 'Software engineering and product development',
-//     },
-//   });
+  // ── Users ───────────────────────────────────────────────────────────────────
+  // Managers must be created before the users that report to them.
+  const usersByEmail = new Map<string, { id: string }>();
+  const managersFirst = [...seedUsers].sort((a) => (a.managerEmail ? 1 : -1));
 
-//   const buOperations = await prisma.businessUnit.upsert({
-//     where: { code: 'OPS' },
-//     update: {},
-//     create: {
-//       name: 'Operations',
-//       code: 'OPS',
-//       description: 'Business operations and administration',
-//     },
-//   });
+  for (const seedUser of managersFirst) {
+    const created = await db.orm.public.User.create({
+      email: seedUser.email,
+      name: seedUser.name,
+      role: seedUser.role,
+      groupId: group.id,
+      managerId: seedUser.managerEmail ? usersByEmail.get(seedUser.managerEmail)?.id : undefined,
+    });
+    usersByEmail.set(seedUser.email, created);
+  }
 
-//   console.log('✅ Business units seeded');
+  console.log('✅ Users seeded');
 
-//   // ── Employee Groups ─────────────────────────────────────────────────────────
-//   const groupDev = await prisma.employeeGroup.upsert({
-//     where: { id: 'group-dev' },
-//     update: {},
-//     create: {
-//       id: 'group-dev',
-//       name: 'Developers',
-//       description: 'Software developers and engineers',
-//     },
-//   });
+  // ── Business Units, Assets & Projects ────────────────────────────────────────
+  const projectsByKey = new Map<string, { id: string }>();
 
-//   const groupManagement = await prisma.employeeGroup.upsert({
-//     where: { id: 'group-management' },
-//     update: {},
-//     create: {
-//       id: 'group-management',
-//       name: 'Management',
-//       description: 'Team leads and project managers',
-//     },
-//   });
+  for (const bu of seedBusinessUnits) {
+    const createdBu = await db.orm.public.BusinessUnit.create({
+      name: bu.name,
+      description: bu.description,
+    });
 
-//   console.log('✅ Employee groups seeded');
+    for (const asset of bu.assets) {
+      const createdAsset = await db.orm.public.Asset.create({
+        name: asset.name,
+        description: asset.description,
+        businessUnitId: createdBu.id,
+      });
 
-//   // ── Users ───────────────────────────────────────────────────────────────────
-//   const admin = await prisma.user.upsert({
-//     where: { email: 'admin@polytime.dev' },
-//     update: {},
-//     create: {
-//       email: 'admin@polytime.dev',
-//       name: 'Admin User',
-//       role: Role.ADMIN,
-//       businessUnitId: buEngineering.id,
-//       employeeGroupId: groupManagement.id,
-//     },
-//   });
+      for (const project of asset.projects) {
+        const createdProject = await db.orm.public.Project.create({
+          name: project.name,
+          description: `${project.name} project`,
+          status: project.status,
+          businessUnitId: createdBu.id,
+          assetId: createdAsset.id,
+        });
+        projectsByKey.set(`${bu.name}|${asset.name}|${project.name}`, createdProject);
+      }
+    }
+  }
 
-//   const manager = await prisma.user.upsert({
-//     where: { email: 'manager@polytime.dev' },
-//     update: {},
-//     create: {
-//       email: 'manager@polytime.dev',
-//       name: 'Jane Manager',
-//       role: Role.MANAGER,
-//       businessUnitId: buEngineering.id,
-//       employeeGroupId: groupManagement.id,
-//     },
-//   });
+  console.log('✅ Business units, assets and projects seeded');
 
-//   const alice = await prisma.user.upsert({
-//     where: { email: 'alice@polytime.dev' },
-//     update: {},
-//     create: {
-//       email: 'alice@polytime.dev',
-//       name: 'Alice Developer',
-//       role: Role.USER,
-//       businessUnitId: buEngineering.id,
-//       employeeGroupId: groupDev.id,
-//     },
-//   });
+  // ── Time Entries (two years, generated from mock.ts seed data) ──────────────
+  const timeEntries = generateSeedTimeEntries();
 
-//   const bob = await prisma.user.upsert({
-//     where: { email: 'bob@polytime.dev' },
-//     update: {},
-//     create: {
-//       email: 'bob@polytime.dev',
-//       name: 'Bob Operations',
-//       role: Role.USER,
-//       businessUnitId: buOperations.id,
-//       employeeGroupId: groupDev.id,
-//     },
-//   });
+  for (const entry of timeEntries) {
+    const user = usersByEmail.get(entry.userEmail);
+    const project = projectsByKey.get(`${entry.businessUnit}|${entry.asset}|${entry.project}`);
+    if (!user || !project) {
+      console.warn(`⚠️ Skipping entry, missing user/project for ${entry.userEmail} / ${entry.project}`);
+      continue;
+    }
 
-//   console.log('✅ Users seeded');
+    const yyyy = entry.date.getFullYear();
+    const mm = String(entry.date.getMonth() + 1).padStart(2, '0');
+    const dd = String(entry.date.getDate()).padStart(2, '0');
 
-//   // ── Projects ────────────────────────────────────────────────────────────────
-//   const projectPolytime = await prisma.project.upsert({
-//     where: { code: 'PT-CORE' },
-//     update: {},
-//     create: {
-//       name: 'PolyTime Core',
-//       code: 'PT-CORE',
-//       description: 'Core timesheeting application development',
-//       status: ProjectStatus.ACTIVE,
-//       businessUnitId: buEngineering.id,
-//     },
-//   });
+    await db.orm.public.TimeEntry.create({
+      description: entry.description ?? null,
+      date: `${yyyy}-${mm}-${dd}`,
+      hours: entry.hours.toString(),
+      status: 'open',
+      userId: user.id,
+      projectId: project.id,
+    });
+  }
 
-//   const projectInfra = await prisma.project.upsert({
-//     where: { code: 'PT-INFRA' },
-//     update: {},
-//     create: {
-//       name: 'Infrastructure',
-//       code: 'PT-INFRA',
-//       description: 'Cloud infrastructure and DevOps',
-//       status: ProjectStatus.ACTIVE,
-//       businessUnitId: buOperations.id,
-//     },
-//   });
+  console.log(`✅ Seeded ${timeEntries.length} time entries covering two years across ${seedUsers.length} users`);
 
-//   const projectInternal = await prisma.project.upsert({
-//     where: { code: 'PT-INT' },
-//     update: {},
-//     create: {
-//       name: 'Internal Admin',
-//       code: 'PT-INT',
-//       description: 'Internal administration and overhead',
-//       status: ProjectStatus.ACTIVE,
-//       businessUnitId: buOperations.id,
-//     },
-//   });
+  console.log('\n🎉 Database seeded successfully!');
+  await db.close();
+}
 
-//   console.log('✅ Projects seeded');
-
-//   // ── Assets ──────────────────────────────────────────────────────────────────
-//   await prisma.asset.upsert({
-//     where: { code: 'ASSET-LAPTOP-001' },
-//     update: {},
-//     create: {
-//       name: 'MacBook Pro 14"',
-//       code: 'ASSET-LAPTOP-001',
-//       type: AssetType.EQUIPMENT,
-//       description: 'Development laptop',
-//       projectId: projectPolytime.id,
-//     },
-//   });
-
-//   await prisma.asset.upsert({
-//     where: { code: 'ASSET-SW-FIGMA' },
-//     update: {},
-//     create: {
-//       name: 'Figma License',
-//       code: 'ASSET-SW-FIGMA',
-//       type: AssetType.SOFTWARE,
-//       description: 'Design and prototyping tool',
-//       projectId: projectPolytime.id,
-//     },
-//   });
-
-//   await prisma.asset.upsert({
-//     where: { code: 'ASSET-SW-GITHUB' },
-//     update: {},
-//     create: {
-//       name: 'GitHub Enterprise',
-//       code: 'ASSET-SW-GITHUB',
-//       type: AssetType.SOFTWARE,
-//       description: 'Source control and CI/CD',
-//       projectId: projectInfra.id,
-//     },
-//   });
-
-//   console.log('✅ Assets seeded');
-
-//   // ── Time Entries ────────────────────────────────────────────────────────────
-//   const today = new Date();
-//   today.setHours(0, 0, 0, 0);
-
-//   const yesterday = new Date(today);
-//   yesterday.setDate(yesterday.getDate() - 1);
-
-//   const twoDaysAgo = new Date(today);
-//   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
-//   // Alice's approved entries
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: alice.id,
-//       projectId: projectPolytime.id,
-//       date: twoDaysAgo,
-//       hours: 8,
-//       description: 'Implemented NavButton and Navbar components with accessibility improvements',
-//       status: EntryStatus.APPROVED,
-//       approvedById: manager.id,
-//       approvedAt: yesterday,
-//     },
-//   });
-
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: alice.id,
-//       projectId: projectPolytime.id,
-//       date: yesterday,
-//       hours: 7.5,
-//       description: 'Set up Storybook with core UI component stories',
-//       status: EntryStatus.SUBMITTED,
-//     },
-//   });
-
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: alice.id,
-//       projectId: projectPolytime.id,
-//       date: today,
-//       hours: 6,
-//       description: 'Prisma schema design and initial migration',
-//       status: EntryStatus.DRAFT,
-//     },
-//   });
-
-//   // Bob's entries
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: bob.id,
-//       projectId: projectInfra.id,
-//       date: yesterday,
-//       hours: 8,
-//       description: 'Configure GitHub Actions CI/CD pipeline',
-//       status: EntryStatus.SUBMITTED,
-//     },
-//   });
-
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: bob.id,
-//       projectId: projectInternal.id,
-//       date: today,
-//       hours: 2,
-//       description: 'Team sync and planning',
-//       status: EntryStatus.DRAFT,
-//     },
-//   });
-
-//   // Manager's entries
-//   await prisma.timeEntry.create({
-//     data: {
-//       userId: manager.id,
-//       projectId: projectPolytime.id,
-//       date: yesterday,
-//       hours: 3,
-//       description: 'Sprint planning and backlog grooming',
-//       status: EntryStatus.APPROVED,
-//       approvedById: admin.id,
-//       approvedAt: today,
-//     },
-//   });
-
-//   console.log('✅ Time entries seeded');
-
-//   console.log('\n🎉 Database seeded successfully!');
-//   console.log('\nSample accounts:');
-//   console.log('  admin@polytime.dev  (Admin)');
-//   console.log('  manager@polytime.dev  (Manager)');
-//   console.log('  alice@polytime.dev  (User)');
-//   console.log('  bob@polytime.dev  (User)');
-// }
-
-// main()
-//   .catch((e) => {
-//     console.error('❌ Seed failed:', e);
-//     process.exit(1);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });
+main().catch((e) => {
+  console.error('❌ Seeding failed:', e);
+  process.exit(1);
+});

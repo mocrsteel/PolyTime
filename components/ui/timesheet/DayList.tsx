@@ -7,7 +7,7 @@ type DayListProps = {
 export default function DayList({ entries }: DayListProps) {
   return (
     <div className="flex flex-col bg-white">
-      {entries.map((entry, index) => (
+      {entries.map((entry) => (
         <DayEntry
           key={`day-entry-${entry.id}`}
           {...entry}

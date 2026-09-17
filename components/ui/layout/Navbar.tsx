@@ -1,7 +1,5 @@
 import Image from "next/image";
 
-import { iconMap, AppIcons } from "../../Icons";
-
 import NavButton, { NavButtonProps } from "./NavButton";
 
 type NavBarProps = {
@@ -83,7 +81,7 @@ export default function Navbar({ userType }: NavBarProps) {
         <div className="hidden px-2 pb-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase lg:flex">
           Workspace
         </div>
-        {workSpaceItems.map(({ title, href, icon, badge }, index) => {
+        {workSpaceItems.map(({ title, href, icon }, index) => {
           if (title === "Management") {
             return (
               <NavButton

@@ -1,9 +1,7 @@
 "use client";
 
 import {
-  startOfWeek,
-  addWeeks,
-  addDays,
+ 
   format,
   parseISO,
   formatISO,
@@ -16,7 +14,6 @@ export default function Experiments() {
   const todayISO = formatISO(today);
   const dbData = "2026-08-01T09:05:08.048Z";
   const reconstructedDatabaseDate = parseISO(dbData);
-  const reconstructedDate = parseISO(dbData);
   return (
     <div>
       <div>Today: {today.toString()}</div>

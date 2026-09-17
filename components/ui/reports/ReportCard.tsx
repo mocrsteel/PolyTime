@@ -1,7 +1,6 @@
 import Card from "@/components/ui/Card";
 import type { AppIcons } from "@/components/Icons";
 import { iconMap } from "@/components/Icons";
-import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
 
 export type ReportCardProps = {

@@ -4,18 +4,16 @@
 
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
-import { twMerge } from "tailwind-merge";
-import { tv } from "tailwind-variants";
 import { iconMap } from "@/components/Icons";
-import { startOfWeek, endOfWeek, format, getWeek } from "date-fns";
+import { startOfWeek, endOfWeek, format } from "date-fns";
 
 type WeekSelectProps = {
   date: Date;
 };
 
-const WeekSelectStyles = tv({
-  base: "flex flex-row items-center justify-between gap-2",
-});
+// const WeekSelectStyles = tv({
+//   base: "flex flex-row items-center justify-between gap-2",
+// });
 
 export const getWeekStartEnd = (date: Date) => {
   const start = startOfWeek(date, { weekStartsOn: 1 });

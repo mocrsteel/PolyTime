@@ -1,8 +1,10 @@
 allowBuilds:
   '@prisma/client': true
   esbuild: true
+  msgpackr-extract: true
   sharp: true
   unrs-resolver: true
+  workerd: false
 minimumReleaseAgeExclude:
   - '@chromatic-com/storybook@5.3.0'
   - '@storybook/addon-a11y@10.5.7'

@@ -4,7 +4,6 @@ import DurationInput from "@/components/ui/timesheet/DurationInput";
 import type { ProjectColor } from "@/lib/project-colors";
 import { projectColorClassFromSlot } from "@/lib/project-colors";
 
-import Daylist from "@/components/ui/timesheet/DayList";
 import { twMerge } from "tailwind-merge";
 
 export type TimesheetEntry = {
@@ -13,7 +12,7 @@ export type TimesheetEntry = {
   readonly asset: string;
   readonly project: string;
   readonly projectColor: ProjectColor["slot"];
-  readonly user: User;
+  readonly user?: string;
   date: Date;
   hours: number;
   comments: string[];

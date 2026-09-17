@@ -13,7 +13,7 @@ import {
 
 import { tv } from "tailwind-variants";
 import { twMerge } from "tailwind-merge";
-import { addDays, parse, format, startOfWeek, Locale } from "date-fns";
+import { addDays, parse, format, startOfWeek } from "date-fns";
 
 import Card from "@/components/ui/Card";
 import type { TimesheetEntry } from "./DayEntry";

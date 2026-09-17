@@ -4,7 +4,6 @@ import { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import WeekSelect from "./WeekSelect";
 import { expect, within } from "storybook/test";
-import { startOfWeek, endOfWeek, format } from "date-fns";
 
 const meta = {
   title: "UI/Timesheets/WeekSelect",

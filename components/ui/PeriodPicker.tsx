@@ -22,7 +22,6 @@ import {
   getMonth,
   getQuarter,
 } from "date-fns";
-import { group } from "console";
 
 export type PeriodPickerProps = {
   /** Period type to pick from. */
