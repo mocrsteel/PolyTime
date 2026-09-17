@@ -1,5 +1,9 @@
-export default function Timesheet() {
+import Timesheets from "@/components/pages/Timesheets";
+
+export default function Page() {
   return (
-    <div>Timesheet</div>
-  )
+    <div>
+      <Timesheets />
+    </div>
+  );
 }

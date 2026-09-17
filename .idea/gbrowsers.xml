@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GBrowserService"><![CDATA[{
+  "history": [
+    {
+      "name": "Experiments - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/experiments--docs"
+    },
+    {
+      "name": "Experiments - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/story/components-periodtabselector--default"
+    },
+    {
+      "name": "Components / PeriodTabSelector - Default ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/settings/guide#controls"
+    },
+    {
+      "name": "Components / PeriodTabSelector - Default ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/settings/guide"
+    },
+    {
+      "name": "Components / PeriodTabSelector - Default ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/settings/about"
+    },
+    {
+      "name": "forms / TimeLog - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/forms-timelog--docs"
+    },
+    {
+      "name": "Pages / Error - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/pages-error--docs"
+    },
+    {
+      "name": "Pages / Error - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/story/pages-error--error-default"
+    },
+    {
+      "name": "Pages / NotFound - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/pages-notfound--docs"
+    },
+    {
+      "name": "Pages / NotFound - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/story/pages-notfound--not-found-default"
+    },
+    {
+      "name": "UI / Layout / Nav Buttons sidebar - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/ui-layout-nav-buttons-sidebar--docs"
+    },
+    {
+      "name": "UI / Layout / TopBar - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/ui-layout-topbar--docs"
+    },
+    {
+      "name": "UI / Timesheets / DayList - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/ui-timesheets-daylist--docs"
+    },
+    {
+      "name": "UI / Timesheets / WeekSelect - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/ui-timesheets-weekselect--docs"
+    },
+    {
+      "name": "UI / Timesheets / WeekSelect - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/story/ui-timesheets-weekselect--not-current-week"
+    },
+    {
+      "name": "UI / Timesheets / WeekSelect - Not Current Week ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/story/ui-timesheets-weekselect--week-across-months"
+    },
+    {
+      "name": "PolyTime — Timesheets",
+      "url": "file:///Users/yannick/Documents/Codex/2026-06-24/propose-an-app-ui-for-an/outputs/hourwise-ui/index.html"
+    },
+    {
+      "name": "UI / Reports / ReportCard - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/docs/ui-reports-reportcard--docs"
+    },
+    {
+      "name": "UI / Reports / ReportCard - Docs ⋅ Storybook",
+      "url": "http://localhost:6006/?path=/story/ui-reports-reportcard--default"
+    },
+    {
+      "name": "GBrowser - IntelliJ IDEs Plugin | Marketplace",
+      "url": "https://plugins.jetbrains.com/plugin/14458-gbrowser"
+    }
+  ]
+}]]></component>
+</project>

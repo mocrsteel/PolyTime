@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@import "./project-palette.css";
+@plugin "tailwindcss-react-aria-components";
+@plugin "tailwindcss-animate";
 
 /*:root {*/
 /*  --background: #ffffff;*/
@@ -112,11 +115,15 @@
     }
 
     body {
-        @apply min-h-screen bg-app-bg text-app-text font-sans antialiased;
+        @apply select-none min-h-screen bg-app-bg text-app-text font-sans antialiased;
     }
 
     svg {
         @apply fill-none stroke-current stroke-[1.8] [stroke-linecap:round] [stroke-linejoin:round];
+    }
+
+    p {
+        @apply select-text;
     }
 }
 

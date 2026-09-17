@@ -1,15 +1,37 @@
 // TODO: Add some more styling options for full page (and spacious design) and smaller cards.
+import { tv } from "tailwind-variants";
+import { twMerge } from "tailwind-merge";
 
-type CardProps = {
+type CardProps = React.HTMLAttributes<HTMLDivElement> & {
+  variant?: keyof typeof cardVariants.variants.layout;
   children: React.ReactNode;
-}
+};
 
-export default function Card({children}: CardProps) {
+const cardVariants = tv({
+  base: "border-polytime-line shadow-soft overflow-hidden rounded-xl border bg-white",
+  variants: {
+    layout: {
+      default: "p-4",
+      modal: "p-4",
+      container: "p-0",
+      page: "p-18",
+      custom: "",
+    },
+  },
+});
+
+export default function Card({
+  children,
+  variant = "page",
+  className,
+  ...props
+}: CardProps) {
   return (
     <div
-      className="rounded-ui-xl border border-app-border bg-app-surface shadow-soft flex flex-col items-center justify-center gap-4  p-18"
+      className={twMerge(cardVariants({ layout: variant }), className)}
+      {...props}
     >
       {children}
     </div>
-  )
+  );
 }

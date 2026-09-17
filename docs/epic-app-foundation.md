@@ -16,6 +16,7 @@
 6. [Data Model Overview](#data-model-overview)
 7. [Release Roadmap](#release-roadmap)
 8. [Success Metrics](#success-metrics)
+9. [Page conntent considerations](#page-contents)
 
 ---
 
@@ -495,6 +496,38 @@ comments
 - [ ] README includes local dev + deployment instructions
 - [ ] Release checklist completed before launch
 - [ ] Migration guide for future versions
+
+
+---
+
+## Page Contents
+
+### Overview
+
+* Missing time entries or incomplete days
+* Timesheet progress for the month
+* Quick links to day/week views if incomplete and in the past.
+* Quick links to reports
+
+### Reports
+
+#### User self-reporting
+
+* Timesheet entries for the current month
+* Total hours worked
+* Total hours worked by business / asset / project. Selector switch.
+* pie-chart of time spent per project, toggle between project, asset and business unit.
+* Daily details as in prototype: comments per project (toggle between month, quarter, year).
+
+### Manager view
+
+* Allow choice between self and team view
+* List of users with links to their timesheets
+* Total hours spent in the month
+* Top 3 projects of the month, quarter, year (depending on selector)
+* Completeness of timesheet per user of team (Only past, not future).
+* Total hours spent per business / asset / project. Selector switch.
+* Daily details as in prototype: comments per project (again, toggle between month, quarter, year).
 
 ---
 

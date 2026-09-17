@@ -4,7 +4,7 @@ import {Meta, StoryObj} from "@storybook/nextjs-vite"
 import LoadingSkeleton from "./LoadingSkeleton"
 
 const meta = {
-  title: "Elements/LoadingSkeleton",
+  title: "UI/Elements/LoadingSkeleton",
   component: LoadingSkeleton,
   tags: ["autodocs"],
 } satisfies Meta<typeof LoadingSkeleton>
