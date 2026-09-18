@@ -23,24 +23,27 @@ enum EntryStatus {
 /// Represents a regular user that either is a manager with users reporting to him or
 /// has a manager.
 model User {
-  id        Uuid                       @id @default(uuid())
-  email     String                     @unique
-  name      String
-  role      Role
+  id         Uuid                       @id @default(uuid())
+  email      String                     @unique
+  name       String
+  role       Role
+  /// Archived user will still represent data, but no additional entries 
+  /// should be made from this User.
+  isArchived Boolean                    @default(false)
 
-  groupId   Uuid
-  group     UserGroup                  @relation(fields: [groupId], references: [id])
+  groupId    Uuid
+  group      UserGroup                  @relation(fields:[groupId], references:[id])
   // If the user has a manager, the ManagerId is to be set. Else, the user is a manager
   // himself and will have reports (users reporting to him)
   // The enforcement of the Uuid relating to an user with the manager role must be
   // enforced in the API itself.
-  managerId Uuid?
-  manager   User?                      @relation("UserManager", fields: [managerId], references: [id])
-  reports   User[]                     @relation("UserManager")
+  managerId  Uuid?
+  manager    User?                      @relation("UserManager", fields:[managerId], references:[id])
+  reports    User[]                     @relation("UserManager")
 
   // Audit fields
-  createdAt TimestamptzString          @default(now())
-  updatedAt temporal.updatedAtString()
+  createdAt  TimestamptzString          @default(now())
+  updatedAt  temporal.updatedAtString()
 }
 
 /// Named group of employees. Can represent a team.
@@ -49,6 +52,8 @@ model UserGroup {
   name        String                     @unique
   description String?
   users       User[]
+  /// A group can be archived. Frontend should avoid archiving filled groups.
+  isArchived  Boolean                    @default(false)
 
   createdAt   TimestamptzString          @default(now())
   updatedAt   temporal.updatedAtString()
@@ -58,6 +63,9 @@ model BusinessUnit {
   id          Uuid                       @id @default(uuid())
   name        String                     @unique
   description String?
+  /// When a bussiness unit is archived, it cannot be selected anymore for a new
+  /// time entry. The API will automatically archive all it's children.
+  isArchived  Boolean                    @default(false)
 
   createdAt   TimestamptzString          @default(now())
   updatedAt   temporal.updatedAtString()
@@ -70,9 +78,12 @@ model Asset {
   id             Uuid                       @id @default(uuid())
   name           String
   description    String?
+  /// Asset can be archived solely, but must be archived when the parent
+  /// is archived.
+  isArchived     Boolean                    @default(false)
 
   businessUnitId Uuid
-  businessUnit   BusinessUnit               @relation(fields: [businessUnitId], references: [id])
+  businessUnit   BusinessUnit               @relation(fields:[businessUnitId], references:[id])
 
   createdAt      TimestamptzString          @default(now())
   updatedAt      temporal.updatedAtString()
@@ -87,12 +98,15 @@ model Project {
   name           String
   description    String?
   status         ProjectStatus
+  /// Project can be archived solely, but must be archived when the parent
+  /// is archived.
+  isArchived     Boolean                    @default(false)
 
   businessUnitId Uuid
-  businessUnit   BusinessUnit               @relation(fields: [businessUnitId], references: [id])
+  businessUnit   BusinessUnit               @relation(fields:[businessUnitId], references:[id])
 
   assetId        Uuid
-  asset          Asset                      @relation(fields: [assetId], references: [id])
+  asset          Asset                      @relation(fields:[assetId], references:[id])
 
   createdAt      TimestamptzString          @default(now())
   updatedAt      temporal.updatedAtString()
@@ -108,11 +122,15 @@ model TimeEntry {
   status      EntryStatus                @default(Open)
 
   userId      Uuid
-  user        User                       @relation(fields: [userId], references: [id])
+  user        User                       @relation(fields:[userId], references:[id])
 
   projectId   Uuid
-  project     Project                    @relation(fields: [projectId], references: [id])
+  project     Project                    @relation(fields:[projectId], references:[id])
 
   createdAt   TimestamptzString          @default(now())
   updatedAt   temporal.updatedAtString()
+  /// When deleted, should not be displayed anymore, nor counted in reports.
+  /// Server side, a daily script should purge the deletions that are older than
+  /// 30 days. A manual purge should also be available (i.e. a bin).
+  deletedAt   TimestamptzString?
 }

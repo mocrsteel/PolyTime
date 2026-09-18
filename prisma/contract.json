@@ -116,6 +116,13 @@
                   "kind": "scalar"
                 }
               },
+              "isArchived": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
               "name": {
                 "nullable": false,
                 "type": {
@@ -177,6 +184,9 @@
                 "id": {
                   "column": "id"
                 },
+                "isArchived": {
+                  "column": "isArchived"
+                },
                 "name": {
                   "column": "name"
                 },
@@ -208,6 +218,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "isArchived": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
                   "kind": "scalar"
                 }
               },
@@ -269,6 +286,9 @@
                 "id": {
                   "column": "id"
                 },
+                "isArchived": {
+                  "column": "isArchived"
+                },
                 "name": {
                   "column": "name"
                 },
@@ -314,6 +334,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "isArchived": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
                   "kind": "scalar"
                 }
               },
@@ -394,6 +421,9 @@
                 "id": {
                   "column": "id"
                 },
+                "isArchived": {
+                  "column": "isArchived"
+                },
                 "name": {
                   "column": "name"
                 },
@@ -421,6 +451,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/date-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "deletedAt": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
                   "kind": "scalar"
                 }
               },
@@ -520,6 +557,9 @@
                 "date": {
                   "column": "date"
                 },
+                "deletedAt": {
+                  "column": "deletedAt"
+                },
                 "description": {
                   "column": "description"
                 },
@@ -573,6 +613,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "isArchived": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
                   "kind": "scalar"
                 }
               },
@@ -672,6 +719,9 @@
                 "id": {
                   "column": "id"
                 },
+                "isArchived": {
+                  "column": "isArchived"
+                },
                 "managerId": {
                   "column": "managerId"
                 },
@@ -709,6 +759,13 @@
                 "nullable": false,
                 "type": {
                   "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "isArchived": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
                   "kind": "scalar"
                 }
               },
@@ -755,6 +812,9 @@
                 "id": {
                   "column": "id"
                 },
+                "isArchived": {
+                  "column": "isArchived"
+                },
                 "name": {
                   "column": "name"
                 },
@@ -799,6 +859,15 @@
                 "id": {
                   "codecId": "pg/uuid@1",
                   "nativeType": "uuid",
+                  "nullable": false
+                },
+                "isArchived": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
                   "nullable": false
                 },
                 "name": {
@@ -875,6 +944,15 @@
                   "nativeType": "uuid",
                   "nullable": false
                 },
+                "isArchived": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
                 "name": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -937,6 +1015,15 @@
                 "id": {
                   "codecId": "pg/uuid@1",
                   "nativeType": "uuid",
+                  "nullable": false
+                },
+                "isArchived": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
                   "nullable": false
                 },
                 "name": {
@@ -1050,6 +1137,11 @@
                   "codecId": "pg/date-string@1",
                   "nativeType": "date",
                   "nullable": false
+                },
+                "deletedAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": true
                 },
                 "description": {
                   "codecId": "pg/text@1",
@@ -1189,6 +1281,15 @@
                   "nativeType": "uuid",
                   "nullable": false
                 },
+                "isArchived": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
                 "managerId": {
                   "codecId": "pg/uuid@1",
                   "nativeType": "uuid",
@@ -1302,6 +1403,15 @@
                   "nativeType": "uuid",
                   "nullable": false
                 },
+                "isArchived": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
                 "name": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -1360,7 +1470,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "d4bffe1493e7ca573ea768cf5c87ca3e7da5b1b08d3c528d40786473043b8aba"
+    "storageHash": "a957f01f2196c1688b0b432f5720d5c24e1338c30ceb25a316478d5517437d28"
   },
   "execution": {
     "executionHash": "831dd3515051f1468aff30b6f98afdd4102ddc23581edce80683f97cc4db85a8",
