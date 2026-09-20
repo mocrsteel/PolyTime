@@ -22,9 +22,7 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
   "include": [
     "types/**/*.d.ts",
@@ -35,5 +33,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "migrations/snapshots"]
+  "exclude": ["node_modules", "migrations"]
 }

@@ -1,20 +1,24 @@
 
 import { db } from './db';
+import { ProjectStatus, Role } from '@prisma/client';
 import { generateSeedTimeEntries, seedBusinessUnits, seedUsers } from '../lib/mock';
 
 async function main() {
   console.log('🌱 Seeding database...');
 
   // Clear existing entries cleanly with TRUNCATE CASCADE
-  const truncatePlan = db.raw.sql`TRUNCATE TABLE "timeEntry", "project", "asset", "businessUnit", "user", "userGroup" CASCADE;`.affectedCount().build();
-  await db.runtime().execute(truncatePlan);
+  await db.$executeRawUnsafe(
+    'TRUNCATE TABLE "timeEntry", "project", "asset", "businessUnit", "user", "userGroup" CASCADE;',
+  );
 
   console.log('🗑️  Cleared existing records');
 
   // ── User Group ───────────────────────────────────────────────────────────
-  const group = await db.orm.public.UserGroup.create({
-    name: 'Everyone',
-    description: 'Default group for all seeded users',
+  const group = await db.userGroup.create({
+    data: {
+      name: 'Everyone',
+      description: 'Default group for all seeded users',
+    },
   });
 
   console.log('✅ User group seeded');
@@ -25,12 +29,14 @@ async function main() {
   const managersFirst = [...seedUsers].sort((a) => (a.managerEmail ? 1 : -1));
 
   for (const seedUser of managersFirst) {
-    const created = await db.orm.public.User.create({
-      email: seedUser.email,
-      name: seedUser.name,
-      role: seedUser.role,
-      groupId: group.id,
-      managerId: seedUser.managerEmail ? usersByEmail.get(seedUser.managerEmail)?.id : undefined,
+    const created = await db.user.create({
+      data: {
+        email: seedUser.email,
+        name: seedUser.name,
+        role: Role[seedUser.role === 'user' ? 'User' : seedUser.role === 'manager' ? 'Manager' : 'Admin'],
+        groupId: group.id,
+        managerId: seedUser.managerEmail ? usersByEmail.get(seedUser.managerEmail)?.id : undefined,
+      },
     });
     usersByEmail.set(seedUser.email, created);
   }
@@ -41,25 +47,31 @@ async function main() {
   const projectsByKey = new Map<string, { id: string }>();
 
   for (const bu of seedBusinessUnits) {
-    const createdBu = await db.orm.public.BusinessUnit.create({
-      name: bu.name,
-      description: bu.description,
+    const createdBu = await db.businessUnit.create({
+      data: {
+        name: bu.name,
+        description: bu.description,
+      },
     });
 
     for (const asset of bu.assets) {
-      const createdAsset = await db.orm.public.Asset.create({
-        name: asset.name,
-        description: asset.description,
-        businessUnitId: createdBu.id,
+      const createdAsset = await db.asset.create({
+        data: {
+          name: asset.name,
+          description: asset.description,
+          businessUnitId: createdBu.id,
+        },
       });
 
       for (const project of asset.projects) {
-        const createdProject = await db.orm.public.Project.create({
-          name: project.name,
-          description: `${project.name} project`,
-          status: project.status,
-          businessUnitId: createdBu.id,
-          assetId: createdAsset.id,
+        const createdProject = await db.project.create({
+          data: {
+            name: project.name,
+            description: `${project.name} project`,
+            status: ProjectStatus[project.status[0].toUpperCase() + project.status.slice(1) as keyof typeof ProjectStatus],
+            businessUnitId: createdBu.id,
+            assetId: createdAsset.id,
+          },
         });
         projectsByKey.set(`${bu.name}|${asset.name}|${project.name}`, createdProject);
       }
@@ -83,20 +95,22 @@ async function main() {
     const mm = String(entry.date.getMonth() + 1).padStart(2, '0');
     const dd = String(entry.date.getDate()).padStart(2, '0');
 
-    await db.orm.public.TimeEntry.create({
-      description: entry.description ?? null,
-      date: `${yyyy}-${mm}-${dd}`,
-      hours: entry.hours.toString(),
-      status: 'open',
-      userId: user.id,
-      projectId: project.id,
+    await db.timeEntry.create({
+      data: {
+        description: entry.description ?? null,
+        date: entry.date,
+        hours: entry.hours.toString(),
+        status: 'Open',
+        userId: user.id,
+        projectId: project.id,
+      },
     });
   }
 
   console.log(`✅ Seeded ${timeEntries.length} time entries covering two years across ${seedUsers.length} users`);
 
   console.log('\n🎉 Database seeded successfully!');
-  await db.close();
+  await db.$disconnect();
 }
 
 main().catch((e) => {

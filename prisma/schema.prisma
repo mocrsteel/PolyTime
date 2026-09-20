@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  User    @map("user")
+  Manager @map("manager")
+  Admin   @map("admin")
+}
+
+enum ProjectStatus {
+  Active    @map("active")
+  Inactive  @map("inactive")
+  Completed @map("completed")
+  Archived  @map("archived")
+}
+
+enum EntryStatus {
+  Open   @map("open")
+  Frozen @map("frozen")
+}
+
+model User {
+  id         String   @id @default(uuid()) @db.Uuid
+  email      String   @unique
+  name       String
+  role       Role
+  isArchived Boolean  @default(false)
+
+  groupId String    @db.Uuid
+  group   UserGroup @relation(fields: [groupId], references: [id])
+
+  managerId String? @db.Uuid
+  manager   User?  @relation("UserManager", fields: [managerId], references: [id])
+  reports   User[] @relation("UserManager")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  entries TimeEntry[]
+
+  @@map("user")
+}
+
+model UserGroup {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String  @unique
+  description String?
+  isArchived  Boolean @default(false)
+
+  users User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("userGroup")
+}
+
+model BusinessUnit {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String  @unique
+  description String?
+  isArchived  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projects Project[]
+  assets   Asset[]
+
+  @@map("businessUnit")
+}
+
+model Asset {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String
+  description    String?
+  isArchived     Boolean      @default(false)
+  businessUnitId String       @db.Uuid
+  businessUnit   BusinessUnit @relation(fields: [businessUnitId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projects Project[]
+
+  @@unique([name, businessUnitId])
+  @@map("asset")
+}
+
+model Project {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String
+  description    String?
+  status         ProjectStatus
+  isArchived     Boolean      @default(false)
+  businessUnitId String       @db.Uuid
+  businessUnit   BusinessUnit @relation(fields: [businessUnitId], references: [id])
+  assetId        String       @db.Uuid
+  asset          Asset        @relation(fields: [assetId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  entries TimeEntry[]
+
+  @@unique([name, assetId, businessUnitId])
+  @@map("project")
+}
+
+model TimeEntry {
+  id          String      @id @default(uuid()) @db.Uuid
+  description String?
+  date        DateTime    @db.Date
+  hours       Decimal
+  status      EntryStatus @default(Open)
+  userId      String      @db.Uuid
+  user        User        @relation(fields: [userId], references: [id])
+  projectId   String      @db.Uuid
+  project     Project     @relation(fields: [projectId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? @db.Timestamptz(6)
+
+  @@map("timeEntry")
+}
