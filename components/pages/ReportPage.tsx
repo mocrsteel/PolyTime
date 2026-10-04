@@ -1,6 +1,6 @@
 "use client";
 
-import { getYear, getMonth, getQuarter, format } from "date-fns";
+import { getYear, getMonth, getQuarter } from "date-fns";
 import { useState } from "react";
 import { Key, TabPanels, Tabs } from "react-aria-components/Tabs";
 
@@ -14,13 +14,18 @@ import PeriodPicker, {
   getDateRange,
   type DateRange,
 } from "@/components/ui/PeriodPicker";
-
-export type ReportPageProps = null;
+import ReportCard from "@/components/ui/reports/ReportCard";
 
 const TAB_KEYS: PeriodTabKeys[] = ["month", "quarter", "year"];
 const DEV_TIME_PERIOD: [Date, Date] = [
   new Date(2025, 6, 1),
   new Date(2026, 8, 25),
+];
+const BUSINESS_UNIT_ALLOCATION = [
+  { label: "Operations", value: 432, valueLabel: "432h" },
+  { label: "Digital", value: 350, valueLabel: "350h" },
+  { label: "Commercial", value: 286, valueLabel: "286h" },
+  { label: "Corporate", value: 180, valueLabel: "180h" },
 ];
 
 function isTabKey(key: Key): key is PeriodTabKeys {
@@ -72,17 +77,50 @@ export default function ReportPage() {
             <PeriodTabSelector />
           </div>
           <TabPanels className="order-3 col-span-2">
-            <h1>Wee bit of content</h1>
-            <p>
-              Currently on tab {'"'}
-              {tab}
-              {'"'}
-            </p>
-            <p>Current date range: {format(selectedDateRange.start, "EEE do MMM yyyy (QQQ)")} to {format(selectedDateRange.end, "EEE do MMM yyyy (QQQ)")}</p>
+            <div
+              aria-label="summary cards"
+              className="grid grid-cols-3 gap-4"
+            >
+              <ReportCard
+                eyebrow="Total hours"
+                title="1,238h"
+                subtitle="Q2 Apr-Jun 2026"
+                icon="barChart"
+                iconTheme="green"
+              />
+              <ReportCard
+                eyebrow="Top Project"
+                title="Atlas"
+                subtitle="384 hours logged"
+                icon="buildings"
+                iconTheme="red"
+              />
+              <ReportCard
+                eyebrow="Completeness"
+                title="99.5%"
+                subtitle="Current quarter"
+                icon="users2"
+                iconTheme="purple"
+              />
+              <div className="col-span-3">
+                <ReportCard
+                  eyebrow="Allocation"
+                  title="Hours by business unit"
+                  subtitle="Quarterly allocation across the organisation."
+                  badge="Q2 2026"
+                  allocationItems={BUSINESS_UNIT_ALLOCATION}
+                />
+              </div>
+            </div>
           </TabPanels>
         </Tabs>
         <div className="order-2">
-          <PeriodPicker granularity={tab} dateRange={DEV_TIME_PERIOD} selectedDateRange={selectedDateRange} setSelectedDateRange={setSelectedDateRange} />
+          <PeriodPicker
+            granularity={tab}
+            dateRange={DEV_TIME_PERIOD}
+            selectedDateRange={selectedDateRange}
+            setSelectedDateRange={setSelectedDateRange}
+          />
         </div>
       </div>
     </div>

@@ -57,7 +57,7 @@ function main() {
                 case 0:
                     console.log('🌱 Seeding database...');
                     // Clear existing entries cleanly with TRUNCATE CASCADE
-                    return [4 /*yield*/, db_1.db.$executeRawUnsafe('TRUNCATE TABLE "timeEntry", "project", "asset", "businessUnit", "user", "userGroup" CASCADE;')];
+                    return [4 /*yield*/, db_1.db.$executeRawUnsafe('TRUNCATE TABLE "time_entry", "project", "asset", "businessUnit", "user", "userGroup" CASCADE;')];
                 case 1:
                     // Clear existing entries cleanly with TRUNCATE CASCADE
                     _j.sent();

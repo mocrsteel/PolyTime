@@ -43,3 +43,19 @@ export const PurpleUsers2Theme: Story = {
 export const GrayTheme: Story = {
   args: { ...baseArgs, iconTheme: "gray" },
 };
+
+export const AllocationBreakdown: Story = {
+  args: {
+    eyebrow: "Allocation",
+    title: "Hours by business unit",
+    subtitle: "Quarterly allocation across the organisation.",
+    badge: "Q2 2026",
+    allocationItems: [
+      { label: "Operations", value: 432, valueLabel: "432h" },
+      { label: "Digital", value: 350, valueLabel: "350h" },
+      { label: "Commercial", value: 286, valueLabel: "286h" },
+      { label: "Corporate", value: 180, valueLabel: "180h" },
+    ],
+  },
+};
+
