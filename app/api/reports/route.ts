@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
 
-import { db } from "@/prisma/db";
-import type { DateRange } from "@/components/ui/PeriodPicker";
 import { validateQueryParams, type ValidatedQueryParams } from "./validators";
 import {
   getBusinessUnitSummary,
@@ -10,9 +8,8 @@ import {
 } from "@/app/api/reports/service";
 
 export async function GET(request: NextRequest) {
-  let queryParams: ValidatedQueryParams = {};
+  let queryParams: ValidatedQueryParams;
   try {
-    // TODO: Implement logic to get data from the database.
     queryParams = validateQueryParams(request.nextUrl.searchParams);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";

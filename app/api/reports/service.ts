@@ -40,7 +40,8 @@ export async function getUserSummary(dateRange: DateRange) {
     userHours.set(userName, (userHours.get(userName) ?? 0) + hours);
   });
 
-  const periodHours = differenceInBusinessDays(dateRange.end, dateRange.start) * HOURS_PER_DAY;
+  const periodHours =
+    differenceInBusinessDays(dateRange.end, dateRange.start) * HOURS_PER_DAY;
 
   return Array.from(userHours.entries()).map(([name, hours]) => ({
     name,
@@ -117,20 +118,20 @@ export async function getCompletionStatus(dateRange: DateRange) {
   const activeEmployees = await db.user.count({
     where: {
       isArchived: false,
-    }
-  })
+    },
+  });
 
   // const periodHours =
   //   (dateRange.end.getTime() - dateRange.start.getTime()) / (1000 * 60 * 60);
   // Holidays not counted for, since they are to be inputted as holidays manually.
   const periodHours =
-    differenceInBusinessDays(dateRange.end, dateRange.start)
-    * HOURS_PER_DAY
-    * activeEmployees;
+    differenceInBusinessDays(dateRange.end, dateRange.start) *
+    HOURS_PER_DAY *
+    activeEmployees;
 
   return {
     expected: periodHours,
-    actual: (totalHours._sum.hours ?? 0).toNumber(),
-    completion: (totalHours._sum.hours ?? 0).toNumber() / periodHours,
+    actual: Number(totalHours._sum.hours ?? 0),
+    completion: Number(totalHours._sum.hours ?? 0) / periodHours,
   };
 }
