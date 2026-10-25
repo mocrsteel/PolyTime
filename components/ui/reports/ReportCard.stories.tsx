@@ -43,3 +43,33 @@ export const PurpleUsers2Theme: Story = {
 export const GrayTheme: Story = {
   args: { ...baseArgs, iconTheme: "gray" },
 };
+
+export const AllocationBreakdown: Story = {
+  args: {
+    eyebrow: "Allocation",
+    title: "Hours by business unit",
+    subtitle: "Quarterly allocation across the organisation.",
+    badge: "Q2 2026",
+    allocationItems: [
+      { label: "Operations", value: 432, valueLabel: "432h" },
+      { label: "Digital", value: 350, valueLabel: "350h" },
+      { label: "Commercial", value: 286, valueLabel: "286h" },
+      { label: "Corporate", value: 180, valueLabel: "180h" },
+    ],
+  },
+};
+
+export const ManpowerOverCapacityWarning: Story = {
+  args: {
+    eyebrow: "Manpower",
+    title: "Hours by team",
+    subtitle: "Planned vs available capacity.",
+    badge: "Q2 2026",
+    allocationMaxValue: 160,
+    allocationItems: [
+      { label: "Platform", value: 146, valueLabel: "146h" },
+      { label: "Delivery", value: 178, valueLabel: "178h" },
+      { label: "Support", value: 160, valueLabel: "160h" },
+    ],
+  },
+};

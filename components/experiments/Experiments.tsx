@@ -1,12 +1,9 @@
 "use client";
 
-import {
- 
-  format,
-  parseISO,
-  formatISO,
-} from "date-fns";
+import { format, parseISO, formatISO } from "date-fns";
 import { useLocale } from "@/lib/locale-context";
+
+import { formatDate, parseDate } from "@/lib/dates";
 
 export default function Experiments() {
   const locale = useLocale();
@@ -16,9 +13,9 @@ export default function Experiments() {
   const reconstructedDatabaseDate = parseISO(dbData);
   return (
     <div>
-      <div>Today: {today.toString()}</div>
-      <div>Today: {todayISO}</div>
-      <div>Today: {format(today, "yyyy-MM-dd")}</div>
+      <div>Today String: {today.toString()}</div>
+      <div>Today ISO: {todayISO}</div>
+      <div>Today custom format: {format(today, "yyyy-MM-dd")}</div>
       <div>
         <h1>Localized</h1>
         <div>Original: 2026-08-01T09:05:08.048Z</div>

@@ -115,7 +115,7 @@
     }
 
     body {
-        @apply select-none min-h-screen bg-app-bg text-app-text font-sans antialiased;
+        @apply select-none min-h-screen bg-white text-app-text font-sans antialiased;
     }
 
     svg {

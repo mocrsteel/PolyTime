@@ -1,3 +1,5 @@
+"use client";
+
 import Heading from "@/components/ui/Heading";
 import WeekSelect from "@/components/ui/timesheet/WeekSelect";
 import Meter from "@/components/ui/timesheet/Meter";
