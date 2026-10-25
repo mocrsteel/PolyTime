@@ -76,11 +76,20 @@ function AllocationMeterRow({
   value,
   valueLabel,
   maxValue,
+  hasTarget,
 }: ReportCardAllocationItem & {
   maxValue: number;
+  hasTarget: boolean;
 }) {
   const safeMaxValue = maxValue > 0 ? maxValue : 1;
   const percentage = Math.min(Math.max((value / safeMaxValue) * 100, 0), 100);
+  const isOverTarget = value > maxValue;
+  const isUnderTarget = hasTarget && value < maxValue;
+  const hasWarning = isOverTarget || isUnderTarget;
+  const hourDelta = Math.abs(value - maxValue);
+  const hourDeltaLabel = isOverTarget
+    ? `${Math.round(hourDelta)}h above expected`
+    : `${Math.round(hourDelta)}h missing`;
 
   return (
     <RACMeter
@@ -88,23 +97,35 @@ function AllocationMeterRow({
       minValue={0}
       maxValue={safeMaxValue}
       formatOptions={{ style: "unit", unit: "hour", unitDisplay: "short" }}
-      className="grid grid-cols-[120px_1fr_auto] items-center gap-6 sm:grid-cols-[120px_1fr_auto]"
+      className="grid grid-cols-[120px_1fr_auto] grid-rows-[auto_auto] items-center gap-x-6 gap-y-0.5 sm:grid-cols-[120px_1fr_auto]"
     >
-      {({ valueText }) => (
-        <>
-          <Label className="text-app-text text-sm">{label}</Label>
-          <div className="relative h-1.5 overflow-hidden rounded-full bg-slate-100">
+      {({ valueText }) => {
+        return (
+          <>
+            <Label className="text-app-text row-start-1 text-sm">{label}</Label>
+            <div className="relative h-1.5 overflow-hidden rounded-full bg-slate-100">
+              <div
+                className={`absolute inset-y-0 left-0 rounded-full ${isOverTarget ? "bg-red-700" : isUnderTarget ? "bg-amber-600" : "bg-polytime-teal"}`}
+                style={{ width: `${percentage}%` }}
+              />
+            </div>
             <div
-              className="bg-polytime-teal absolute inset-y-0 left-0 rounded-full"
-              style={{ width: `${percentage}%` }}
-            />
-          </div>
-          <div className="text-app-text text-right text-sm tabular-nums">
-            {valueLabel}
-          </div>
-          <span className="sr-only">{`${label}: ${valueText}`}</span>
-        </>
-      )}
+              className={`flex flex-row items-center gap-1 text-right text-sm tabular-nums ${isOverTarget ? "text-red-700" : isUnderTarget ? "text-amber-700" : "text-app-text"}`}
+            >
+              {hasWarning && iconMap({ icon: "alert" })}
+              {valueLabel ?? valueText}
+            </div>
+            {hasTarget && value !== maxValue ? (
+              <div
+                className={`col-start-2 row-start-2 text-xs ${isOverTarget ? "text-red-700" : "text-amber-700"}`}
+              >
+                {hourDeltaLabel}
+              </div>
+            ) : null}
+            <span className="sr-only">{`${label}: ${valueText}`}</span>
+          </>
+        );
+      }}
     </RACMeter>
   );
 }
@@ -112,6 +133,9 @@ function AllocationMeterRow({
 export default function ReportCard(props: ReportCardProps) {
   const allocationCard = isAllocationCard(props) ? props : null;
   const summaryCard = allocationCard ? null : props;
+  const hasAllocationTarget = allocationCard
+    ? allocationCard.allocationMaxValue !== undefined
+    : false;
   const allocationMaxValue = allocationCard
     ? (allocationCard.allocationMaxValue ??
       Math.max(...allocationCard.allocationItems.map((item) => item.value), 0))
@@ -183,6 +207,7 @@ export default function ReportCard(props: ReportCardProps) {
               key={item.label}
               {...item}
               maxValue={allocationMaxValue ?? 1}
+              hasTarget={hasAllocationTarget}
             />
           ))}
         </div>

@@ -1,32 +1,35 @@
-import { DateRange, PeriodPickerProps } from "@/components/ui/PeriodPicker";
 import { parseISO } from "date-fns";
 
-export type ValidatedQueryParams = DateRange & {
-  granularity: PeriodPickerProps["granularity"];
+import type { ReportDateRange, ReportGranularity } from "@/lib/reports/types";
+
+export type ValidatedQueryParams = ReportDateRange & {
+  granularity: ReportGranularity;
 };
 
 const REPORT_QUERY_PARAMS = ["startDate", "endDate", "granularity"];
-const VALID_GRANULARITY = ["month", "quarter", "year"];
+const VALID_GRANULARITY: ReportGranularity[] = ["month", "quarter", "year"];
 
 function validateISODate(dateString: string): Date | null {
   const date = parseISO(dateString);
   return isNaN(date.getTime()) ? null : date;
 }
 
-function validateGranularity(
-  granularity: string | null,
-): PeriodPickerProps["granularity"] {
-  if (granularity && VALID_GRANULARITY.includes(granularity)) {
-    return granularity as PeriodPickerProps["granularity"];
-  } else {
-    throw new Error("Granularity must be one of: month, quarter, year.");
+function validateGranularity(granularity: string | null): ReportGranularity {
+  if (!granularity) {
+    return "quarter";
   }
+
+  if (VALID_GRANULARITY.includes(granularity as ReportGranularity)) {
+    return granularity as ReportGranularity;
+  }
+
+  throw new Error("Granularity must be one of: month, quarter, year.");
 }
 
 function validateDateRange(
   start: string | null,
   end: string | null,
-): DateRange {
+): ReportDateRange {
   if (!start || !end) {
     throw new Error("Start and end dates are required.");
   }

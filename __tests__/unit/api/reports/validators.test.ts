@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { formatISO } from "date-fns";
 
-import { validateQueryParams } from "@/app/api/reports/validators";
+import { validateQueryParams } from "@/lib/reports/validators";
 
 function makeParams(params: Record<string, string>) {
   return new URLSearchParams(params);

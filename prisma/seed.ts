@@ -4,10 +4,11 @@ import {
   generateSeedTimeEntries,
   seedBusinessUnits,
   seedUsers,
-} from "../lib/mock";
+} from "@/lib/mock";
 
 async function main() {
   console.log("🌱 Seeding database...");
+
 
   // Clear existing entries cleanly with TRUNCATE CASCADE
   await db.$executeRawUnsafe(

@@ -59,3 +59,17 @@ export const AllocationBreakdown: Story = {
   },
 };
 
+export const ManpowerOverCapacityWarning: Story = {
+  args: {
+    eyebrow: "Manpower",
+    title: "Hours by team",
+    subtitle: "Planned vs available capacity.",
+    badge: "Q2 2026",
+    allocationMaxValue: 160,
+    allocationItems: [
+      { label: "Platform", value: 146, valueLabel: "146h" },
+      { label: "Delivery", value: 178, valueLabel: "178h" },
+      { label: "Support", value: 160, valueLabel: "160h" },
+    ],
+  },
+};
