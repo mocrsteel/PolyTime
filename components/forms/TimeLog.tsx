@@ -156,7 +156,7 @@ function OptionSelect({
             <ListBoxItem
               id={o.id}
               textValue={o.name}
-              className="cursor-pointer rounded-md px-3 py-2 text-sm outline-none data-[focused]:bg-slate-100 data-[selected]:font-semibold"
+              className="focused:bg-slate-100 selected:font-semibold cursor-pointer rounded-md px-3 py-2 text-sm outline-none"
             >
               {o.name}
             </ListBoxItem>
@@ -267,7 +267,7 @@ export default function TimeLog({
               {(segment) => (
                 <DateSegment
                   segment={segment}
-                  className="focus:bg-polytime-teal rounded px-0.5 outline-none focus:text-white data-[placeholder]:text-slate-400"
+                  className="focus:bg-polytime-teal rounded px-0.5 outline-none placeholder:text-slate-400 focus:text-white"
                 />
               )}
             </DateInput>
@@ -292,7 +292,7 @@ export default function TimeLog({
                   {(d) => (
                     <CalendarCell
                       date={d}
-                      className="data-[selected]:bg-polytime-teal data-[focus-visible]:outline-polytime-teal flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-sm outline-none hover:bg-slate-100 data-[focus-visible]:outline-2 data-[outside-month]:hidden data-[selected]:text-white"
+                      className="selected:bg-polytime-teal focus-visible:outline-polytime-teal outside-month:hidden selected:text-white flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-sm outline-none hover:bg-slate-100 focus-visible:outline-2"
                     />
                   )}
                 </CalendarGrid>
@@ -307,10 +307,10 @@ export default function TimeLog({
           menuTrigger="focus"
           allowsEmptyCollection
           items={items}
-          selectedKey={projectKey}
+          value={projectKey}
           inputValue={projectInput}
           onInputChange={setProjectInput}
-          onSelectionChange={(key) => {
+          onChange={(key) => {
             setProjectKey(key);
             const project = projects.find((p) => p.id === key);
             if (project) setProjectInput(project.name);
@@ -343,12 +343,15 @@ export default function TimeLog({
                 </div>
               )}
             >
-              {(item) =>
+              {(
+                item:
+                  TimeLogProject | { id: typeof NEW_PROJECT_KEY; name: string },
+              ) =>
                 "asset" in item ? (
                   <ListBoxItem
                     id={item.id}
                     textValue={item.name}
-                    className="flex cursor-pointer flex-col rounded-md px-3 py-2 text-sm outline-none data-[focused]:bg-slate-100 data-[selected]:font-semibold"
+                    className="focused:bg-slate-100 selected:font-semibold flex cursor-pointer flex-col rounded-md px-3 py-2 text-sm outline-none"
                   >
                     <Text slot="label">{item.name}</Text>
                     <Text
@@ -362,7 +365,7 @@ export default function TimeLog({
                   <ListBoxItem
                     id={item.id}
                     textValue={item.name}
-                    className="text-polytime-teal cursor-pointer rounded-md px-3 py-2 text-sm outline-none data-[focused]:bg-slate-100"
+                    className="text-polytime-teal focused:bg-slate-100 cursor-pointer rounded-md px-3 py-2 text-sm outline-none"
                   >
                     + Create new project “{item.name}”
                   </ListBoxItem>
@@ -424,14 +427,14 @@ export default function TimeLog({
           <Label className={fieldLabel}>Hours</Label>
           <Input
             placeholder="e.g. 8 or 8.5"
-            className={`${fieldBox} outline-none`}
+            className={`${fieldBox} focus:outline-polytime-teal focus:outline-2`}
           />
           <Text slot="description" className="text-polytime-muted mt-1 text-xs">
             Whole or decimal hours, e.g. 8 or 8.5
           </Text>
           <FieldError className={errorText} />
         </TextField>
-        
+
         <TextField
           name="comment"
           defaultValue={defaultHours}
@@ -440,10 +443,12 @@ export default function TimeLog({
           validate={validateHours}
           className="flex flex-col"
         >
-          <Label className={fieldLabel}>Comment <i>(optional)</i></Label>
+          <Label className={fieldLabel}>
+            Comment <i>(optional)</i>
+          </Label>
           <Input
             placeholder="Performed study ..."
-            className={`${fieldBox} outline-none`}
+            className={`${fieldBox} focus:outline-polytime-teal focus:outline-2`}
           />
         </TextField>
 
