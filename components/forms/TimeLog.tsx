@@ -431,6 +431,21 @@ export default function TimeLog({
           </Text>
           <FieldError className={errorText} />
         </TextField>
+        
+        <TextField
+          name="comment"
+          defaultValue={defaultHours}
+          isRequired
+          inputMode="decimal"
+          validate={validateHours}
+          className="flex flex-col"
+        >
+          <Label className={fieldLabel}>Comment <i>(optional)</i></Label>
+          <Input
+            placeholder="Performed study ..."
+            className={`${fieldBox} outline-none`}
+          />
+        </TextField>
 
         <Button
           type="submit"
