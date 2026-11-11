@@ -63,9 +63,14 @@ export interface TimeLogNewProject {
 export interface TimeLogValues {
   date: string;
   hours: number;
+  comment?: string;
   projectId?: string;
   newProject?: TimeLogNewProject;
 }
+
+export type TimeLogSubmitHandler = (
+  values: TimeLogValues,
+) => void | Promise<void>;
 
 export interface TimeLogProps {
   projects?: TimeLogProject[];
@@ -74,7 +79,7 @@ export interface TimeLogProps {
   defaultDate?: DateValue;
   defaultProjectId?: string;
   defaultHours?: string;
-  onSubmit?: (values: TimeLogValues) => void;
+  onSubmit?: TimeLogSubmitHandler;
 }
 
 const DEFAULT_BUSINESS_UNITS: TimeLogBusinessUnit[] = [
@@ -205,6 +210,8 @@ export default function TimeLog({
   );
   const [newBuId, setNewBuId] = useState<string | null>(null);
   const [newAssetId, setNewAssetId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
 
   const isNew = projectKey === NEW_PROJECT_KEY;
   const selected = projects.find((p) => p.id === projectKey);
@@ -236,22 +243,31 @@ export default function TimeLog({
       <h1 className="mt-2 text-xl font-bold">Add time</h1>
       <Form
         className="mt-4 flex flex-col gap-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           const data = new FormData(e.currentTarget);
-          onSubmit?.({
-            date: String(data.get("date") ?? ""),
-            hours: Number(String(data.get("hours")).replace(",", ".")),
-            ...(isNew
-              ? {
-                  newProject: {
-                    name: query,
-                    businessUnitId: newBuId!,
-                    assetId: newAssetId!,
-                  },
-                }
-              : { projectId: String(projectKey) }),
-          });
+          setIsSubmitting(true);
+          setSubmissionError(null);
+          try {
+            await onSubmit?.({
+              date: String(data.get("date") ?? ""),
+              hours: Number(String(data.get("hours")).replace(",", ".")),
+              comment: String(data.get("comment") ?? "").trim(),
+              ...(isNew
+                ? {
+                    newProject: {
+                      name: query,
+                      businessUnitId: newBuId!,
+                      assetId: newAssetId!,
+                    },
+                  }
+                : { projectId: String(projectKey) }),
+            });
+          } catch {
+            setSubmissionError("Time could not be added. Please try again.");
+          } finally {
+            setIsSubmitting(false);
+          }
         }}
       >
         <DatePicker
@@ -435,14 +451,7 @@ export default function TimeLog({
           <FieldError className={errorText} />
         </TextField>
 
-        <TextField
-          name="comment"
-          defaultValue={defaultHours}
-          isRequired
-          inputMode="decimal"
-          validate={validateHours}
-          className="flex flex-col"
-        >
+        <TextField name="comment" className="flex flex-col">
           <Label className={fieldLabel}>
             Comment <i>(optional)</i>
           </Label>
@@ -454,10 +463,16 @@ export default function TimeLog({
 
         <Button
           type="submit"
+          isDisabled={isSubmitting}
           className="bg-polytime-teal cursor-pointer rounded-lg px-4 py-2 font-semibold text-white"
         >
-          Add time
+          {isSubmitting ? "Adding time…" : "Add time"}
         </Button>
+        {submissionError && (
+          <p role="alert" className={errorText}>
+            {submissionError}
+          </p>
+        )}
       </Form>
     </div>
   );

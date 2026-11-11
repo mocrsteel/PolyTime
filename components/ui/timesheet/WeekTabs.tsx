@@ -27,6 +27,7 @@ type DayTabProps = RACTabProps & {
   date: Date;
   /** The full timesheeting entries for the week. Data is filtered within the tabs per day.*/
   data: TimesheetEntry[];
+  onAddEntry?: () => void;
 };
 
 /**
@@ -74,7 +75,12 @@ export function getEntriesOnDate(data: TimesheetEntry[], date: string) {
  * Renders a tabbed interface for displaying timesheeting entries for a specific week.
  * @todo Allows for entering new entries and editing existing ones.
  */
-export default function WeekTabs({ date, data, ...props }: DayTabProps) {
+export default function WeekTabs({
+  date,
+  data,
+  onAddEntry,
+  ...props
+}: DayTabProps) {
   const [tab, setTab] = useState<Key>(format(date, "yyyy-MM-dd"));
   const locale = useLocale();
   const displayWeek = generateWeekDays(date);
@@ -148,7 +154,7 @@ export default function WeekTabs({ date, data, ...props }: DayTabProps) {
           <DayList entries={entries} />
           <Button
             style="tertiary"
-            onClick={() => {}}
+            onClick={onAddEntry}
             className="mt-2 mb-6 w-full"
           >
             {iconMap({ icon: "plus" })}
