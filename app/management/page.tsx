@@ -1,5 +1,5 @@
-export default function Management(){
-  return (
-    <div>Management</div>
-  )
+import ManagementPage from "@/components/pages/ManagementPage";
+
+export default function Management() {
+  return <ManagementPage role="User" />;
 }
