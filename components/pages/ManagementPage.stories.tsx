@@ -11,6 +11,23 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+async function selectOption(
+  container: HTMLElement,
+  label: string,
+  option: string,
+) {
+  await userEvent.click(
+    await within(container).findByRole("button", {
+      name: new RegExp(`${label}$`),
+    }),
+  );
+  await userEvent.click(
+    await within(container.ownerDocument.body).findByRole("option", {
+      name: option,
+    }),
+  );
+}
+
 export const User: Story = {
   args: { role: "User" },
   play: async ({ canvasElement }) => {
@@ -36,12 +53,14 @@ export const User: Story = {
       canvas.getByText("New passwords do not match."),
     ).toBeInTheDocument();
     await userEvent.click(canvas.getByRole("button", { name: "Add project" }));
-    const dialog = within(
-      await within(document.body).findByRole("dialog", { name: "Add project" }),
-    );
-    await userEvent.selectOptions(
-      dialog.getByLabelText("Asset"),
-      "operations:north",
+    const dialogElement = await within(
+      canvasElement.ownerDocument.body,
+    ).findByRole("dialog", { name: "Add project" });
+    const dialog = within(dialogElement);
+    await selectOption(
+      dialogElement,
+      "Asset",
+      "Operations / North facility",
     );
     await userEvent.type(dialog.getByLabelText("Name"), "New project");
     await userEvent.click(dialog.getByRole("button", { name: "Save" }));
@@ -64,7 +83,7 @@ export const Manager: Story = {
       await within(document.body).findByRole("dialog", { name: "Edit person" }),
     );
     await expect(dialog.queryByLabelText("Role")).not.toBeInTheDocument();
-    await userEvent.selectOptions(dialog.getByLabelText("Group"), "operations");
+    await selectOption("Group", "Operations");
     await userEvent.click(dialog.getByRole("button", { name: "Save" }));
     await expect(
       within(canvas.getByRole("row", { name: /Alex Morgan/ })).getByText(
@@ -80,12 +99,12 @@ export const Manager: Story = {
     await expect(canvas.getByText("2026-10-31")).toBeInTheDocument();
     await expect(canvas.getByText("Maintenance review")).toBeInTheDocument();
     await expect(canvas.queryByText("Design review")).not.toBeInTheDocument();
-    await userEvent.selectOptions(canvas.getByLabelText("User"), "jonas");
+    await selectOption("User", "Jonas Lee");
     await expect(canvas.getByText("Design review")).toBeInTheDocument();
     await expect(
       canvas.queryByText("Maintenance review"),
     ).not.toBeInTheDocument();
-    await userEvent.selectOptions(canvas.getByLabelText("User"), "alex");
+    await selectOption("User", "Alex Morgan");
     await userEvent.click(
       canvas.getByRole("button", {
         name: "Edit entry for Alex Morgan on 2026-10-28",
@@ -104,11 +123,11 @@ export const Manager: Story = {
       canvas.getByText("Select a month to view entries."),
     ).toBeInTheDocument();
     await userEvent.type(month, "2020-01");
-    await userEvent.selectOptions(canvas.getByLabelText("User"), "maya");
+    await selectOption("User", "Maya Singh");
     await expect(
       canvas.getByText("No entries for Maya Singh in this month."),
     ).toBeInTheDocument();
-    await userEvent.selectOptions(canvas.getByLabelText("User"), "alex");
+    await selectOption("User", "Alex Morgan");
     await userEvent.click(canvas.getByRole("button", { name: "Lock month" }));
     await expect(
       canvas.getByRole("button", { name: "Unlock month" }),
@@ -121,7 +140,7 @@ export const Manager: Story = {
         name: "Edit entry for Alex Morgan on 2020-01-15",
       }),
     ).not.toBeInTheDocument();
-    await userEvent.selectOptions(canvas.getByLabelText("User"), "jonas");
+    await selectOption("User", "Jonas Lee");
     await expect(
       canvas.getByRole("button", { name: "Unlock month" }),
     ).toBeInTheDocument();
@@ -150,7 +169,7 @@ export const Admin: Story = {
     const dialog = within(
       await within(document.body).findByRole("dialog", { name: "Edit person" }),
     );
-    await userEvent.selectOptions(dialog.getByLabelText("Role"), "Admin");
+    await selectOption("Role", "Admin");
     await userEvent.click(dialog.getByRole("button", { name: "Save" }));
     await expect(
       within(canvas.getByRole("row", { name: /Alex Morgan/ })).getByText(
@@ -158,7 +177,7 @@ export const Admin: Story = {
       ),
     ).toBeInTheDocument();
     await userEvent.click(canvas.getByRole("button", { name: "Time entries" }));
-    await userEvent.selectOptions(canvas.getByLabelText("User"), "jonas");
+    await selectOption("User", "Jonas Lee");
     await userEvent.click(
       canvas.getByRole("button", {
         name: "Edit entry for Jonas Lee on 2026-10-29",
