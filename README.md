@@ -23,12 +23,12 @@ Built with **Next.js 16**, **TypeScript**, **Prisma**, **Tailwind CSS**, and **R
 |---|---|
 | Framework | [Next.js 16](https://nextjs.org) (App Router) |
 | Language | TypeScript 5 |
-| Database ORM | [Prisma 6](https://www.prisma.io) |
+| Database ORM | [Prisma 7](https://www.prisma.io) |
 | Styling | [Tailwind CSS 4](https://tailwindcss.com) |
 | Accessibility | [React Aria Components](https://react-spectrum.adobe.com/react-aria/) |
 | Component Dev | [Storybook 10](https://storybook.js.org) |
 | Testing | [Vitest](https://vitest.dev) + Playwright |
-| Package Manager | [pnpm](https://pnpm.io) |
+| Tooling | [mise](https://mise.jdx.dev) |
 
 ---
 
@@ -36,34 +36,33 @@ Built with **Next.js 16**, **TypeScript**, **Prisma**, **Tailwind CSS**, and **R
 
 ### Prerequisites
 
-- Node.js 20+
-- pnpm (`npm install -g pnpm`)
+- [mise](https://mise.jdx.dev/getting-started.html)
 
 ### Installation
 
 ```bash
 git clone https://github.com/mocrsteel/PolyTime.git
 cd PolyTime
-pnpm install
+mise run install
 ```
 
 ### Database Setup
 
 ```bash
 # Generate the Prisma client
-pnpm db:generate
+mise run db:generate
 
 # Run migrations
-pnpm db:migrate
+mise run db:migrate
 
 # (Optional) Seed with demo data
-pnpm db:seed
+mise run db:seed
 ```
 
 ### Development Server
 
 ```bash
-pnpm dev
+mise run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
@@ -74,16 +73,17 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 | Command | Description |
 |---|---|
-| `pnpm dev` | Start the development server |
-| `pnpm build` | Build for production |
-| `pnpm start` | Start the production server |
-| `pnpm lint` | Run ESLint |
-| `pnpm storybook` | Start Storybook on port 6006 |
-| `pnpm build-storybook` | Build the Storybook static site |
-| `pnpm db:generate` | Regenerate the Prisma client |
-| `pnpm db:migrate` | Run database migrations |
-| `pnpm db:seed` | Seed the database |
-| `pnpm db:studio` | Open Prisma Studio |
+| `mise run dev` | Start the development server |
+| `mise run build` | Build for production |
+| `mise run start` | Start the production server |
+| `mise run lint` | Run ESLint |
+| `mise run test:all` | Run lint, type checks, unit, Storybook, and E2E tests |
+| `mise run storybook` | Start Storybook on port 6006 |
+| `mise run build-storybook` | Build the Storybook static site |
+| `mise run db:generate` | Regenerate the Prisma client |
+| `mise run db:migrate` | Run database migrations |
+| `mise run db:seed` | Seed the database |
+| `mise run db:studio` | Open Prisma Studio |
 
 ---
 

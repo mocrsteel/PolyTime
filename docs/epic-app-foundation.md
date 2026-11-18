@@ -291,7 +291,7 @@
 - **Testing:** Jest + React Testing Library
 
 ### Backend
-- **Runtime:** Node.js 18+
+- **Runtime:** Node.js 24+
 - **Database:** PostgreSQL
 - **ORM:** Prisma
 - **API:** RESTful (Next.js API routes) or tRPC
@@ -551,16 +551,16 @@ comments
 npm install
 
 # Dev server
-npm run dev
+mise run dev
 
 # Storybook
-npm run storybook
+mise run storybook
 
 # Tests
-npm run test
+mise run test:all
 
 # Linting
-npm run lint
+mise run lint
 ```
 
 ---

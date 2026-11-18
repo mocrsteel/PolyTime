@@ -11,7 +11,7 @@ Your project is configured with three test projects:
 - **Location**: `__tests__/unit/**/*.test.ts(x)`
 - **Tool**: Vitest + jsdom
 - **Purpose**: Test pure functions, utilities, and isolated logic
-- **Run**: `pnpm test:unit`
+- **Run**: `mise run test:unit`
 
 Example:
 
@@ -30,7 +30,7 @@ describe("calculateTimeDifference", () => {
 - **Location**: `__tests__/unit/**/*.test.tsx`
 - **Tool**: Vitest + React Testing Library + jsdom
 - **Purpose**: Test React components with user interactions
-- **Run**: `pnpm test:unit`
+- **Run**: `mise run test:unit`
 
 Example:
 
@@ -52,7 +52,7 @@ describe("Button Component", () => {
 - **Location**: `components/**/*.stories.tsx`
 - **Tool**: Storybook + Vitest addon
 - **Purpose**: Automated visual regression and accessibility testing
-- **Run**: `pnpm test:storybook`
+- **Run**: `mise run test:storybook`
 
 Example:
 
@@ -68,7 +68,7 @@ export const Primary: Story = {
 - **Location**: `__tests__/e2e/**/*.test.ts`
 - **Tool**: Vitest + Playwright
 - **Purpose**: Test complete user workflows end-to-end
-- **Run**: `pnpm test:e2e` (requires app running on localhost:3000)
+- **Run**: `mise run test:e2e` (requires app running on localhost:3000)
 
 Example:
 
@@ -86,22 +86,22 @@ it("should navigate to timesheet page", async () => {
 
 ```bash
 # Run all tests
-pnpm test
+mise run test:all
 
 # Run only unit/component tests (fast)
-pnpm test:unit
+mise run test:unit
 
 # Run only Storybook visual tests
-pnpm test:storybook
+mise run test:storybook
 
 # Run only E2E tests
-pnpm test:e2e
+mise run test:e2e
 
 # Run with watch mode (for development)
-pnpm test -- --watch
+mise run test:unit -- --watch
 
 # Generate coverage report
-pnpm test:coverage
+mise run test:coverage
 ```
 
 ## Test Organization
@@ -222,16 +222,16 @@ it("should update on input change", async () => {
 
 ```bash
 # Run with debugging UI
-pnpm test -- --ui
+mise run test:unit -- --ui
 
 # Run specific test file
-pnpm test -- timeUtils.test.ts
+mise run test:unit -- timeUtils.test.ts
 
 # Run tests matching pattern
-pnpm test -- --grep "Button"
+mise run test:unit -- --grep "Button"
 
 # Verbose output
-pnpm test -- --reporter=verbose
+mise run test:unit -- --reporter=verbose
 ```
 
 ## Coverage Goals
@@ -245,7 +245,7 @@ Industry standards typically aim for:
 Generate coverage with:
 
 ```bash
-pnpm test:coverage
+mise run test:coverage
 ```
 
 ## Resources
@@ -257,7 +257,7 @@ pnpm test:coverage
 
 ## Next Steps
 
-1. Run `pnpm test:unit` to verify unit/component tests work
-2. Run `pnpm test:storybook` to run visual tests on your stories
-3. Start your app with `pnpm dev` and run `pnpm test:e2e` for E2E tests
+1. Run `mise run test:unit` to verify unit/component tests work
+2. Run `mise run test:storybook` to run visual tests on your stories
+3. Start your app with `mise run dev` and run `mise run test:e2e` for E2E tests
 4. Add more tests as you develop new features

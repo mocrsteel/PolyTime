@@ -12,10 +12,10 @@ This project uses Prisma 7 with the schema-first architecture.
 ## Commands
 
 ```bash
-pnpm db:generate
-pnpm db:migrate
-pnpm db:seed
-pnpm db:studio
+mise run db:generate
+mise run db:migrate
+mise run db:seed
+mise run db:studio
 ```
 
 Set `DATABASE_URL` in `.env` before running database commands.
