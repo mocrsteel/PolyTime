@@ -3,28 +3,6 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "test": "vitest run __tests__/unit",
-    "test:unit": "vitest run __tests__/unit",
-    "test:storybook": "vitest run --project storybook",
-    "test:e2e": "playwright test",
-    "test:coverage": "vitest run --coverage __tests__/unit",
-    "typecheck": "tsc --noEmit",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "db:start": "cd .devcontainer && docker compose up -d",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:seed": "tsx prisma/seed.ts",
-    "db:studio": "prisma studio --url $DATABASE_URL"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  },
   "dependencies": {
     "@internationalized/date": "^3.12.4",
     "@prisma/adapter-pg": "^7.10.0",
@@ -89,13 +67,5 @@
     "tailwindFunctions": [
       "tv"
     ]
-  },
-  "packageManager": "pnpm@11.20.0",
-  "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "^24.19.0",
-      "onFail": "download"
-    }
   }
 }

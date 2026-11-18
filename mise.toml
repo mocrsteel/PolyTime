@@ -1,0 +1,102 @@
+[tools]
+node = "24.19.0"
+pnpm = "12.21.0"
+
+[env]
+_.file = ".env"
+
+[tasks.install]
+description = "Install dependencies from the lockfile"
+run = "pnpm install --frozen-lockfile"
+
+[tasks.dev]
+description = "Run the Next.js development server"
+depends = ["install", "db:setup"]
+run = "pnpm exec next dev"
+
+[tasks.build]
+description = "Build the production application"
+run = "pnpm exec next build"
+
+[tasks.start]
+description = "Start the production application"
+run = "pnpm exec next start"
+
+[tasks.lint]
+description = "Run ESLint"
+run = "pnpm exec eslint"
+
+[tasks.test]
+description = "Run the complete test suite"
+depends = ["test:all"]
+
+[tasks."test:all"]
+description = "Run lint, type checks, unit, Storybook, and E2E tests"
+depends = [
+  "install",
+  "db:setup",
+  "lint",
+  "typecheck",
+  "test:unit",
+  "test:storybook",
+  "playwright:install",
+  "test:e2e",
+]
+
+[tasks."test:unit"]
+description = "Run unit and component tests"
+run = "pnpm exec vitest run __tests__/unit"
+
+[tasks."test:storybook"]
+description = "Run Storybook tests"
+run = "pnpm exec vitest run --project storybook"
+
+[tasks."test:e2e"]
+description = "Run Playwright end-to-end tests"
+run = "pnpm exec playwright test"
+
+[tasks."test:coverage"]
+description = "Run unit tests with coverage"
+run = "pnpm exec vitest run --coverage __tests__/unit"
+
+[tasks.typecheck]
+description = "Run the TypeScript type checker"
+run = "pnpm exec tsc --noEmit"
+
+[tasks.storybook]
+description = "Run the Storybook development server"
+run = "pnpm exec storybook dev -p 6006"
+
+[tasks."build-storybook"]
+description = "Build the Storybook static site"
+run = "pnpm exec storybook build"
+
+[tasks."db:start"]
+description = "Start the local PostgreSQL database"
+run = "docker compose up -d --wait"
+
+[tasks."db:generate"]
+description = "Generate the Prisma client"
+run = "pnpm exec prisma generate"
+
+[tasks."db:migrate"]
+description = "Run Prisma migrations"
+depends = ["db:start", "db:generate"]
+run = "pnpm exec prisma migrate dev"
+
+[tasks."db:seed"]
+description = "Seed the development database"
+depends = ["db:migrate"]
+run = "pnpm exec tsx prisma/seed.ts"
+
+[tasks."db:setup"]
+description = "Generate the Prisma client and seed the database"
+depends = ["db:seed"]
+
+[tasks."db:studio"]
+description = "Open Prisma Studio"
+run = "pnpm exec prisma studio --url \"$DATABASE_URL\""
+
+[tasks."playwright:install"]
+description = "Install Playwright Chromium and system dependencies"
+run = "pnpm exec playwright install chromium --with-deps"

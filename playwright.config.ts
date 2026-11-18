@@ -18,7 +18,7 @@ export default defineConfig({
   ],
   // Automatically start the dev server before running E2E tests
   webServer: {
-    command: 'pnpm dev',
+    command: 'pnpm exec next dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

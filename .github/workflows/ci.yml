@@ -18,13 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/setup@v2
+      - uses: jdx/mise-action@v2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: mise run install
 
       - name: Run ESLint
-        run: pnpm lint
+        run: mise run lint
 
   typecheck:
     name: Type Check
@@ -34,13 +34,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/setup@v2
+      - uses: jdx/mise-action@v2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: mise run install
 
       - name: Run TypeScript type check
-        run: pnpm exec tsc --noEmit
+        run: mise run typecheck
 
   test:
     name: Storybook Tests
@@ -50,16 +50,16 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/setup@v2
+      - uses: jdx/mise-action@v2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: mise run install
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install chromium --with-deps
+        run: mise run playwright:install
 
       - name: Run Storybook tests
-        run: pnpm exec vitest --run --project storybook
+        run: mise run test:storybook
 
       - name: Run unit tests
-        run: pnpm exec vitest --run __tests__/unit
+        run: mise run test:unit
