@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: mise run install
 
+      - name: Generate prisma typings
+        run: mise run db:generate
+
       - name: Run TypeScript type check
         run: mise run typecheck
 
