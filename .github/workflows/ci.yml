@@ -41,6 +41,12 @@ jobs:
 
       - name: Generate prisma typings
         run: mise run db:generate
+        env:
+            DATABASE_USER: ci
+            DATABASE_PASSWORD: ci
+            DATABASE_HOST: localhost
+            DATABASE_PORT: "5432"
+            DATABASE_NAME: ci
 
       - name: Run TypeScript type check
         run: mise run typecheck
